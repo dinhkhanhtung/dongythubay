@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(grid);
   }
 
-  // 4. Affiliate List Component (E-commerce Style List 1 Column)
+  // 4. Affiliate List Component (E-commerce Style Grid 2 Columns like TikTok Shop)
   function renderAffiliateList(section, container) {
     const list = document.createElement('div');
     list.className = 'affiliate-container';
@@ -459,28 +459,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const image = item.image || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4=';
       const linkUrl = item.affiliateUrl;
       const isTikTok = linkUrl.includes('tiktok.com');
-      const isShopee = linkUrl.includes('shopee.vn') || linkUrl.includes('shope.ee');
-      const isLazada = linkUrl.includes('lazada.vn');
-
-      let platformClass = 'other';
-      let defaultCta = 'Mua ngay';
-      let targetAttr = '_blank';
-      let relAttr = 'rel="noopener noreferrer"';
-
-      if (isTikTok) {
-        platformClass = 'tiktok';
-        defaultCta = 'Mua trên TikTok';
-        targetAttr = '_self';
-        relAttr = '';
-      } else if (isShopee) {
-        platformClass = 'shopee';
-        defaultCta = 'Mua trên Shopee';
-      } else if (isLazada) {
-        platformClass = 'lazada';
-        defaultCta = 'Mua trên Lazada';
-      }
-
-      const ctaLabel = item.ctaLabel || defaultCta;
+      const targetAttr = isTikTok ? '_self' : '_blank';
+      const relAttr = isTikTok ? '' : 'rel="noopener noreferrer"';
 
       card.href = linkUrl;
       card.target = targetAttr;
@@ -497,12 +477,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="affiliate-info">
           <div class="affiliate-text">
             <h3 class="affiliate-name">${name}</h3>
-            <div class="affiliate-price">${price}</div>
+            <div class="affiliate-price-row">
+              <div class="affiliate-price">${price}</div>
+            </div>
             <div class="affiliate-discount">${discount}</div>
-          </div>
-          <div class="affiliate-cta ${platformClass}">
-            <span>${ctaLabel}</span>
-            <i data-lucide="shopping-cart"></i>
           </div>
         </div>
       `;
