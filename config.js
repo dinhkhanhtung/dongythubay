@@ -50,7 +50,7 @@ window.CONFIG = {
         {
           "platform": "tiktok",
           "label": "Kênh TikTok",
-          "url": "https://www.tiktok.com/@dongy_thubay",
+          "url": "https://www.tiktok.com/@khanhtungdinh",
           "icon": "https://img.icons8.com/color/144/tiktok.png"
         }
       ]
