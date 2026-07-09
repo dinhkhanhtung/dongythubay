@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
     grid.className = 'project-bento-grid';
 
     section.items.forEach((item, index) => {
-      const card = document.createElement('div');
+      const card = document.createElement('a');
       card.className = 'project-card';
       card.id = `project-card-${section.id}-${index}`;
       
@@ -391,6 +391,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const image = item.image || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4=';
       const tag = item.tag || 'Ứng dụng';
       const linkUrl = item.previewUrl;
+
+      card.href = linkUrl;
+      card.target = '_blank';
+      card.setAttribute('rel', 'noopener noreferrer');
 
       card.innerHTML = `
         <div class="project-image-wrapper">
@@ -402,17 +406,17 @@ document.addEventListener('DOMContentLoaded', () => {
             <h3>${title}</h3>
             <p>${description}</p>
           </div>
-          <a href="${linkUrl}" target="_blank" rel="noopener noreferrer" class="project-cta">
+          <div class="project-cta">
             <span>Sử dụng ngay</span>
             <i data-lucide="arrow-up-right"></i>
-          </a>
+          </div>
         </div>
       `;
 
       // Track click
-      const ctaBtn = card.querySelector('.project-cta');
-      ctaBtn.addEventListener('click', () => {
-        trackClick('project', slugify(title), title, linkUrl);
+      card.addEventListener('click', () => {
+        const currentTitle = card.querySelector('h3')?.textContent || title;
+        trackClick('project', slugify(currentTitle), currentTitle, linkUrl);
       });
 
       // Link Unfurling Trigger if metadata is missing
@@ -429,17 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
               if (imgEl) imgEl.alt = meta.title;
             }
             if (descEl && !item.description && meta.description) descEl.textContent = meta.description;
-            
-            // Re-bind click tracking with new title if it was missing
-            if (!item.title && meta.title) {
-              const newCta = card.querySelector('.project-cta');
-              // Clone to replace listener
-              const clone = newCta.cloneNode(true);
-              newCta.parentNode.replaceChild(clone, newCta);
-              clone.addEventListener('click', () => {
-                trackClick('project', slugify(meta.title), meta.title, linkUrl);
-              });
-            }
           }
         });
       }
@@ -450,13 +443,13 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(grid);
   }
 
-  // 4. Affiliate List Component (E-commerce Style Grid 2 Columns)
+  // 4. Affiliate List Component (E-commerce Style List 1 Column)
   function renderAffiliateList(section, container) {
     const list = document.createElement('div');
     list.className = 'affiliate-container';
 
     section.items.forEach((item, index) => {
-      const card = document.createElement('div');
+      const card = document.createElement('a');
       card.className = 'affiliate-card';
       card.id = `affiliate-card-${section.id}-${index}`;
       
@@ -471,27 +464,33 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetAttr = isTikTok ? '_self' : '_blank';
       const relAttr = isTikTok ? '' : 'rel="noopener noreferrer"';
 
+      card.href = linkUrl;
+      card.target = targetAttr;
+      if (relAttr) {
+        card.setAttribute('rel', 'noopener noreferrer');
+      }
+
       card.innerHTML = `
         <div class="affiliate-image-wrapper">
           <img src="${image}" alt="${name}" class="affiliate-image" loading="lazy">
         </div>
         <div class="affiliate-info">
-          <div>
+          <div class="affiliate-text">
             <h3 class="affiliate-name">${name}</h3>
             <div class="affiliate-price">${price}</div>
             <div class="affiliate-discount">${discount}</div>
           </div>
-          <a href="${linkUrl}" target="${targetAttr}" ${relAttr} class="affiliate-cta">
+          <div class="affiliate-cta">
             <span>${ctaLabel}</span>
             <i data-lucide="shopping-cart"></i>
-          </a>
+          </div>
         </div>
       `;
 
       // Track click
-      const ctaBtn = card.querySelector('.affiliate-cta');
-      ctaBtn.addEventListener('click', () => {
-        trackClick('affiliate', slugify(name), name, linkUrl);
+      card.addEventListener('click', () => {
+        const currentName = card.querySelector('.affiliate-name')?.textContent || name;
+        trackClick('affiliate', slugify(currentName), currentName, linkUrl);
       });
 
       // Link Unfurling Trigger if metadata is missing
@@ -509,16 +508,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (descEl && !item.discountNote && meta.description) {
               descEl.textContent = meta.description;
-            }
-            
-            // Re-bind tracking
-            if (!item.name && meta.title) {
-              const newCta = card.querySelector('.affiliate-cta');
-              const clone = newCta.cloneNode(true);
-              newCta.parentNode.replaceChild(clone, newCta);
-              clone.addEventListener('click', () => {
-                trackClick('affiliate', slugify(meta.title), meta.title, linkUrl);
-              });
             }
           }
         });
