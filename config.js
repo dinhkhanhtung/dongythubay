@@ -3,7 +3,7 @@
 window.CONFIG = {
   "profile": {
     "avatar": "assets/avatar_doctor.png",
-    "name": "Đông y Thu Bẩy",
+    "name": "Đinh Khánh Tùng ",
     "title": "Phòng Chẩn Trị YHCT Thu Bẩy",
     "subtitle": "Lương y Đinh Khánh Tùng",
     "tiktokHandle": "@khanhtungdinh",
