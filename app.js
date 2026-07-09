@@ -448,6 +448,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const list = document.createElement('div');
     list.className = 'affiliate-container';
 
+    // Helper to generate consistent mock sales & rating based on string hash
+    function getMockStats(nameStr) {
+      let hash = 0;
+      for (let i = 0; i < nameStr.length; i++) {
+        hash = nameStr.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      hash = Math.abs(hash);
+      const rating = [4.7, 4.8, 4.9][hash % 3];
+      const rawSales = 150 + (hash % 12350);
+      const salesText = rawSales >= 1000 ? (rawSales / 1000).toFixed(1) + 'K' : rawSales;
+      return { rating, salesText };
+    }
+
     section.items.forEach((item, index) => {
       const card = document.createElement('a');
       card.className = 'affiliate-card';
@@ -482,6 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const ctaLabel = item.ctaLabel || defaultCta;
+      const { rating, salesText } = getMockStats(name);
 
       card.href = linkUrl;
       card.target = targetAttr;
@@ -499,6 +513,11 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="affiliate-text">
             <h3 class="affiliate-name">${name}</h3>
             <div class="affiliate-price">${price}</div>
+            <div class="affiliate-rating-row">
+              <span class="affiliate-rating">${rating} <i data-lucide="star" class="star-icon"></i></span>
+              <span class="affiliate-divider">|</span>
+              <span class="affiliate-sales">${salesText} đã bán</span>
+            </div>
             <div class="affiliate-discount">${discount}</div>
           </div>
           <div class="affiliate-cta ${platformClass}">
@@ -546,6 +565,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (nameEl && !item.name && meta.title) {
               nameEl.textContent = meta.title;
               if (imgEl) imgEl.alt = meta.title;
+              
+              // Recalculate stats with the fetched title
+              const newStats = getMockStats(meta.title);
+              const ratingEl = card.querySelector('.affiliate-rating');
+              const salesEl = card.querySelector('.affiliate-sales');
+              if (ratingEl) ratingEl.innerHTML = `${newStats.rating} <i data-lucide="star" class="star-icon"></i>`;
+              if (salesEl) salesEl.textContent = `${newStats.salesText} đã bán`;
+              
+              if (window.lucide) {
+                window.lucide.createIcons();
+              }
             }
             if (descEl && !item.discountNote && meta.description) {
               descEl.textContent = meta.description;

@@ -589,6 +589,40 @@ body {
   color: #ef4444;
 }
 
+.affiliate-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+.affiliate-rating {
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star-icon {
+  width: 12px;
+  height: 12px;
+  fill: #ffb300;
+  color: #ffb300;
+  display: inline-block;
+}
+
+.affiliate-divider {
+  color: rgba(var(--color-primary-rgb), 0.15);
+  font-weight: 300;
+}
+
+.affiliate-sales {
+  color: var(--text-muted);
+}
+
 .affiliate-discount {
   font-size: 11px;
   color: var(--text-muted);

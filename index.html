@@ -1,31 +1,37 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đông y Thu Bẩy - Y học cổ truyền Thái Nguyên</title>
-  
+
   <!-- Dynamic Meta Tags will be filled by app.js, fallback here -->
-  <meta name="description" content="Trang thông tin liên kết của Phòng chẩn trị YHCT Thu Bẩy - Lương y Đinh Khánh Tùng.">
+  <meta name="description"
+    content="Trang thông tin liên kết của Phòng chẩn trị YHCT Thu Bẩy - Lương y Đinh Khánh Tùng.">
   <meta property="og:title" content="Đông y Thu Bẩy - Y học cổ truyền Thái Nguyên">
-  <meta property="og:description" content="Trang liên kết chính thức của Phòng chẩn trị YHCT Thu Bẩy. Đặt lịch, liên hệ và sản phẩm y khoa thảo dược.">
+  <meta property="og:description"
+    content="Trang liên kết chính thức của Phòng chẩn trị YHCT Thu Bẩy. Đặt lịch, liên hệ và sản phẩm y khoa thảo dược.">
   <meta property="og:image" content="assets/avatar_doctor.png">
   <meta property="og:type" content="website">
-  
+
   <!-- Google Fonts: Outfit & Satoshi (fallback to Inter) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+
   <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css">
-  
+
   <!-- Configuration (loaded before application logic) -->
   <script src="config.js"></script>
 </head>
+
 <body>
   <!-- Light/Dark Mode Toggle & Admin trigger -->
   <div class="top-controls">
@@ -39,7 +45,7 @@
 
   <!-- App Wrapper -->
   <main class="app-container">
-    
+
     <!-- Profile Section (Header) -->
     <header class="profile-header">
       <div class="avatar-container">
@@ -67,7 +73,7 @@
 
     <!-- Footer -->
     <footer class="app-footer">
-      <p class="copyright">© 2026 YHCT Thu Bẩy. Thiết kế bởi Antigravity.</p>
+      <p class="copyright">© 2026 YHCT Thu Bẩy. Thiết kế bởi Đinh Khánh Tùng .</p>
       <p class="address">Địa chỉ: Tổ 10, Quan Triều, Thái Nguyên</p>
     </footer>
 
@@ -86,7 +92,8 @@
         <button id="close-modal" class="close-btn">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="modal-desc">Thống kê nội bộ các lượt click vào liên kết được lưu trên trình duyệt của bạn (dành cho Admin):</p>
+        <p class="modal-desc">Thống kê nội bộ các lượt click vào liên kết được lưu trên trình duyệt của bạn (dành cho
+          Admin):</p>
         <div class="stats-table-wrapper">
           <table class="stats-table">
             <thead>
@@ -114,4 +121,5 @@
   <!-- Application Logic -->
   <script src="app.js"></script>
 </body>
+
 </html>
