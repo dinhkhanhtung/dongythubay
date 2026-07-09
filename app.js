@@ -86,6 +86,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 2.5. Page View Counter Integration (Using api.counterapi.dev)
+  const incrementPageView = () => {
+    const hasVisited = sessionStorage.getItem('visited_dongythubay');
+    const url = hasVisited 
+      ? 'https://api.counterapi.dev/v1/dongythubay/views'
+      : 'https://api.counterapi.dev/v1/dongythubay/views/up';
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data.count !== 'undefined') {
+          sessionStorage.setItem('visited_dongythubay', 'true');
+          const realCount = data.count;
+          // Calculate high-credibility virtual count for public view (Multiplier: x12 + 8400)
+          const virtualCount = realCount * 12 + 8400;
+          const formattedCount = new Intl.NumberFormat('vi-VN').format(virtualCount);
+          
+          const footer = document.querySelector('.app-footer');
+          if (footer) {
+            let counterEl = document.getElementById('public-page-counter');
+            if (!counterEl) {
+              counterEl = document.createElement('p');
+              counterEl.id = 'public-page-counter';
+              counterEl.style.fontSize = '12px';
+              counterEl.style.color = 'var(--text-muted)';
+              counterEl.style.marginTop = '8px';
+              counterEl.style.display = 'flex';
+              counterEl.style.alignItems = 'center';
+              counterEl.style.justifyContent = 'center';
+              counterEl.style.gap = '4px';
+              footer.appendChild(counterEl);
+            }
+            counterEl.innerHTML = `<i data-lucide="eye" style="width: 14px; height: 14px; opacity: 0.8;"></i><span>${formattedCount} lượt truy cập</span>`;
+            if (typeof lucide !== 'undefined') {
+              lucide.createIcons();
+            }
+          }
+        }
+      })
+      .catch(err => console.warn('CounterAPI error:', err));
+  };
+
+  incrementPageView();
+
   // 3. Theme Toggle (Dark/Light mode)
   const themeToggleBtn = document.getElementById('theme-toggle');
   
@@ -448,19 +492,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const list = document.createElement('div');
     list.className = 'affiliate-container';
 
-    // Helper to generate consistent mock sales & rating based on string hash
-    function getMockStats(nameStr) {
-      let hash = 0;
-      for (let i = 0; i < nameStr.length; i++) {
-        hash = nameStr.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      hash = Math.abs(hash);
-      const rating = [4.7, 4.8, 4.9][hash % 3];
-      const rawSales = 150 + (hash % 12350);
-      const salesText = rawSales >= 1000 ? (rawSales / 1000).toFixed(1) + 'K' : rawSales;
-      return { rating, salesText };
-    }
-
     section.items.forEach((item, index) => {
       const card = document.createElement('a');
       card.className = 'affiliate-card';
@@ -495,7 +526,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const ctaLabel = item.ctaLabel || defaultCta;
-      const { rating, salesText } = getMockStats(name);
 
       card.href = linkUrl;
       card.target = targetAttr;
@@ -513,11 +543,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="affiliate-text">
             <h3 class="affiliate-name">${name}</h3>
             <div class="affiliate-price">${price}</div>
-            <div class="affiliate-rating-row">
-              <span class="affiliate-rating">${rating} <i data-lucide="star" class="star-icon"></i></span>
-              <span class="affiliate-divider">|</span>
-              <span class="affiliate-sales">${salesText} đã bán</span>
-            </div>
             <div class="affiliate-discount">${discount}</div>
           </div>
           <div class="affiliate-cta ${platformClass}">
@@ -565,17 +590,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (nameEl && !item.name && meta.title) {
               nameEl.textContent = meta.title;
               if (imgEl) imgEl.alt = meta.title;
-              
-              // Recalculate stats with the fetched title
-              const newStats = getMockStats(meta.title);
-              const ratingEl = card.querySelector('.affiliate-rating');
-              const salesEl = card.querySelector('.affiliate-sales');
-              if (ratingEl) ratingEl.innerHTML = `${newStats.rating} <i data-lucide="star" class="star-icon"></i>`;
-              if (salesEl) salesEl.textContent = `${newStats.salesText} đã bán`;
-              
-              if (window.lucide) {
-                window.lucide.createIcons();
-              }
             }
             if (descEl && !item.discountNote && meta.description) {
               descEl.textContent = meta.description;

@@ -468,6 +468,7 @@
         <div class="nav-item" data-tab="my-apps"><i data-lucide="layout-grid"></i> Ứng dụng/Web App</div>
         <div class="nav-item" data-tab="affiliates"><i data-lucide="shopping-bag"></i> Sản phẩm khuyên dùng</div>
         <div class="nav-item" data-tab="payment"><i data-lucide="wallet"></i> Thông tin Donate</div>
+        <div class="nav-item" data-tab="stats"><i data-lucide="bar-chart-2"></i> Thống kê truy cập</div>
       </div>
 
       <!-- Main Editor Container -->
@@ -586,6 +587,8 @@
         renderItemsTab(container, 'affiliates', 'Sản phẩm khuyên dùng', 'Hiển thị dạng Shopee Grid 2 cột. Chỉ cần điền URL, hệ thống tự cào thông tin.');
       } else if (currentTab === 'payment') {
         renderPaymentTab(container);
+      } else if (currentTab === 'stats') {
+        renderStatsTab(container);
       }
 
       // Reinitialize icons
@@ -964,6 +967,100 @@
       });
       document.getElementById('bank-qr-url').addEventListener('input', (e) => section.qrUrl = e.target.value);
       document.getElementById('bank-note').addEventListener('input', (e) => section.note = e.target.value);
+    }
+
+    // TAB: Stats & Traffic
+    async function renderStatsTab(container) {
+      container.innerHTML = `
+        <div class="section-header">
+          <h3>Thống Kê Lưu Lượng Truy Cập</h3>
+          <p>Dữ liệu truy cập thật từ CounterAPI và số liệu click từ máy khách.</p>
+        </div>
+        
+        <div class="field-grid" style="margin-bottom: 20px;">
+          <div class="editor-card" style="text-align: center; padding: 24px;">
+            <div style="font-size: 14px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">Lượt truy cập thật (Thật)</div>
+            <div id="stat-real-views" style="font-size: 36px; font-weight: 800; color: var(--color-primary);">Đang tải...</div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Đo lường thời gian thực bằng API</p>
+          </div>
+          <div class="editor-card" style="text-align: center; padding: 24px;">
+            <div style="font-size: 14px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">Hiển thị công cộng (Ảo)</div>
+            <div id="stat-virtual-views" style="font-size: 36px; font-weight: 800; color: #38bdf8;">Đang tải...</div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Công thức: Lượt thật x 12 + 8400</p>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <h3>Lượt click liên kết (Local)</h3>
+          <p>Theo dõi các lượt bấm vào liên kết (lưu tại trình duyệt này).</p>
+        </div>
+        <div class="editor-card">
+          <div class="stats-table-wrapper" style="overflow-x: auto; background-color: rgba(0,0,0,0.15); border-radius: 10px; padding: 10px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted);">
+                  <th style="padding: 12px;">Loại / Tên</th>
+                  <th style="padding: 12px;">Liên kết</th>
+                  <th style="padding: 12px; text-align: center;">Số click</th>
+                </tr>
+              </thead>
+              <tbody id="stat-clicks-body">
+                <tr>
+                  <td colspan="3" style="text-align: center; padding: 20px; color: var(--text-muted);">Không có dữ liệu lượt click nào trên trình duyệt này.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      // Fetch Real Count
+      try {
+        const res = await fetch('https://api.counterapi.dev/v1/dongythubay/views');
+        const data = await res.json();
+        if (data && typeof data.count !== 'undefined') {
+          const realViews = data.count;
+          const virtualViews = realViews * 12 + 8400;
+          
+          document.getElementById('stat-real-views').textContent = new Intl.NumberFormat('vi-VN').format(realViews);
+          document.getElementById('stat-virtual-views').textContent = new Intl.NumberFormat('vi-VN').format(virtualViews);
+        } else {
+          document.getElementById('stat-real-views').textContent = 'Lỗi';
+          document.getElementById('stat-virtual-views').textContent = 'Lỗi';
+        }
+      } catch (err) {
+        document.getElementById('stat-real-views').textContent = 'N/A';
+        document.getElementById('stat-virtual-views').textContent = 'N/A';
+      }
+
+      // Populate clicks from localStorage
+      try {
+        const clicksData = JSON.parse(localStorage.getItem('linktree_clicks') || '{}');
+        const tbody = document.getElementById('stat-clicks-body');
+        const keys = Object.keys(clicksData);
+        
+        if (keys.length > 0) {
+          tbody.innerHTML = '';
+          keys.forEach(key => {
+            const item = clicksData[key];
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid rgba(255, 255, 255, 0.04)';
+            tr.innerHTML = `
+              <td style="padding: 12px; font-weight: 600;">
+                <span style="font-size: 11px; text-transform: uppercase; background-color: var(--bg-input); padding: 2px 6px; border-radius: 4px; color: var(--color-primary); margin-right: 6px;">${item.type}</span>
+                ${item.name}
+              </td>
+              <td style="padding: 12px; color: var(--text-muted); font-size: 13px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <a href="${item.url}" target="_blank" style="color: var(--text-muted); text-decoration: none;">${item.url}</a>
+              </td>
+              <td style="padding: 12px; text-align: center; font-weight: 700; color: white;">${item.clicks}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+      } catch (e) {
+        console.error('Error rendering click stats:', e);
+      }
     }
 
     // --- SECURE SAVE ---
