@@ -61,7 +61,7 @@ window.CONFIG = {
       "title": "Lời Ngỏ Từ Lương Y",
       "enabled": true,
       "order": 2,
-      "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của <strong>Phòng chẩn trị YHCT Thu Bẩy</strong>. Tại đây, bà con có thể dễ dàng liên hệ tư vấn điều trị, đặt lịch khám trực tiếp tại Thái Nguyên, hoặc tham khảo các dòng trà thảo mộc organic và tinh dầu thảo dược thiên nhiên do chính phòng khám bào chế và tuyển chọn kỹ lượng."
+      "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của <strong>Phòng chẩn trị YHCT Thu Bẩy</strong>. Tại đây, bà con có thể dễ dàng liên hệ tư vấn điều trị, đặt lịch khám trực tiếp tại Thái Nguyên, hoặc tham khảo các dòng trà thảo mộc organic và tinh dầu thảo dược thiên nhiên do chính phòng khám bào chế và tuyển chọn kỹ lưỡng."
     },
     {
       "id": "my-apps",
@@ -73,44 +73,40 @@ window.CONFIG = {
         {
           "image": "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=600&q=80",
           "title": "Vidu Family",
-          "description": "Nền tảng quản lý gia phả số, kết nối dòng họ và lưu trữ khoảnh khắc gia đình linh thiêng.",
-          "previewUrl": "https://vidufamily.vercel.app",
-          "tag": "Gia phả số"
-        },
-        {
-          "image": "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=600&q=80",
-          "title": "Kimke",
-          "description": "Ứng dụng quản lý tài chính cá nhân & chi tiêu gia đình thông minh, tinh gọn và bảo mật.",
-          "previewUrl": "https://kimke.vercel.app",
+          "description": "Ứng dụng Web App (PWA) quản lý chi tiêu gia đình thông minh tối ưu cho người Việt, đồng bộ thời gian thực.",
+          "previewUrl": "https://vidu-family.vercel.app/",
           "tag": "Tài chính"
         },
         {
-          "image": "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?auto=format&fit=crop&w=600&q=80",
-          "title": "TGSender",
-          "description": "Hệ thống hỗ trợ gửi tin nhắn và thông báo Telegram tự động tối ưu cho doanh nghiệp.",
-          "previewUrl": "https://tgsender.vercel.app",
-          "tag": "Công cụ"
+          "image": "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=600&q=80",
+          "title": "Kim Kê 1981",
+          "description": "Nền tảng Social Commerce (Thương mại xã hội) kết nối giao thương dựa trên niềm tin cho cộng đồng Tân Dậu 1981.",
+          "previewUrl": "https://kimke.vercel.app/",
+          "tag": "Cộng đồng"
         },
         {
           "image": "https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&w=600&q=80",
           "title": "Dịch Tâm",
-          "description": "Ứng dụng tra cứu Kinh Dịch và dịch lý ứng dụng sâu sắc vào cuộc sống và y học.",
-          "previewUrl": "https://dichtam.vercel.app",
+          "description": "Trợ lý trí tuệ nhân tạo (AI Gemini) hỗ trợ tra cứu Kinh Dịch và ứng dụng dịch lý sâu sắc vào y khoa và cuộc sống.",
+          "previewUrl": "https://dichtam.vercel.app/",
           "tag": "Dịch lý số"
         },
         {
-          "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
+          "image": "https://thienthucongso.vercel.app/images/share.png",
           "title": "Thiên Thư Công Sở",
-          "description": "Cẩm nang tra cứu và hỗ trợ quản trị công việc văn phòng hiệu quả cho người làm công sở.",
-          "previewUrl": "https://thienthucongso.vercel.app",
-          "tag": "Văn phòng"
+          "description": "60 Tâm Pháp Sinh Tồn chốn công sở - Cẩm nang mưu lược thực chiến giúp bạn tự vệ và làm chủ đại cuộc.",
+          "previewUrl": "https://thienthucongso.vercel.app/",
+          "tag": "Mưu lược"
         },
         {
-          "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80",
-          "title": "Tiền Mãn Kinh",
-          "description": "Cổng tư vấn sức khỏe sinh lý và chăm sóc toàn diện cho phụ nữ giai đoạn tiền mãn kinh.",
-          "previewUrl": "https://tienmankinh.vercel.app",
+          "previewUrl": "https://tgsender.vercel.app/",
+          "tag": "Tự động hóa"
+          // Khuyết title, description, image để hệ thống TỰ ĐỘNG cào link (unfurl)
+        },
+        {
+          "previewUrl": "https://tienmankinh.vercel.app/",
           "tag": "Sức khỏe"
+          // Khuyết title, description, image để hệ thống TỰ ĐỘNG cào link (unfurl)
         }
       ]
     },
@@ -124,7 +120,7 @@ window.CONFIG = {
         {
           "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80",
           "title": "Đăng Ký Đặt Lịch Khám",
-          "description": "Hệ thống đặt lịch khám trực tiếp để tránh phải xếp hàng chờ đợi lâu tại phòng khám.",
+          "description": "Hệ thống đặt lịch khám trực tiếp để tránh phải xếp hàng chờ đợi lâu tại phòng khám Thái Nguyên.",
           "previewUrl": "https://zalo.me/0982581222",
           "tag": "Đặt Lịch"
         },
@@ -147,18 +143,24 @@ window.CONFIG = {
         {
           "image": "assets/product_tea.png",
           "name": "Trà Thảo Mộc Thanh Nhiệt Giải Độc",
-          "priceNote": "120.000đ - Hộp 30 túi lọc",
-          "discountNote": "Mua combo 3 hộp miễn phí giao hàng",
+          "priceNote": "120.000đ",
+          "discountNote": "Hộp 30 túi lọc - Mua combo 3 hộp free ship",
           "affiliateUrl": "https://zalo.me/0982581222",
-          "ctaLabel": "Tư vấn & Mua ngay"
+          "ctaLabel": "Tư vấn & Mua"
         },
         {
           "image": "assets/product_oil.png",
           "name": "Tinh Dầu Ngải Cứu Xoa Bóp Gia Truyền",
-          "priceNote": "85.000đ - Chai 100ml xịt",
-          "discountNote": "Đặc trị đau nhức xương khớp, tê bì tay chân",
+          "priceNote": "85.000đ",
+          "discountNote": "Chai xịt 100ml - Hỗ trợ giảm đau cơ xương khớp",
           "affiliateUrl": "https://zalo.me/0982581222",
-          "ctaLabel": "Tìm hiểu ngay"
+          "ctaLabel": "Mua ngay"
+        },
+        {
+          "priceNote": "Dùng thử miễn phí",
+          "affiliateUrl": "https://thienthucongso.vercel.app/",
+          "ctaLabel": "Đọc ngay"
+          // Khuyết name, image để kiểm tra tính năng tự cào sản phẩm
         }
       ]
     },

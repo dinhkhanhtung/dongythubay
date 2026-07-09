@@ -169,11 +169,71 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/\-\-+/g, '-');
   };
 
-  // 6. Dynamically Render Sections
+  // --- 6. DYNAMIC LINK UNFUHLING (METADATA SCRAPER CLIENT-SIDE) ---
+  const unfurlCache = {};
+  
+  async function unfurlLink(url) {
+    if (!url) return null;
+    
+    // Check in-memory cache
+    if (unfurlCache[url]) return unfurlCache[url];
+    
+    // Check localStorage cache
+    const cacheKey = `unfurl::${url}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        unfurlCache[url] = parsed;
+        return parsed;
+      } catch (e) {
+        localStorage.removeItem(cacheKey);
+      }
+    }
+    
+    // Scrape via Microlink API (no CORS issue)
+    try {
+      const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`);
+      if (!response.ok) throw new Error('API fetch failed');
+      const json = await response.json();
+      
+      if (json.status === 'success' && json.data) {
+        const metadata = {
+          title: json.data.title || '',
+          description: json.data.description || '',
+          image: json.data.image?.url || json.data.logo?.url || 'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=600&q=80'
+        };
+        
+        // Cache data
+        localStorage.setItem(cacheKey, JSON.stringify(metadata));
+        unfurlCache[url] = metadata;
+        return metadata;
+      }
+    } catch (e) {
+      console.warn(`[Unfurl] Failed to fetch metadata for ${url}:`, e);
+    }
+    
+    // Fallback if scraping fails
+    try {
+      const hostname = new URL(url).hostname;
+      return {
+        title: hostname,
+        description: 'Bấm vào nút để truy cập liên kết.',
+        image: 'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=600&q=80'
+      };
+    } catch(e) {
+      return {
+        title: 'Xem chi tiết',
+        description: 'Bấm vào nút để truy cập liên kết.',
+        image: 'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=600&q=80'
+      };
+    }
+  }
+
+  // 7. Dynamically Render Sections
   const sectionsContainer = document.getElementById('dynamic-sections');
   
   if (config.sections && config.sections.length > 0) {
-    // Clear skeleton loader
     sectionsContainer.innerHTML = '';
 
     // Filter enabled sections and sort by order
@@ -219,7 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
       sectionsContainer.appendChild(sectionEl);
     });
 
-    // Re-create icons for dynamically added elements
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
     }
@@ -245,7 +304,6 @@ document.addEventListener('DOMContentLoaded', () => {
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
       
-      // Set icon
       if (item.icon) {
         const img = document.createElement('img');
         img.src = item.icon;
@@ -253,7 +311,6 @@ document.addEventListener('DOMContentLoaded', () => {
         img.loading = 'lazy';
         link.appendChild(img);
       } else {
-        // Fallback generic icon
         const iconContainer = document.createElement('i');
         iconContainer.setAttribute('data-lucide', 'external-link');
         link.appendChild(iconContainer);
@@ -268,7 +325,6 @@ document.addEventListener('DOMContentLoaded', () => {
       arrowIcon.setAttribute('data-lucide', 'chevron-right');
       link.appendChild(arrowIcon);
 
-      // Add click tracking event listener
       link.addEventListener('click', () => {
         trackClick('social_link', item.platform, item.label, item.url);
       });
@@ -286,13 +342,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const contentDiv = document.createElement('div');
     contentDiv.className = 'text-block-content';
-    contentDiv.innerHTML = section.content; // Allows basic HTML formatting safely from config
+    contentDiv.innerHTML = section.content;
     
     card.appendChild(contentDiv);
     container.appendChild(card);
   }
 
-  // 3. Project Grid (Bento style with rhythm) Component
+  // 3. Project Grid Component (Full Width Image Card for App display)
   function renderProjectGrid(section, container) {
     const grid = document.createElement('div');
     grid.className = 'project-bento-grid';
@@ -300,36 +356,65 @@ document.addEventListener('DOMContentLoaded', () => {
     section.items.forEach((item, index) => {
       const card = document.createElement('div');
       card.className = 'project-card';
+      card.id = `project-card-${section.id}-${index}`;
       
-      // Rhythm: First item is marked as featured
-      if (index === 0) {
-        card.classList.add('featured');
-      }
+      const title = item.title || 'Đang tải...';
+      const description = item.description || 'Vui lòng đợi giây lát...';
+      const image = item.image || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23eee"/></svg>';
+      const tag = item.tag || 'Ứng dụng';
+      const linkUrl = item.previewUrl;
 
-      // HTML template for card
       card.innerHTML = `
         <div class="project-image-wrapper">
-          <img src="${item.image}" alt="${item.title}" class="project-image" loading="lazy">
-          ${item.tag ? `<span class="project-tag">${item.tag}</span>` : ''}
+          <img src="${image}" alt="${title}" class="project-image" loading="lazy">
+          <span class="project-tag">${tag}</span>
         </div>
         <div class="project-info">
           <div>
-            <h3>${item.title}</h3>
-            <p>${item.description}</p>
+            <h3>${title}</h3>
+            <p>${description}</p>
           </div>
-          <a href="${item.previewUrl}" target="_blank" rel="noopener noreferrer" class="project-cta" data-index="${index}">
-            <span>Xem trước</span>
+          <a href="${linkUrl}" target="_blank" rel="noopener noreferrer" class="project-cta">
+            <span>Sử dụng ngay</span>
             <i data-lucide="arrow-up-right"></i>
           </a>
         </div>
       `;
 
-      // Track clicks on the button
+      // Track click
       const ctaBtn = card.querySelector('.project-cta');
       ctaBtn.addEventListener('click', () => {
-        const itemSlug = slugify(item.title);
-        trackClick('project', itemSlug, item.title, item.previewUrl);
+        trackClick('project', slugify(title), title, linkUrl);
       });
+
+      // Link Unfurling Trigger if metadata is missing
+      if (!item.title || !item.description || !item.image) {
+        unfurlLink(linkUrl).then(meta => {
+          if (meta) {
+            const imgEl = card.querySelector('.project-image');
+            const titleEl = card.querySelector('h3');
+            const descEl = card.querySelector('p');
+            
+            if (!item.image && meta.image) imgEl.src = meta.image;
+            if (!item.title && meta.title) {
+              titleEl.textContent = meta.title;
+              imgEl.alt = meta.title;
+            }
+            if (!item.description && meta.description) descEl.textContent = meta.description;
+            
+            // Re-bind click tracking with new title if it was missing
+            if (!item.title && meta.title) {
+              const newCta = card.querySelector('.project-cta');
+              // Clone to replace listener
+              const clone = newCta.cloneNode(true);
+              newCta.parentNode.replaceChild(clone, newCta);
+              clone.addEventListener('click', () => {
+                trackClick('project', slugify(meta.title), meta.title, linkUrl);
+              });
+            }
+          }
+        });
+      }
 
       grid.appendChild(card);
     });
@@ -337,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(grid);
   }
 
-  // 4. Affiliate List Component
+  // 4. Affiliate List Component (E-commerce Style Grid 2 Columns)
   function renderAffiliateList(section, container) {
     const list = document.createElement('div');
     list.className = 'affiliate-container';
@@ -345,19 +430,27 @@ document.addEventListener('DOMContentLoaded', () => {
     section.items.forEach((item, index) => {
       const card = document.createElement('div');
       card.className = 'affiliate-card';
+      card.id = `affiliate-card-${section.id}-${index}`;
+      
+      const name = item.name || 'Đang tải...';
+      const price = item.priceNote || '';
+      const discount = item.discountNote || 'Nhấp xem chi tiết ưu đãi';
+      const image = item.image || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23eee"/></svg>';
+      const linkUrl = item.affiliateUrl;
+      const ctaLabel = item.ctaLabel || 'Mua ngay';
 
       card.innerHTML = `
         <div class="affiliate-image-wrapper">
-          <img src="${item.image}" alt="${item.name}" class="affiliate-image" loading="lazy">
+          <img src="${image}" alt="${name}" class="affiliate-image" loading="lazy">
         </div>
         <div class="affiliate-info">
           <div>
-            <h3 class="affiliate-name">${item.name}</h3>
-            <div class="affiliate-price">${item.priceNote}</div>
-            ${item.discountNote ? `<div class="affiliate-discount">${item.discountNote}</div>` : ''}
+            <h3 class="affiliate-name">${name}</h3>
+            <div class="affiliate-price">${price}</div>
+            <div class="affiliate-discount">${discount}</div>
           </div>
-          <a href="${item.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="affiliate-cta" data-index="${index}">
-            <span>${item.ctaLabel || 'Mua ngay'}</span>
+          <a href="${linkUrl}" target="_blank" rel="noopener noreferrer" class="affiliate-cta">
+            <span>${ctaLabel}</span>
             <i data-lucide="shopping-cart"></i>
           </a>
         </div>
@@ -366,9 +459,38 @@ document.addEventListener('DOMContentLoaded', () => {
       // Track click
       const ctaBtn = card.querySelector('.affiliate-cta');
       ctaBtn.addEventListener('click', () => {
-        const itemSlug = slugify(item.name);
-        trackClick('affiliate', itemSlug, item.name, item.affiliateUrl);
+        trackClick('affiliate', slugify(name), name, linkUrl);
       });
+
+      // Link Unfurling Trigger if metadata is missing
+      if (!item.name || !item.image) {
+        unfurlLink(linkUrl).then(meta => {
+          if (meta) {
+            const imgEl = card.querySelector('.affiliate-image');
+            const nameEl = card.querySelector('.affiliate-name');
+            const descEl = card.querySelector('.affiliate-discount');
+            
+            if (!item.image && meta.image) imgEl.src = meta.image;
+            if (!item.name && meta.title) {
+              nameEl.textContent = meta.title;
+              imgEl.alt = meta.title;
+            }
+            if (!item.discountNote && meta.description) {
+              descEl.textContent = meta.description;
+            }
+            
+            // Re-bind tracking
+            if (!item.name && meta.title) {
+              const newCta = card.querySelector('.affiliate-cta');
+              const clone = newCta.cloneNode(true);
+              newCta.parentNode.replaceChild(clone, newCta);
+              clone.addEventListener('click', () => {
+                trackClick('affiliate', slugify(meta.title), meta.title, linkUrl);
+              });
+            }
+          }
+        });
+      }
 
       list.appendChild(card);
     });
