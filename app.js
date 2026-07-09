@@ -467,6 +467,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const linkUrl = item.affiliateUrl;
       const ctaLabel = item.ctaLabel || 'Mua trên TikTok';
 
+      const isTikTok = linkUrl.includes('tiktok.com');
+      const targetAttr = isTikTok ? '_self' : '_blank';
+      const relAttr = isTikTok ? '' : 'rel="noopener noreferrer"';
+
       card.innerHTML = `
         <div class="affiliate-image-wrapper">
           <img src="${image}" alt="${name}" class="affiliate-image" loading="lazy">
@@ -477,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="affiliate-price">${price}</div>
             <div class="affiliate-discount">${discount}</div>
           </div>
-          <a href="${linkUrl}" target="_blank" rel="noopener noreferrer" class="affiliate-cta">
+          <a href="${linkUrl}" target="${targetAttr}" ${relAttr} class="affiliate-cta">
             <span>${ctaLabel}</span>
             <i data-lucide="shopping-cart"></i>
           </a>
