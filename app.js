@@ -190,6 +190,27 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem(cacheKey);
       }
     }
+
+    // Try parsing TikTok Shop parameters directly from URL to avoid bot blocking
+    try {
+      const urlObj = new URL(url);
+      const ogInfoParam = urlObj.searchParams.get('og_info');
+      if (ogInfoParam) {
+        const decodedInfo = JSON.parse(decodeURIComponent(ogInfoParam));
+        if (decodedInfo && (decodedInfo.title || decodedInfo.image)) {
+          const metadata = {
+            title: decodedInfo.title || 'Sản phẩm TikTok Shop',
+            description: 'Sản phẩm chính hãng khuyên dùng trên TikTok Shop.',
+            image: decodedInfo.image || 'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=600&q=80'
+          };
+          localStorage.setItem(cacheKey, JSON.stringify(metadata));
+          unfurlCache[url] = metadata;
+          return metadata;
+        }
+      }
+    } catch (e) {
+      console.warn('[Unfurl] Error parsing URL query params:', e);
+    }
     
     // Scrape via Microlink API (no CORS issue)
     try {
