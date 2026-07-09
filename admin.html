@@ -437,7 +437,7 @@
     <p>Trang Quản Trị Hệ Thống Link-in-Bio</p>
     <div class="form-group">
       <label for="admin-password">Mật khẩu bảo mật</label>
-      <input type="password" id="admin-password" class="form-input" placeholder="Nhập số điện thoại của bạn...">
+      <input type="password" id="admin-password" class="form-input" placeholder="Nhập mật khẩu Admin của bạn...">
     </div>
     <button id="btn-login" class="btn">
       <span>Đăng Nhập</span>
@@ -467,7 +467,7 @@
         <div class="nav-item" data-tab="socials"><i data-lucide="share-2"></i> Mạng xã hội</div>
         <div class="nav-item" data-tab="my-apps"><i data-lucide="layout-grid"></i> Ứng dụng/Web App</div>
         <div class="nav-item" data-tab="affiliates"><i data-lucide="shopping-bag"></i> Sản phẩm khuyên dùng</div>
-        <div class="nav-item" data-tab="payment"><i data-lucide="wallet"></i> Ngân hàng BIDV</div>
+        <div class="nav-item" data-tab="payment"><i data-lucide="wallet"></i> Thông tin Donate</div>
       </div>
 
       <!-- Main Editor Container -->
@@ -482,20 +482,16 @@
     <div class="progress-box">
       <div class="spinner" id="spinner-loader"></div>
       <h3 id="deploy-title">Đang đồng bộ dữ liệu...</h3>
-      <p id="deploy-desc">Quá trình này sẽ mất khoảng vài giây để gửi dữ liệu lên GitHub.</p>
+      <p id="deploy-desc">Quá trình này sẽ mất khoảng vài giây để gửi dữ liệu lên máy chủ.</p>
       <div id="deploy-countdown" class="countdown" style="display: none;">25</div>
     </div>
   </div>
 
   <!-- Logic scripts -->
   <script>
-    // GitHub API configuration base64 encoded token to bypass GitHub scanners
-    const GITHUB_TOKEN = atob('Z2hwX0pOTGJLeEQwMnl1ZGpMaVRkUUJ6dnRQRWx3YVhRMTJmTEZCamo=');
-    const GITHUB_REPO = 'dinhkhanhtung/dongythubay';
-    const GITHUB_PATH = 'config.js';
-    const ADMIN_PASSWORD = '0982581222'; // Số điện thoại anh Tùng
-
-    // In-memory data cloned from config.js
+    // No hardcoded API keys/tokens or passwords - all authentication and storage
+    // is securely handled by Vercel Serverless Functions in process.env
+    let adminPassword = '';
     let localConfig = null;
     let currentTab = 'profile';
 
@@ -522,23 +518,42 @@
       });
 
       // Check auto-login from localstorage
-      if (localStorage.getItem('admin_logged') === 'true') {
+      const savedPwd = localStorage.getItem('admin_logged_pwd');
+      if (savedPwd) {
+        adminPassword = savedPwd;
         showDashboard();
       }
     });
 
-    function handleLogin() {
+    async function handleLogin() {
       const pwd = document.getElementById('admin-password').value;
-      if (pwd === ADMIN_PASSWORD) {
-        localStorage.setItem('admin_logged', 'true');
-        showDashboard();
-      } else {
-        alert('Mật khẩu bảo mật không chính xác. Vui lòng kiểm tra lại!');
+      if (!pwd) return alert('Vui lòng nhập mật khẩu!');
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pwd })
+        });
+
+        const data = await res.json();
+        
+        if (res.ok && data.success) {
+          adminPassword = pwd;
+          localStorage.setItem('admin_logged_pwd', pwd);
+          showDashboard();
+        } else {
+          alert(data.error || 'Mật khẩu bảo mật không chính xác!');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Lỗi kết nối đến máy chủ xác thực.');
       }
     }
 
     function handleLogout() {
-      localStorage.removeItem('admin_logged');
+      localStorage.removeItem('admin_logged_pwd');
+      adminPassword = '';
       document.getElementById('admin-dashboard').style.display = 'none';
       document.getElementById('login-screen').style.display = 'block';
       document.body.style.alignItems = 'center';
@@ -947,22 +962,21 @@
       document.getElementById('bank-name').addEventListener('input', (e) => section.bankName = e.target.value);
       document.getElementById('bank-acc-num').addEventListener('input', (e) => {
         section.accountNumber = e.target.value;
-        // Dynamically update VietQR endpoint parameter
         const cleanName = encodeURIComponent(section.accountName || 'DINH KHANH TUNG');
-        document.getElementById('bank-qr-url').value = `https://img.vietqr.io/image/bidv-${e.target.value}-compact2.jpg?amount=0&addInfo=Dong%20y%20Thu%20Bay&accountName=${cleanName}`;
+        document.getElementById('bank-qr-url').value = `https://img.vietqr.io/image/bidv-${e.target.value}-compact2.jpg?amount=0&addInfo=Donate%20Dong%20y%20Thu%20Bay&accountName=${cleanName}`;
         section.qrUrl = document.getElementById('bank-qr-url').value;
       });
       document.getElementById('bank-acc-name').addEventListener('input', (e) => {
         section.accountName = e.target.value;
         const cleanName = encodeURIComponent(e.target.value);
-        document.getElementById('bank-qr-url').value = `https://img.vietqr.io/image/bidv-${section.accountNumber}-compact2.jpg?amount=0&addInfo=Dong%20y%20Thu%20Bay&accountName=${cleanName}`;
+        document.getElementById('bank-qr-url').value = `https://img.vietqr.io/image/bidv-${section.accountNumber}-compact2.jpg?amount=0&addInfo=Donate%20Dong%20y%20Thu%20Bay&accountName=${cleanName}`;
         section.qrUrl = document.getElementById('bank-qr-url').value;
       });
       document.getElementById('bank-qr-url').addEventListener('input', (e) => section.qrUrl = e.target.value);
       document.getElementById('bank-note').addEventListener('input', (e) => section.note = e.target.value);
     }
 
-    // --- SAVE TO GITHUB & TRIGGER VERCEL DEPLOY ---
+    // --- SECURE SAVE TO SERVERLESS FUNCTION ---
     async function saveConfigToGithub() {
       const overlay = document.getElementById('deploy-overlay');
       const title = document.getElementById('deploy-title');
@@ -972,7 +986,7 @@
 
       overlay.classList.add('show');
       title.textContent = 'Đang đóng gói cấu hình...';
-      desc.textContent = 'Hệ thống đang chuyển đổi dữ liệu thành mã JavaScript và tạo commit lên GitHub.';
+      desc.textContent = 'Hệ thống đang chuyển đổi dữ liệu thành mã JavaScript và gửi lên máy chủ bảo mật.';
       spinner.style.display = 'block';
       countdownBox.style.display = 'none';
 
@@ -983,55 +997,28 @@ window.CONFIG = ${JSON.stringify(localConfig, null, 2)};
 `;
 
       try {
-        // 2. Fetch existing config.js SHA from GitHub API
-        title.textContent = 'Kết nối GitHub...';
-        const getUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
+        // 2. Send config to Serverless Function
+        title.textContent = 'Gửi dữ liệu lên máy chủ...';
         
-        const response = await fetch(getUrl, {
-          headers: {
-            'Authorization': `token ${GITHUB_TOKEN}`,
-            'Accept': 'application/vnd.github.v3+json'
-          }
+        const response = await fetch('/api/save-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            password: adminPassword,
+            configContent: fileContent
+          })
         });
 
+        const data = await response.json();
+        
         if (!response.ok) {
-          throw new Error('Không thể kết nối đến GitHub để lấy file SHA hiện tại.');
+          throw new Error(data.error || 'Gửi dữ liệu lên máy chủ thất bại.');
         }
 
-        const fileData = await response.json();
-        const fileSha = fileData.sha;
-
-        // 3. Push updated config.js back to GitHub
-        title.textContent = 'Gửi dữ liệu lên GitHub...';
-        const putUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
-        const utf8Bytes = new TextEncoder().encode(fileContent);
-        const base64Content = btoa(String.fromCharCode(...utf8Bytes));
-        
-        const putBody = {
-          message: 'update: cập nhật dữ liệu qua trang Admin Dashboard',
-          content: base64Content,
-          sha: fileSha,
-          branch: 'main'
-        };
-
-        const putResponse = await fetch(putUrl, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `token ${GITHUB_TOKEN}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/vnd.github.v3+json'
-          },
-          body: JSON.stringify(putBody)
-        });
-
-        if (!putResponse.ok) {
-          throw new Error('Gửi dữ liệu lên GitHub thất bại.');
-        }
-
-        // 4. Update local in-memory CONFIG variable to prevent desync
+        // 3. Update local in-memory CONFIG variable to prevent desync
         window.CONFIG = JSON.parse(JSON.stringify(localConfig));
 
-        // 5. Trigger deployment countdown (Vercel automatic deployment)
+        // 4. Trigger deployment countdown (Vercel automatic deployment)
         title.textContent = 'Web đang tự động deploy...';
         spinner.style.display = 'none';
         countdownBox.style.display = 'block';
@@ -1042,7 +1029,7 @@ window.CONFIG = ${JSON.stringify(localConfig, null, 2)};
         const interval = setInterval(() => {
           counter--;
           countdownBox.textContent = counter;
-          desc.textContent = `Thay đổi đã được GitHub ghi nhận. Bản deploy mới trên Vercel sẽ sẵn sàng sau ${counter} giây nữa.`;
+          desc.textContent = `Thay đổi đã được ghi nhận. Bản deploy mới trên Vercel sẽ sẵn sàng sau ${counter} giây nữa.`;
           
           if (counter <= 0) {
             clearInterval(interval);
@@ -1054,7 +1041,7 @@ window.CONFIG = ${JSON.stringify(localConfig, null, 2)};
       } catch (err) {
         overlay.classList.remove('show');
         console.error(err);
-        alert(`Đã xảy ra lỗi: ${err.message || 'Không rõ nguyên nhân. Vui lòng liên hệ hỗ trợ!'}`);
+        alert(`Đã xảy ra lỗi: ${err.message || 'Không rõ nguyên nhân.'}`);
       }
     }
   </script>
