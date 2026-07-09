@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(grid);
   }
 
-  // 4. Affiliate List Component (E-commerce Style List 1 Column)
+  // 4. Affiliate List Component (E-commerce Style Grid 2 Columns like TikTok Shop)
   function renderAffiliateList(section, container) {
     const list = document.createElement('div');
     list.className = 'affiliate-container';
