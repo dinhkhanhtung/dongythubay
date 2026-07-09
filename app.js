@@ -458,16 +458,36 @@ document.addEventListener('DOMContentLoaded', () => {
       const discount = item.discountNote || 'Nhấp xem chi tiết ưu đãi';
       const image = item.image || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4=';
       const linkUrl = item.affiliateUrl;
-      const ctaLabel = item.ctaLabel || 'Mua trên TikTok';
-
       const isTikTok = linkUrl.includes('tiktok.com');
-      const targetAttr = isTikTok ? '_self' : '_blank';
-      const relAttr = isTikTok ? '' : 'rel="noopener noreferrer"';
+      const isShopee = linkUrl.includes('shopee.vn') || linkUrl.includes('shope.ee');
+      const isLazada = linkUrl.includes('lazada.vn');
+
+      let platformClass = 'other';
+      let defaultCta = 'Mua ngay';
+      let targetAttr = '_blank';
+      let relAttr = 'rel="noopener noreferrer"';
+
+      if (isTikTok) {
+        platformClass = 'tiktok';
+        defaultCta = 'Mua trên TikTok';
+        targetAttr = '_self';
+        relAttr = '';
+      } else if (isShopee) {
+        platformClass = 'shopee';
+        defaultCta = 'Mua trên Shopee';
+      } else if (isLazada) {
+        platformClass = 'lazada';
+        defaultCta = 'Mua trên Lazada';
+      }
+
+      const ctaLabel = item.ctaLabel || defaultCta;
 
       card.href = linkUrl;
       card.target = targetAttr;
       if (relAttr) {
         card.setAttribute('rel', 'noopener noreferrer');
+      } else {
+        card.removeAttribute('rel');
       }
 
       card.innerHTML = `
@@ -480,7 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="affiliate-price">${price}</div>
             <div class="affiliate-discount">${discount}</div>
           </div>
-          <div class="affiliate-cta">
+          <div class="affiliate-cta ${platformClass}">
             <span>${ctaLabel}</span>
             <i data-lucide="shopping-cart"></i>
           </div>

@@ -627,7 +627,32 @@ body {
   transition: var(--transition-cubic);
 }
 
-.affiliate-cta:hover {
+/* Multi-channel branding colors */
+.affiliate-cta.tiktok {
+  background-color: #fe2c55;
+  color: #ffffff;
+}
+.affiliate-cta.tiktok:hover {
+  background-color: #e0244a;
+}
+
+.affiliate-cta.shopee {
+  background-color: #ee4d2d;
+  color: #ffffff;
+}
+.affiliate-cta.shopee:hover {
+  background-color: #d63e1f;
+}
+
+.affiliate-cta.lazada {
+  background-color: #f51c76;
+  color: #ffffff;
+}
+.affiliate-cta.lazada:hover {
+  background-color: #dd1365;
+}
+
+.affiliate-cta.other:hover {
   background-color: var(--color-accent);
 }
 
