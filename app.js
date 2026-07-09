@@ -508,10 +508,30 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
 
-      // Track click
-      card.addEventListener('click', () => {
+      // Track click & Smart TikTok Deep-linking for seamless purchase
+      card.addEventListener('click', (e) => {
         const currentName = card.querySelector('.affiliate-name')?.textContent || name;
         trackClick('affiliate', slugify(currentName), currentName, linkUrl);
+
+        if (isTikTok) {
+          const match = linkUrl.match(/\/product\/(\d+)/);
+          if (match && match[1]) {
+            const productId = match[1];
+            // TikTok native PDP schema
+            const deepLink = `tiktok://ecommerce/product/detail?product_id=${productId}`;
+            
+            // Prevent normal browser navigation to avoid WebView error/popup loop
+            e.preventDefault();
+            
+            // Try to open deep link directly
+            window.location.href = deepLink;
+            
+            // Fallback to normal URL if deep link fails (after 1.2s)
+            setTimeout(() => {
+              window.location.href = linkUrl;
+            }, 1200);
+          }
+        }
       });
 
       // Link Unfurling Trigger if metadata is missing
