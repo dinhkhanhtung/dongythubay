@@ -7,7 +7,7 @@ window.CONFIG = {
     "title": "Phòng Chẩn Trị YHCT Thu Bẩy",
     "subtitle": "Lương y Đinh Khánh Tùng",
     "tiktokHandle": "@dongy_thubay",
-    "bio": "Kế thừa tinh hoa Y học cổ truyền, chuyên trị các bệnh xương khớp, suy nhược, hỗ trợ sức khỏe toàn diện bằng thảo dược tự nhiên lành tính."
+    "bio": "💊 Cường Dương | Sỏi Thận | Dạ Dày | Rụng Tóc | Hiếm Muộn | Trĩ | Xương Khớp | Phụ Khoa \n☎️ Hotline tư vấn: 0982581222"
   },
   "seo": {
     "title": "Đông y Thu Bẩy - Phòng Chẩn Trị YHCT Thu Bẩy",

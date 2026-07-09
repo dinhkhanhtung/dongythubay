@@ -272,6 +272,7 @@ body {
   max-width: 92%;
   margin: 0 auto;
   font-weight: 400;
+  white-space: pre-line;
 }
 
 /* Sections Container */
