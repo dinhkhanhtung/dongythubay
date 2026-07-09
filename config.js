@@ -61,7 +61,7 @@ window.CONFIG = {
       "title": "Lời Ngỏ Từ Lương Y",
       "enabled": true,
       "order": 2,
-      "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của <strong>Phòng chẩn trị YHCT Thu Bẩy</strong>. Tại đây, bà con có thể dễ dàng liên hệ tư vấn điều trị, đặt lịch khám trực tiếp tại Thái Nguyên, hoặc tham khảo các dòng trà thảo mộc organic và tinh dầu thảo dược thiên nhiên do chính phòng khám bào chế và tuyển chọn kỹ lượng."
+      "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của <strong>Phòng chẩn trị YHCT Thu Bẩy</strong>. Tại đây, bà con có thể dễ dàng liên hệ tư vấn điều trị, đặt lịch khám trực tiếp tại Thái Nguyên, hoặc tham khảo các dòng trà thảo mộc organic và tinh dầu thảo dược thiên nhiên do chính phòng khám bào chế và tuyển chọn kỹ lưỡng."
     },
     {
       "id": "my-apps",
@@ -116,7 +116,7 @@ window.CONFIG = {
     {
       "id": "affiliates",
       "type": "affiliate-list",
-      "title": "Sản phẩm thảo dược khuyên dùng",
+      "title": "Sản phẩm gợi ý trên TikTok Shop",
       "enabled": true,
       "order": 5,
       "items": [
@@ -124,27 +124,27 @@ window.CONFIG = {
           "priceNote": "120.000đ",
           "discountNote": "Hộp 30 túi lọc - Mua combo 3 hộp free ship",
           "affiliateUrl": "https://zalo.me/0982581222",
-          "ctaLabel": "Tư vấn & Mua"
+          "ctaLabel": "Mua trên TikTok"
         },
         {
           "priceNote": "85.000đ",
           "discountNote": "Chai xịt 100ml - Hỗ trợ giảm đau cơ xương khớp",
           "affiliateUrl": "https://zalo.me/0982581222",
-          "ctaLabel": "Mua ngay"
+          "ctaLabel": "Mua trên TikTok"
         }
       ]
     },
     {
       "id": "payment",
       "type": "bank-transfer",
-      "title": "Thông Tin Chuyển Khoản Nhanh",
+      "title": "Thông tin Donate",
       "enabled": true,
       "order": 6,
       "bankName": "Ngân hàng BIDV",
       "accountNumber": "0982581222",
       "accountName": "DINH KHANH TUNG",
-      "qrUrl": "https://img.vietqr.io/image/bidv-0982581222-compact2.jpg?amount=0&addInfo=Dong%20y%20Thu%20Bay&accountName=DINH%20KHANH%20TUNG",
-      "note": "Quý khách vui lòng ghi rõ nội dung chuyển khoản: Họ tên + Số điện thoại để chúng tôi dễ dàng xác nhận đơn hàng hoặc dịch vụ."
+      "qrUrl": "https://img.vietqr.io/image/bidv-0982581222-compact2.jpg?amount=0&addInfo=Donate%20Dong%20y%20Thu%20Bay&accountName=DINH%20KHANH%20TUNG",
+      "note": "Mọi đóng góp, ủng hộ (donate) từ quý bà con sẽ được phòng khám sử dụng vào việc quỹ phát thuốc miễn phí cho người nghèo và nâng cấp dịch vụ khám chữa bệnh."
     }
   ]
 };

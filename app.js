@@ -437,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const discount = item.discountNote || 'Nhấp xem chi tiết ưu đãi';
       const image = item.image || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23eee"/></svg>';
       const linkUrl = item.affiliateUrl;
-      const ctaLabel = item.ctaLabel || 'Mua ngay';
+      const ctaLabel = item.ctaLabel || 'Mua trên TikTok';
 
       card.innerHTML = `
         <div class="affiliate-image-wrapper">
