@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đông y Thu Bẩy - Y học cổ truyền Thái Nguyên</title>
+  
+  <!-- Dynamic Meta Tags will be filled by app.js, fallback here -->
+  <meta name="description" content="Trang thông tin liên kết của Phòng chẩn trị YHCT Thu Bẩy - Lương y Đinh Khánh Tùng.">
+  <meta property="og:title" content="Đông y Thu Bẩy - Y học cổ truyền Thái Nguyên">
+  <meta property="og:description" content="Trang liên kết chính thức của Phòng chẩn trị YHCT Thu Bẩy. Đặt lịch, liên hệ và sản phẩm y khoa thảo dược.">
+  <meta property="og:image" content="assets/avatar_doctor.png">
+  <meta property="og:type" content="website">
+  
+  <!-- Google Fonts: Outfit & Satoshi (fallback to Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Configuration (loaded before application logic) -->
+  <script src="config.js"></script>
+</head>
+<body>
+  <!-- Light/Dark Mode Toggle & Admin trigger -->
+  <div class="top-controls">
+    <button id="theme-toggle" class="control-btn" aria-label="Chuyển chế độ sáng/tối">
+      <i data-lucide="moon"></i>
+    </button>
+    <button id="admin-trigger" class="control-btn" aria-label="Thống kê truy cập" style="display: none;">
+      <i data-lucide="bar-chart-2"></i>
+    </button>
+  </div>
+
+  <!-- App Wrapper -->
+  <main class="app-container">
+    
+    <!-- Profile Section (Header) -->
+    <header class="profile-header">
+      <div class="avatar-container">
+        <img id="profile-avatar" src="" alt="Avatar" class="avatar-img" loading="lazy">
+        <div class="avatar-ring"></div>
+      </div>
+      <h1 id="profile-name"></h1>
+      <p id="profile-title" class="profile-title"></p>
+      <div id="profile-tiktok" class="profile-tiktok">
+        <i data-lucide="user"></i>
+        <span></span>
+      </div>
+      <p id="profile-bio" class="profile-bio"></p>
+    </header>
+
+    <!-- Dynamic Sections Container -->
+    <div id="dynamic-sections" class="dynamic-sections">
+      <!-- Generated dynamically by app.js -->
+      <div class="skeleton-loader">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p class="copyright">© 2026 YHCT Thu Bẩy. Thiết kế bởi Antigravity.</p>
+      <p class="address">Địa chỉ: Tổ 10, Quan Triều, Thái Nguyên</p>
+    </footer>
+
+  </main>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="back-to-top" aria-label="Quay lại đầu trang">
+    <i data-lucide="arrow-up"></i>
+  </button>
+
+  <!-- Stats Modal (Admin View) -->
+  <div id="stats-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Thống Kê Số Lượt Bấm</h2>
+        <button id="close-modal" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Thống kê nội bộ các lượt click vào liên kết được lưu trên trình duyệt của bạn (dành cho Admin):</p>
+        <div class="stats-table-wrapper">
+          <table class="stats-table">
+            <thead>
+              <tr>
+                <th>Loại / Tên liên kết</th>
+                <th>Liên kết</th>
+                <th>Số lượt click</th>
+              </tr>
+            </thead>
+            <tbody id="stats-data">
+              <tr>
+                <td colspan="3" class="no-data">Chưa có dữ liệu tracking nào.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-actions">
+          <button id="reset-stats" class="btn btn-danger">Xóa thống kê</button>
+          <button id="export-stats" class="btn btn-secondary">Xuất dữ liệu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
