@@ -212,9 +212,16 @@ document.addEventListener('DOMContentLoaded', () => {
       console.warn('[Unfurl] Error parsing URL query params:', e);
     }
     
-    // Scrape via Microlink API (no CORS issue)
+    // Scrape via Microlink API (no CORS issue) with 3.5s timeout
     try {
-      const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+      const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`, {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
       if (!response.ok) throw new Error('API fetch failed');
       const json = await response.json();
       
@@ -222,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const metadata = {
           title: json.data.title || '',
           description: json.data.description || '',
-          image: json.data.image?.url || json.data.logo?.url || 'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=600&q=80'
+          image: json.data.image?.url || json.data.logo?.url || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4='
         };
         
         // Cache data
@@ -240,13 +247,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return {
         title: hostname,
         description: 'Bấm vào nút để truy cập liên kết.',
-        image: 'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=600&q=80'
+        image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4='
       };
     } catch(e) {
       return {
-        title: 'Xem chi tiết',
+        title: 'Liên kết',
         description: 'Bấm vào nút để truy cập liên kết.',
-        image: 'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=600&q=80'
+        image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4='
       };
     }
   }
@@ -381,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const title = item.title || 'Đang tải...';
       const description = item.description || 'Vui lòng đợi giây lát...';
-      const image = item.image || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23eee"/></svg>';
+      const image = item.image || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4=';
       const tag = item.tag || 'Ứng dụng';
       const linkUrl = item.previewUrl;
 
@@ -416,12 +423,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const titleEl = card.querySelector('h3');
             const descEl = card.querySelector('p');
             
-            if (!item.image && meta.image) imgEl.src = meta.image;
-            if (!item.title && meta.title) {
+            if (imgEl && !item.image && meta.image) imgEl.src = meta.image;
+            if (titleEl && !item.title && meta.title) {
               titleEl.textContent = meta.title;
-              imgEl.alt = meta.title;
+              if (imgEl) imgEl.alt = meta.title;
             }
-            if (!item.description && meta.description) descEl.textContent = meta.description;
+            if (descEl && !item.description && meta.description) descEl.textContent = meta.description;
             
             // Re-bind click tracking with new title if it was missing
             if (!item.title && meta.title) {
@@ -456,7 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const name = item.name || 'Đang tải...';
       const price = item.priceNote || '';
       const discount = item.discountNote || 'Nhấp xem chi tiết ưu đãi';
-      const image = item.image || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23eee"/></svg>';
+      const image = item.image || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4=';
       const linkUrl = item.affiliateUrl;
       const ctaLabel = item.ctaLabel || 'Mua trên TikTok';
 
@@ -491,12 +498,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const nameEl = card.querySelector('.affiliate-name');
             const descEl = card.querySelector('.affiliate-discount');
             
-            if (!item.image && meta.image) imgEl.src = meta.image;
-            if (!item.name && meta.title) {
+            if (imgEl && !item.image && meta.image) imgEl.src = meta.image;
+            if (nameEl && !item.name && meta.title) {
               nameEl.textContent = meta.title;
-              imgEl.alt = meta.title;
+              if (imgEl) imgEl.alt = meta.title;
             }
-            if (!item.discountNote && meta.description) {
+            if (descEl && !item.discountNote && meta.description) {
               descEl.textContent = meta.description;
             }
             
