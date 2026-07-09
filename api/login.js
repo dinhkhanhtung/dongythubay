@@ -12,7 +12,8 @@ module.exports = async (req, res) => {
   }
 
   const { password } = req.body;
-  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '0982581222';
+  const rawAdminPassword = process.env.ADMIN_PASSWORD || '0982581222';
+  const ADMIN_PASSWORD = rawAdminPassword.replace(/\uFEFF/g, '').trim();
 
   if (password === ADMIN_PASSWORD) {
     return res.status(200).json({ success: true });

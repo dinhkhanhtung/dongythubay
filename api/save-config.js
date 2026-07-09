@@ -19,15 +19,20 @@ module.exports = async (req, res) => {
 
   const { password, configContent } = req.body;
 
-  // Read environment variables
-  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '0982581222';
-  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const GITHUB_REPO = process.env.GITHUB_REPO || 'dinhkhanhtung/dongythubay';
-  const GITHUB_PATH = process.env.GITHUB_PATH || 'config.js';
+  // Read and sanitize environment variables to remove potential BOM (\ufeff) or spaces
+  const rawAdminPassword = process.env.ADMIN_PASSWORD || '0982581222';
+  const rawGithubToken = process.env.GITHUB_TOKEN;
+  const rawGithubRepo = process.env.GITHUB_REPO || 'dinhkhanhtung/dongythubay';
+  const rawGithubPath = process.env.GITHUB_PATH || 'config.js';
 
-  if (!GITHUB_TOKEN) {
+  const ADMIN_PASSWORD = rawAdminPassword.replace(/\uFEFF/g, '').trim();
+  const GITHUB_REPO = rawGithubRepo.replace(/\uFEFF/g, '').trim();
+  const GITHUB_PATH = rawGithubPath.replace(/\uFEFF/g, '').trim();
+
+  if (!rawGithubToken) {
     return res.status(500).json({ error: 'Chưa cấu hình GITHUB_TOKEN trên Vercel Environment Variables.' });
   }
+  const GITHUB_TOKEN = rawGithubToken.replace(/\uFEFF/g, '').trim();
 
   // 1. Password Verification
   if (password !== ADMIN_PASSWORD) {
