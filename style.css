@@ -503,8 +503,8 @@ body {
 
 /* Section Type: Affiliate List (E-commerce Style List 1 Column like TikTok Shop) */
 .affiliate-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 12px;
   width: 100%;
 }
@@ -517,26 +517,29 @@ body {
   overflow: hidden;
   box-shadow: var(--card-shadow);
   display: flex;
-  flex-direction: column;
-  height: 100%;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
   transition: var(--transition-cubic);
   text-decoration: none;
   cursor: pointer;
 }
 
 .affiliate-card:hover, .affiliate-card:active {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: rgba(var(--color-primary-rgb), 0.25);
   box-shadow: var(--hover-shadow);
 }
 
 .affiliate-image-wrapper {
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  width: 90px;
+  height: 90px;
   overflow: hidden;
   flex-shrink: 0;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin: 12px 0 12px 12px;
   background-color: rgba(0,0,0,0.02);
-  border-bottom: var(--border-card);
 }
 
 .affiliate-image {
@@ -551,44 +554,42 @@ body {
 }
 
 .affiliate-info {
-  padding: 10px 12px 14px 12px;
+  padding: 12px 14px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   flex-grow: 1;
-  gap: 8px;
+  gap: 12px;
+  min-width: 0;
 }
 
 .affiliate-text {
   display: flex;
   flex-direction: column;
   text-align: left;
+  flex-grow: 1;
+  min-width: 0;
 }
 
 .affiliate-name {
-  font-size: 13.5px;
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
   color: var(--text-primary);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 38px; /* Đảm bảo chiều cao tiêu đề tối thiểu cho 2 dòng */
-}
-
-.affiliate-price-row {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  flex-wrap: wrap;
+  height: auto;
 }
 
 .affiliate-price {
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 800;
   color: #dc2626;
+  margin-bottom: 1px;
 }
 
 [data-theme="dark"] .affiliate-price {
@@ -601,10 +602,77 @@ body {
   font-weight: 500;
   line-height: 1.3;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin-top: 2px;
+  height: auto;
+  margin-bottom: 0;
+}
+
+.affiliate-cta {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  flex-shrink: 0;
+  min-width: 115px;
+  transition: var(--transition-cubic);
+}
+
+/* Multi-channel branding colors */
+.affiliate-cta.tiktok {
+  background-color: #fe2c55;
+  color: #ffffff;
+}
+.affiliate-cta.tiktok:hover {
+  background-color: #e0244a;
+}
+
+.affiliate-cta.shopee {
+  background-color: #ee4d2d;
+  color: #ffffff;
+}
+.affiliate-cta.shopee:hover {
+  background-color: #d63e1f;
+}
+
+.affiliate-cta.lazada {
+  background-color: #f51c76;
+  color: #ffffff;
+}
+.affiliate-cta.lazada:hover {
+  background-color: #dd1365;
+}
+
+.affiliate-cta.other:hover {
+  background-color: var(--color-accent);
+}
+
+.affiliate-cta i {
+  width: 13px;
+  height: 13px;
+}
+
+@media (max-width: 375px) {
+  .affiliate-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .affiliate-cta {
+    width: 100%;
+  }
+  .affiliate-image-wrapper {
+    margin: 12px;
+  }
 }
 
 /* Multi-channel branding colors */
