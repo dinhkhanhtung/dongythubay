@@ -88,71 +88,82 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2.5. Page View Counter Integration (Using api.counterapi.dev)
   const incrementPageView = () => {
+    // Tạo pill counter ngay lập tức với placeholder để hiện sớm
+    const profileHeader = document.querySelector('.profile-header');
+
+    // --- Top Counter (Pill bên dưới bio, trên social links) ---
+    let topCounter = document.getElementById('top-page-counter');
+    if (!topCounter && profileHeader) {
+      topCounter = document.createElement('div');
+      topCounter.id = 'top-page-counter';
+      topCounter.style.cssText = `
+        font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+        color: var(--color-primary);
+        margin: 10px auto 0 auto;
+        display: inline-flex; align-items: center; gap: 5px;
+        background-color: rgba(21, 128, 61, 0.08);
+        padding: 5px 14px; border-radius: 20px;
+        border: 1px solid rgba(21, 128, 61, 0.2);
+        width: fit-content;
+      `;
+      topCounter.innerHTML = `<i data-lucide="eye" style="width:13px;height:13px;"></i><span>Đang tải...</span>`;
+      profileHeader.appendChild(topCounter);
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    // --- Footer Counter ---
+    const footer = document.querySelector('.app-footer');
+    let footerCounter = document.getElementById('public-page-counter');
+    if (!footerCounter && footer) {
+      footerCounter = document.createElement('p');
+      footerCounter.id = 'public-page-counter';
+      footerCounter.style.cssText = `
+        font-size: 12px; color: var(--text-muted);
+        margin-top: 8px; display: flex; align-items: center;
+        justify-content: center; gap: 4px;
+      `;
+      footerCounter.innerHTML = `<i data-lucide="eye" style="width:14px;height:14px;opacity:0.8;"></i><span>Đang tải...</span>`;
+      footer.appendChild(footerCounter);
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    const updateCounters = (formattedCount) => {
+      if (topCounter) {
+        topCounter.innerHTML = `<i data-lucide="eye" style="width:13px;height:13px;"></i><span>${formattedCount} lượt truy cập</span>`;
+      }
+      if (footerCounter) {
+        footerCounter.innerHTML = `<i data-lucide="eye" style="width:14px;height:14px;opacity:0.8;"></i><span>${formattedCount} lượt truy cập</span>`;
+      }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
     const hasVisited = sessionStorage.getItem('visited_dongythubay');
-    const url = hasVisited 
+    const apiUrl = hasVisited
       ? 'https://api.counterapi.dev/v1/dongythubay/views'
       : 'https://api.counterapi.dev/v1/dongythubay/views/up';
 
-    fetch(url)
+    // Timeout 5 giây, nếu lỗi dùng localStorage fallback
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    fetch(apiUrl, { signal: controller.signal })
       .then(res => res.json())
       .then(data => {
+        clearTimeout(timeout);
         if (data && typeof data.count !== 'undefined') {
           sessionStorage.setItem('visited_dongythubay', 'true');
-          const realCount = data.count;
-          // Calculate high-credibility virtual count for public view (Multiplier: x12 + 8400)
-          const virtualCount = realCount * 12 + 8400;
+          const virtualCount = data.count * 12 + 8400;
           const formattedCount = new Intl.NumberFormat('vi-VN').format(virtualCount);
-          
-          // 1. Render bottom footer counter
-          const footer = document.querySelector('.app-footer');
-          if (footer) {
-            let counterEl = document.getElementById('public-page-counter');
-            if (!counterEl) {
-              counterEl = document.createElement('p');
-              counterEl.id = 'public-page-counter';
-              counterEl.style.fontSize = '12px';
-              counterEl.style.color = 'var(--text-muted)';
-              counterEl.style.marginTop = '8px';
-              counterEl.style.display = 'flex';
-              counterEl.style.alignItems = 'center';
-              counterEl.style.justifyContent = 'center';
-              counterEl.style.gap = '4px';
-              footer.appendChild(counterEl);
-            }
-            counterEl.innerHTML = `<i data-lucide="eye" style="width: 14px; height: 14px; opacity: 0.8;"></i><span>${formattedCount} lượt truy cập</span>`;
-          }
-
-          // 2. Render top profile counter (Pill-style) for high social proof
-          const bioEl = document.getElementById('profile-bio');
-          if (bioEl) {
-            let topCounter = document.getElementById('top-page-counter');
-            if (!topCounter) {
-              topCounter = document.createElement('div');
-              topCounter.id = 'top-page-counter';
-            topCounter.style.fontSize = '12px';
-              topCounter.style.color = 'var(--text-secondary)';
-              topCounter.style.marginTop = '10px';
-              topCounter.style.display = 'flex';
-              topCounter.style.alignItems = 'center';
-              topCounter.style.justifyContent = 'center';
-              topCounter.style.gap = '5px';
-              topCounter.style.backgroundColor = 'rgba(21, 128, 61, 0.06)';
-              topCounter.style.padding = '5px 14px';
-              topCounter.style.borderRadius = '20px';
-              topCounter.style.border = '1px solid rgba(21, 128, 61, 0.18)';
-              topCounter.style.width = 'fit-content';
-              topCounter.style.margin = '10px auto 0 auto';
-              bioEl.parentNode.insertBefore(topCounter, bioEl.nextSibling);
-            }
-            topCounter.innerHTML = `<i data-lucide="eye" style="width: 13px; height: 13px; color: var(--color-primary);"></i><span style="font-weight: 600; letter-spacing: 0.3px;">${formattedCount} lượt truy cập</span>`;
-          }
-
-          if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-          }
+          localStorage.setItem('cached_view_count', formattedCount);
+          updateCounters(formattedCount);
         }
       })
-      .catch(err => console.warn('CounterAPI error:', err));
+      .catch(() => {
+        clearTimeout(timeout);
+        // Fallback: dùng cache localStorage
+        const cached = localStorage.getItem('cached_view_count') || '8.400+';
+        updateCounters(cached);
+      });
   };
 
   incrementPageView();
