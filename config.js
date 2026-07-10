@@ -216,7 +216,7 @@ window.CONFIG = {
     {
       "id": "patient-reviews",
       "type": "reviews",
-      "title": "Cảm Nhận Từ Người Bệnh",
+      "title": "Chia sẻ từ bà con",
       "enabled": true,
       "order": 3.5,
       "items": [
