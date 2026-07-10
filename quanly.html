@@ -526,8 +526,11 @@
         <div class="nav-item" data-tab="socials"><i data-lucide="share-2"></i> Mạng xã hội</div>
         <div class="nav-item" data-tab="booking"><i data-lucide="calendar"></i> Đặt Lịch Hẹn Khám</div>
         <div class="nav-item" data-tab="my-apps"><i data-lucide="layout-grid"></i> Ứng dụng/Web App</div>
+        <div class="nav-item" data-tab="services"><i data-lucide="layers"></i> Dịch vụ số</div>
         <div class="nav-item" data-tab="affiliates"><i data-lucide="shopping-bag"></i> Sản phẩm khuyên dùng</div>
         <div class="nav-item" data-tab="reviews"><i data-lucide="message-square"></i> Ý kiến bệnh nhân</div>
+        <div class="nav-item" data-tab="free-gifts"><i data-lucide="gift"></i> Quà tặng miễn phí</div>
+        <div class="nav-item" data-tab="faq"><i data-lucide="help-circle"></i> Câu hỏi thường gặp</div>
         <div class="nav-item" data-tab="payment"><i data-lucide="wallet"></i> Thông tin Donate</div>
         <div class="nav-item" data-tab="stats"><i data-lucide="bar-chart-2"></i> Thống kê truy cập</div>
       </div>
@@ -808,10 +811,16 @@
         renderBookingTab(container);
       } else if (currentTab === 'my-apps') {
         renderItemsTab(container, 'my-apps', 'Ứng dụng / Web App', 'Chỉ cần điền URL, hệ thống sẽ tự động lấy ảnh và mô tả từ liên kết.');
+      } else if (currentTab === 'services') {
+        renderItemsTab(container, 'services-digital', 'Dịch Vụ Số & Công Nghệ', 'Các dịch vụ bạn cung cấp (Facebook Ads, Web Dev, AI Agent...). Nút bấm Báo Giá sẽ tự cuộn tới form liên hệ và điền dịch vụ.');
       } else if (currentTab === 'affiliates') {
         renderAffiliatesTab(container);
       } else if (currentTab === 'reviews') {
         renderItemsTab(container, 'patient-reviews', 'Ý Kiến Bệnh Nhân (Review)', 'Hiển thị các ảnh chụp màn hình feedback/nhận xét của người bệnh (khuyên dùng tỉ lệ ảnh dọc của tin nhắn điện thoại).');
+      } else if (currentTab === 'free-gifts') {
+        renderItemsTab(container, 'free-gifts', '🎁 Quà Tặng Miễn Phí', 'Các tài liệu, Prompt AI hoặc bài thuốc miễn phí bạn muốn chia sẻ. Hệ thống tự động hiển thị nút Tải về nếu nội dung bắt đầu bằng http:// hoặc https://, ngược lại hiện nút Sao chép.');
+      } else if (currentTab === 'faq') {
+        renderItemsTab(container, 'faq', 'Câu Hỏi Thường Gặp (FAQ)', 'Các câu hỏi thường gặp giúp khách hàng hiểu rõ hơn về dịch vụ và cách thức làm việc.');
       } else if (currentTab === 'payment') {
         renderPaymentTab(container);
       } else if (currentTab === 'stats') {
@@ -1010,23 +1019,7 @@
           <p>${descText}</p>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <span style="font-size: 14px; font-weight: 700; color: var(--text-muted);">Danh sách các item (${section.items.length})</span>
-          <button id="add-item" class="btn" style="width: auto; height: 36px; padding: 0 16px; font-size: 13px;">
-            <i data-lucide="plus"></i> Thêm item
-          </button>
-        </div>
-        <div id="items-list"></div>
-      `;
-
-      const listDiv = document.getElementById('items-list');
-
-      const renderItemsList = () => {
-        listDiv.innerHTML = '';
-        section.items.forEach((item, index) => {
-          const card = document.createElement('div');
-          card.className = 'editor-card';
-          
-          let specificFieldsHtml = '';
+          <span style="font-size: 14px; font-weight: 700; colo          let specificFieldsHtml = '';
           
           if (sectionId === 'my-apps') {
             specificFieldsHtml = `
@@ -1039,6 +1032,74 @@
                   <label>Tag giới thiệu (ví dụ: Gia phả, Sức khỏe...)</label>
                   <input type="text" class="form-input inp-tag" value="${item.tag || ''}" data-index="${index}">
                 </div>
+              </div>
+            `;
+          } else if (sectionId === 'services-digital') {
+            specificFieldsHtml = `
+              <div class="field-grid">
+                <div class="form-group">
+                  <label>Tên dịch vụ (title) - *Bắt buộc</label>
+                  <input type="text" class="form-input inp-service-title" value="${item.title || ''}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                  <label>Mã Demo/Subtitle (subtitle)</label>
+                  <input type="text" class="form-input inp-service-subtitle" value="${item.subtitle || ''}" data-index="${index}">
+                </div>
+              </div>
+              <div class="field-grid">
+                <div class="form-group">
+                  <label>Mô tả ngắn (description)</label>
+                  <input type="text" class="form-input inp-service-desc" value="${item.description || ''}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                  <label>Icon Lucide (icon)</label>
+                  <input type="text" class="form-input inp-service-icon" value="${item.icon || 'layers'}" data-index="${index}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Các đặc điểm chính (mỗi dòng là 1 đặc điểm, tối đa 3 dòng)</label>
+                <textarea class="form-input inp-service-features" data-index="${index}" style="height: 80px; padding: 10px; resize: vertical;">${(item.features || []).join('\n')}</textarea>
+              </div>
+            `;
+          } else if (sectionId === 'free-gifts') {
+            specificFieldsHtml = `
+              <div class="field-grid">
+                <div class="form-group">
+                  <label>Tên quà tặng (title) - *Bắt buộc</label>
+                  <input type="text" class="form-input inp-gift-title" value="${item.title || ''}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                  <label>Mô tả ngắn (description)</label>
+                  <input type="text" class="form-input inp-gift-desc" value="${item.description || ''}" data-index="${index}">
+                </div>
+              </div>
+              <div class="field-grid">
+                <div class="form-group">
+                  <label>Icon Lucide (icon)</label>
+                  <input type="text" class="form-input inp-gift-icon" value="${item.icon || 'gift'}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                  <label>Loại quà tặng (type)</label>
+                  <select class="form-input inp-gift-type" data-index="${index}">
+                    <option value="copy" ${item.type === 'copy' ? 'selected' : ''}>Sao chép (Prompt/Bài thuốc)</option>
+                    <option value="download" ${item.type === 'download' ? 'selected' : ''}>Tải về/Liên kết (Bắt đầu bằng http)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Nội dung (Prompt/Bài thuốc để copy, hoặc URL tải file PDF/Word)</label>
+                <textarea class="form-input inp-gift-content" data-index="${index}" style="height: 100px; padding: 10px; resize: vertical;">${item.content || ''}</textarea>
+              </div>
+            `;
+          } else if (sectionId === 'faq') {
+            specificFieldsHtml = `
+              <div class="form-group">
+                <label>Câu hỏi (question) - *Bắt buộc</label>
+                <input type="text" class="form-input inp-faq-question" value="${item.question || ''}" data-index="${index}">
+              </div>
+              <div class="form-group">
+                <label>Câu trả lời (answer) - *Bắt buộc</label>
+                <textarea class="form-input inp-faq-answer" data-index="${index}" style="height: 100px; padding: 10px; resize: vertical;">${item.answer || ''}</textarea>
               </div>
             `;
           } else if (sectionId === 'affiliates') {
@@ -1082,10 +1143,17 @@
               </div>
             `;
           }
+ 
+          let editorTitle = 'Sản phẩm';
+          if (sectionId === 'my-apps') editorTitle = 'Ứng dụng';
+          else if (sectionId === 'services-digital') editorTitle = 'Dịch vụ';
+          else if (sectionId === 'free-gifts') editorTitle = 'Quà tặng';
+          else if (sectionId === 'faq') editorTitle = 'Câu hỏi';
+          else if (sectionId === 'patient-reviews') editorTitle = 'Review';
 
           card.innerHTML = `
             <div class="editor-card-header">
-              <span class="editor-card-title">${sectionId === 'my-apps' ? 'Ứng dụng' : (sectionId === 'patient-reviews' ? 'Review' : 'Sản phẩm')} #${index + 1}</span>
+              <span class="editor-card-title">${editorTitle} #${index + 1}</span>
               <div class="editor-card-actions">
                 <button class="icon-btn btn-up" data-index="${index}"><i data-lucide="arrow-up"></i></button>
                 <button class="icon-btn btn-down" data-index="${index}"><i data-lucide="arrow-down"></i></button>
@@ -1093,19 +1161,58 @@
               </div>
             </div>
             ${specificFieldsHtml}
-            ${sectionId !== 'patient-reviews' ? `
+            ${(sectionId !== 'patient-reviews' && sectionId !== 'free-gifts' && sectionId !== 'faq' && sectionId !== 'services-digital') ? `
             <p style="font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 4px;">
               Các trường Tên, Mô tả, Hình ảnh được tự động cào từ đường dẫn sau khi lưu.
             </p>
             ` : ''}
           `;
-
+ 
           if (sectionId === 'my-apps') {
             card.querySelector('.inp-preview-url').addEventListener('input', (e) => {
               section.items[index].previewUrl = e.target.value;
             });
             card.querySelector('.inp-tag').addEventListener('input', (e) => {
               section.items[index].tag = e.target.value;
+            });
+          } else if (sectionId === 'services-digital') {
+            card.querySelector('.inp-service-title').addEventListener('input', (e) => {
+              section.items[index].title = e.target.value;
+            });
+            card.querySelector('.inp-service-subtitle').addEventListener('input', (e) => {
+              section.items[index].subtitle = e.target.value;
+            });
+            card.querySelector('.inp-service-desc').addEventListener('input', (e) => {
+              section.items[index].description = e.target.value;
+            });
+            card.querySelector('.inp-service-icon').addEventListener('input', (e) => {
+              section.items[index].icon = e.target.value;
+            });
+            card.querySelector('.inp-service-features').addEventListener('input', (e) => {
+              section.items[index].features = e.target.value.split('\n').filter(l => l.trim() !== '');
+            });
+          } else if (sectionId === 'free-gifts') {
+            card.querySelector('.inp-gift-title').addEventListener('input', (e) => {
+              section.items[index].title = e.target.value;
+            });
+            card.querySelector('.inp-gift-desc').addEventListener('input', (e) => {
+              section.items[index].description = e.target.value;
+            });
+            card.querySelector('.inp-gift-icon').addEventListener('input', (e) => {
+              section.items[index].icon = e.target.value;
+            });
+            card.querySelector('.inp-gift-type').addEventListener('change', (e) => {
+              section.items[index].type = e.target.value;
+            });
+            card.querySelector('.inp-gift-content').addEventListener('input', (e) => {
+              section.items[index].content = e.target.value;
+            });
+          } else if (sectionId === 'faq') {
+            card.querySelector('.inp-faq-question').addEventListener('input', (e) => {
+              section.items[index].question = e.target.value;
+            });
+            card.querySelector('.inp-faq-answer').addEventListener('input', (e) => {
+              section.items[index].answer = e.target.value;
             });
           } else if (sectionId === 'affiliates') {
             card.querySelector('.inp-affiliate-url').addEventListener('input', (e) => {
@@ -1139,14 +1246,14 @@
               openGalleryModal(index);
             });
           }
-
+ 
           card.querySelector('.btn-delete').addEventListener('click', () => {
             if (confirm('Bạn có chắc muốn xóa item này?')) {
               section.items.splice(index, 1);
               renderItemsList();
             }
           });
-
+ 
           card.querySelector('.btn-up').addEventListener('click', () => {
             if (index > 0) {
               const temp = section.items[index];
@@ -1155,7 +1262,7 @@
               renderItemsList();
             }
           });
-
+ 
           card.querySelector('.btn-down').addEventListener('click', () => {
             if (index < section.items.length - 1) {
               const temp = section.items[index];
@@ -1164,16 +1271,22 @@
               renderItemsList();
             }
           });
-
+ 
           listDiv.appendChild(card);
         });
-
+ 
         lucide.createIcons();
       };
-
+ 
       document.getElementById('add-item').addEventListener('click', () => {
         if (sectionId === 'my-apps') {
           section.items.unshift({ previewUrl: 'https://', tag: 'Web App' });
+        } else if (sectionId === 'services-digital') {
+          section.items.unshift({ title: 'Dịch vụ mới', subtitle: 'Dịch vụ mới Demo', description: 'Mô tả dịch vụ...', icon: 'layers', features: [] });
+        } else if (sectionId === 'free-gifts') {
+          section.items.unshift({ title: 'Quà tặng mới', description: 'Mô tả quà tặng...', icon: 'gift', type: 'copy', content: '' });
+        } else if (sectionId === 'faq') {
+          section.items.unshift({ question: 'Câu hỏi mới?', answer: 'Trả lời mới...' });
         } else if (sectionId === 'patient-reviews') {
           // Tìm ảnh chưa sử dụng trong REVIEWS_GALLERY
           const usedImages = section.items.map(it => it.image ? it.image.replace('assets/review/', '') : '');

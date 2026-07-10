@@ -407,6 +407,105 @@ window.CONFIG = {
       "ctaUrl": "#section-appointment-booking",
       "enabled": true,
       "order": 3
+    },
+    {
+      "id": "services-digital",
+      "type": "services",
+      "title": "Dịch Vụ Số & Công Nghệ",
+      "enabled": true,
+      "order": 4.5,
+      "items": [
+        {
+          "title": "Chạy quảng cáo Facebook",
+          "subtitle": "Facebook Ads Demo",
+          "description": "Giúp bạn tiếp cận khách hàng tiềm năng, tối ưu chi phí quảng cáo.",
+          "icon": "facebook",
+          "features": [
+            "Tư vấn chiến lược phù hợp với ngân sách thực tế.",
+            "Đo lường, báo cáo minh bạch, hỗ trợ tối ưu liên tục."
+          ]
+        },
+        {
+          "title": "Quản lý fanpage & Nội dung",
+          "subtitle": "Fanpage Content Demo",
+          "description": "Fanpage chuyên nghiệp, nội dung gần gũi, hỗ trợ phát triển cộng đồng.",
+          "icon": "edit-3",
+          "features": [
+            "Xây dựng hình ảnh thương hiệu trên Facebook.",
+            "Lên kế hoạch nội dung, thiết kế hình ảnh, tăng tương tác tự nhiên."
+          ]
+        },
+        {
+          "title": "Hỗ trợ tài khoản Facebook",
+          "subtitle": "Facebook Account Support Demo",
+          "description": "An tâm sử dụng Facebook, bảo vệ tài sản số cá nhân/doanh nghiệp.",
+          "icon": "shield",
+          "features": [
+            "Giải quyết các vấn đề về tài khoản, bảo mật.",
+            "Hỗ trợ lấy lại tài khoản, tư vấn bảo vệ tài khoản."
+          ]
+        },
+        {
+          "title": "Thiết kế Website",
+          "subtitle": "Thiết kế Website Demo",
+          "description": "Website chuyên nghiệp, hỗ trợ phát triển thương hiệu online.",
+          "icon": "globe",
+          "features": [
+            "Thiết kế website chuẩn SEO, giao diện thân thiện.",
+            "Tối ưu tốc độ, bảo hành 6 tháng."
+          ]
+        },
+        {
+          "title": "Phát triển ứng dụng Android",
+          "subtitle": "Android App Demo",
+          "description": "Ứng dụng phù hợp với quy trình nội bộ, hỗ trợ kinh doanh hiệu quả.",
+          "icon": "smartphone",
+          "features": [
+            "Phát triển ứng dụng theo yêu cầu thực tế.",
+            "Đảm bảo bảo mật, trải nghiệm mượt mà."
+          ]
+        },
+        {
+          "title": "Xây dựng AI Agent",
+          "subtitle": "AI Agent Demo",
+          "description": "Tự động hóa một số tác vụ, hỗ trợ chăm sóc khách hàng cơ bản.",
+          "icon": "bot",
+          "features": [
+            "Tạo chatbot, trợ lý AI cho fanpage/doanh nghiệp.",
+            "Tùy chỉnh kịch bản, tích hợp đa kênh."
+          ]
+        },
+        {
+          "title": "Thiết kế Đồ họa & Video",
+          "subtitle": "Thiết kế Đồ họa & Video Demo",
+          "description": "Hình ảnh, video chuyên nghiệp, hỗ trợ nhận diện thương hiệu.",
+          "icon": "video",
+          "features": [
+            "Thiết kế banner, logo, video quảng cáo.",
+            "Chỉnh sửa video theo yêu cầu."
+          ]
+        },
+        {
+          "title": "Tư vấn thương hiệu & kênh số",
+          "subtitle": "Tư vấn Thương hiệu Demo",
+          "description": "Đồng hành xây dựng thương hiệu, phát triển kênh số phù hợp thực tế.",
+          "icon": "compass",
+          "features": [
+            "Tư vấn xây dựng thương hiệu cá nhân/doanh nghiệp.",
+            "Định hướng phát triển kênh Facebook, TikTok."
+          ]
+        },
+        {
+          "title": "Dịch vụ theo yêu cầu",
+          "subtitle": "Dịch vụ theo yêu cầu",
+          "description": "Giải pháp linh hoạt, cá nhân hóa theo nhu cầu thực tế của bạn.",
+          "icon": "layers",
+          "features": [
+            "Tư vấn, triển khai các giải pháp số, marketing, công nghệ phù hợp riêng cho từng khách hàng.",
+            "Phân tích, xây dựng lộ trình chuyển đổi số, tối ưu quy trình kinh doanh."
+          ]
+        }
+      ]
     }
   ]
 };

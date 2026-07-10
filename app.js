@@ -397,6 +397,9 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'countdown':
           renderCountdown(section, sectionEl);
           break;
+        case 'services':
+          renderServiceList(section, sectionEl);
+          break;
         default:
           console.warn(`Unknown section type: ${section.type}`);
           break;
@@ -526,16 +529,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // HOT badge: hiện ở vị trí index 1 và 4 (tạo cảm giác có chọn lọc, không đều)
       const isHotApp = (index === 1 || index === 4);
-      const hotBadgeHtml = isHotApp ? '<span class="hot-badge">🔥 Hot</span>' : '';
 
       card.innerHTML = `
         <div class="project-image-wrapper">
           <img src="${image}" alt="${title}" class="project-image" loading="lazy">
           <span class="project-tag">${tag}</span>
+          ${isHotApp ? '<span class="project-hot-badge">🔥 Hot</span>' : ''}
         </div>
         <div class="project-info">
           <div class="project-text">
-            <h3>${title}${hotBadgeHtml}</h3>
+            <h3>${title}</h3>
             <p>${description}</p>
           </div>
           <div class="project-usage">
@@ -629,15 +632,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // HOT badge: hiện ở sản phẩm đầu tiên mỗi section
       const isHotProduct = (index === 0);
-      const hotProductBadge = isHotProduct ? '<span class="hot-badge">🔥 Hot</span>' : '';
 
       card.innerHTML = `
-        <div class="affiliate-image-wrapper">
+        <div class="affiliate-image-wrapper" style="position: relative;">
           <img src="${image}" alt="${name}" class="affiliate-image" loading="lazy">
+          ${isHotProduct ? '<span class="affiliate-hot-badge">🔥 Hot</span>' : ''}
         </div>
         <div class="affiliate-info">
           <div class="affiliate-text">
-            <h3 class="affiliate-name">${name}${hotProductBadge}</h3>
+            <h3 class="affiliate-name">${name}</h3>
             <div class="affiliate-price">${price}</div>
             <div class="affiliate-discount">${discount}</div>
             <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 6px;">
@@ -1085,7 +1088,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 'g2', icon: 'salad', title: 'Prompt AI: Thực đơn theo bệnh lý', description: 'Nhận gợi ý thực đơn hàng ngày phù hợp với thể trạng.', type: 'copy', content: 'Bạn là chuyên gia dinh dưỡng y học cổ truyền. Tôi bị [tên bệnh], [tuổi] tuổi. Hãy gợi ý thực đơn 3 ngày: thực phẩm nên ăn, nên kiêng và cách chế biến đơn giản. Ưu tiên nguyên liệu dễ mua tại Việt Nam.' },
       { id: 'g3', icon: 'leaf', title: '🌿 Trà Gừng Mật Ong (Hỗ trợ dạ dày)', description: 'Bài thuốc dân gian giảm ợ chua, đau bụng hiệu quả.', type: 'copy', content: '🌿 TRÀ GỪNG MẬT ONG – Hỗ trợ dạ dày\n\nNguyên liệu:\n- 2-3 lát gừng tươi\n- 1 thìa mật ong nguyên chất\n- 300ml nước sôi\n\nCách làm:\n1. Hãm gừng trong nước sôi 5-7 phút\n2. Để nguội bớt (~60°C) rồi thêm mật ong\n\nDùng: 1-2 lần/ngày, sau ăn 30 phút.\n⚠️ Không uống khi đói. Phụ nữ có thai hỏi bác sĩ trước.' },
       { id: 'g4', icon: 'sparkles', title: '🌿 Ngâm Chân Thảo Dược', description: 'Giảm mệt mỏi, đau nhức xương khớp, ngủ ngon hơn.', type: 'copy', content: '🌿 NGÂM CHÂN THẢO DƯỢC\n\nCông thức:\n- Muối hạt: 2 thìa canh\n- Gừng tươi: 50g giã nát\n- Ngải cứu khô: 1 nắm\n- Nước ấm 40-42°C vừa ngập cổ chân\n\nCách dùng:\n✓ Ngâm 20-30 phút trước khi ngủ\n✓ Thực hiện 3-4 lần/tuần\n✓ Kết hợp massage nhẹ lòng bàn chân\n\n⚠️ Không ngâm khi có vết thương hở.' },
-      { id: 'g5', icon: 'moon', title: 'Prompt AI: Cải thiện giấc ngủ', description: 'Prompt giúp AI tư vấn cách ngủ ngon theo đông y.', type: 'copy', content: 'Tôi đang gặp vấn đề giấc ngủ: [mô tả: khó ngủ/hay thức giấc]. Tôi [tuổi] tuổi. Theo y học cổ truyền, nguyên nhân có thể là gì? Hãy gợi ý: 1) Thảo dược giúp ngủ ngon, 2) Thói quen cần thay đổi, 3) Bài tập thư giãn trước ngủ. Giải thích đơn giản, dễ hiểu.' }
+      { id: 'g5', icon: 'moon', title: 'Prompt AI: Cải thiện giấc ngủ', description: 'Prompt giúp AI tư vấn cách ngủ ngon theo đông y.', type: 'copy', content: 'Tôi đang gặp vấn đề giấc ngủ: [mô tả: khó ngủ/hay thức giấc]. Tôi [tuổi] tuổi. Theo y học cổ truyền, nguyên nhân có thể là gì? Hãy gợi ý: 1) Thảo duyệt giúp ngủ ngon, 2) Thói quen cần thay đổi, 3) Bài tập thư giãn trước ngủ. Giải thích đơn giản, dễ hiểu.' }
     ];
     const items = (section.items && section.items.length > 0) ? section.items : defaultItems;
 
@@ -1095,33 +1098,125 @@ document.addEventListener('DOMContentLoaded', () => {
     items.forEach(gift => {
       const card = document.createElement('div');
       card.className = 'gift-card';
+      
+      const isLink = gift.type === 'download' || gift.type === 'link' || (gift.content && (gift.content.startsWith('http://') || gift.content.startsWith('https://')));
+      
+      let actionBtnHtml = '';
+      if (isLink) {
+        actionBtnHtml = `<a class="gift-btn" href="${gift.content}" target="_blank" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">Tải về</a>`;
+      } else {
+        actionBtnHtml = `<button class="gift-btn" data-content="${encodeURIComponent(gift.content || '')}">Sao chép</button>`;
+      }
+
       card.innerHTML = `
         <div class="gift-icon"><i data-lucide="${gift.icon || 'gift'}"></i></div>
         <div class="gift-body">
           <h4 class="gift-title">${gift.title}</h4>
           <p class="gift-desc">${gift.description}</p>
         </div>
-        <button class="gift-btn" data-content="${encodeURIComponent(gift.content || '')}">Sao chép</button>
+        ${actionBtnHtml}
       `;
 
-      const btn = card.querySelector('.gift-btn');
+      if (!isLink) {
+        const btn = card.querySelector('.gift-btn');
+        btn.addEventListener('click', () => {
+          const text = decodeURIComponent(btn.dataset.content);
+          navigator.clipboard.writeText(text)
+            .then(() => {
+              btn.textContent = '✓ Đã copy!';
+              btn.style.backgroundColor = 'var(--color-primary)';
+              setTimeout(() => { btn.textContent = 'Sao chép'; btn.style.backgroundColor = ''; }, 2500);
+            })
+            .catch(() => {
+              const ta = document.createElement('textarea');
+              ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+              document.body.appendChild(ta); ta.select();
+              document.execCommand('copy');
+              document.body.removeChild(ta);
+              btn.textContent = '✓ Đã copy!'; setTimeout(() => { btn.textContent = 'Sao chép'; }, 2500);
+            });
+          trackClick('gift', gift.id, gift.title, '#');
+        });
+      } else {
+        const link = card.querySelector('.gift-btn');
+        link.addEventListener('click', () => {
+          trackClick('gift_download', gift.id, gift.title, gift.content);
+        });
+      }
+
+      grid.appendChild(card);
+    });
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    container.appendChild(grid);
+  }
+
+  // 6e. Service List Component
+  function renderServiceList(section, container) {
+    const grid = document.createElement('div');
+    grid.className = 'service-grid';
+
+    section.items.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'service-card';
+      
+      const title = item.title || '';
+      const subtitle = item.subtitle || '';
+      const description = item.description || '';
+      const features = item.features || [];
+      const iconName = item.icon || 'layers';
+
+      let featuresHtml = '';
+      if (features && features.length > 0) {
+        featuresHtml = `<ul class="service-features-list">
+          ${features.map(f => `<li><i data-lucide="check-circle-2"></i><span>${f}</span></li>`).join('')}
+        </ul>`;
+      }
+
+      card.innerHTML = `
+        <div class="service-header">
+          <div class="service-icon-wrapper">
+            <i data-lucide="${iconName}"></i>
+          </div>
+          <div class="service-title-block">
+            <span class="service-subtitle">${subtitle}</span>
+            <h3 class="service-title">${title}</h3>
+          </div>
+        </div>
+        <p class="service-desc">${description}</p>
+        ${featuresHtml}
+        <button class="service-cta-btn" data-service-title="${title}">
+          <span>Báo Giá</span>
+          <i data-lucide="arrow-right"></i>
+        </button>
+      `;
+
+      // Click "Báo giá" scroll tới form booking và ghi chú dịch vụ
+      const btn = card.querySelector('.service-cta-btn');
       btn.addEventListener('click', () => {
-        const text = decodeURIComponent(btn.dataset.content);
-        navigator.clipboard.writeText(text)
-          .then(() => {
-            btn.textContent = '✓ Đã copy!';
-            btn.style.backgroundColor = 'var(--color-primary)';
-            setTimeout(() => { btn.textContent = 'Sao chép'; btn.style.backgroundColor = ''; }, 2500);
-          })
-          .catch(() => {
-            const ta = document.createElement('textarea');
-            ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
-            document.body.appendChild(ta); ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            btn.textContent = '✓ Đã copy!'; setTimeout(() => { btn.textContent = 'Sao chép'; }, 2500);
-          });
-        trackClick('gift', gift.id, gift.title, '#');
+        const bookingSection = document.getElementById('section-appointment-booking');
+        if (bookingSection) {
+          bookingSection.scrollIntoView({ behavior: 'smooth' });
+          
+          const formWrapper = bookingSection.querySelector('#booking-form-wrapper');
+          const chevron = bookingSection.querySelector('#booking-chevron');
+          if (formWrapper && (formWrapper.style.maxHeight === '0px' || formWrapper.style.maxHeight === '')) {
+            formWrapper.style.maxHeight = formWrapper.scrollHeight + 'px';
+            if (chevron) chevron.style.transform = 'rotate(180deg)';
+          }
+
+          const messageArea = bookingSection.querySelector('#book-message');
+          if (messageArea) {
+            messageArea.value = `Tôi muốn nhận báo giá dịch vụ: ${title}\n---\n`;
+            messageArea.focus();
+          }
+
+          const selectDisease = bookingSection.querySelector('#book-disease');
+          if (selectDisease) {
+            selectDisease.value = 'Khác';
+          }
+        }
+        trackClick('service_quote', slugify(title), `Yêu cầu báo giá: ${title}`, '#');
       });
 
       grid.appendChild(card);
@@ -1130,6 +1225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof lucide !== 'undefined') lucide.createIcons();
     container.appendChild(grid);
   }
+
 
   // 6d. FAQ Accordion Component
   function renderFAQSection(section, container) {
