@@ -115,9 +115,9 @@ window.CONFIG = {
       "order": 4
     },
     {
-      "id": "affiliates",
+      "id": "affiliates-health",
       "type": "affiliate-list",
-      "title": "Sản phẩm gợi ý trên TikTok Shop",
+      "title": "Sản phẩm Sức khỏe & Đông y",
       "enabled": true,
       "order": 5,
       "items": [
@@ -136,11 +136,27 @@ window.CONFIG = {
       ]
     },
     {
+      "id": "affiliates-tech",
+      "type": "affiliate-list",
+      "title": "Sản phẩm Công nghệ tiện ích",
+      "enabled": true,
+      "order": 6,
+      "items": []
+    },
+    {
+      "id": "affiliates-other",
+      "type": "affiliate-list",
+      "title": "Sản phẩm Khuyên dùng khác",
+      "enabled": true,
+      "order": 7,
+      "items": []
+    },
+    {
       "id": "patient-reviews",
       "type": "reviews",
       "title": "Cảm Nhận Từ Người Bệnh",
       "enabled": true,
-      "order": 6,
+      "order": 8,
       "items": [
         {
           "image": "assets/review/120396173_3669040766462528_7282720382376266470_n.jpg",
@@ -177,7 +193,7 @@ window.CONFIG = {
       "type": "bank-transfer",
       "title": "Thông tin Donate",
       "enabled": true,
-      "order": 7,
+      "order": 9,
       "bankName": "Ngân hàng BIDV",
       "accountNumber": "0982581222",
       "accountName": "DINH KHANH TUNG",

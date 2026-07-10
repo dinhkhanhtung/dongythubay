@@ -453,20 +453,28 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(card);
   }
 
-  // Helper to generate virtual usage count for apps
+  // Helper to generate virtual usage count for apps with daily dynamic growth
   function getVirtualUsage(title) {
     if (!title || title === 'Đang tải...') return '1.2k+';
+    const daysSinceStart = Math.floor((new Date() - new Date('2026-07-01')) / (1000 * 60 * 60 * 24));
     const score = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const count = (score % 750) + 1200; // 1200 - 1950
-    return new Intl.NumberFormat('vi-VN').format(count);
+    
+    const baseCount = (score % 600) + 1200; // 1200 - 1800
+    const dailyGrowth = (score % 4) + 2; // mỗi ngày tăng 2-5 lượt
+    const total = baseCount + (daysSinceStart * dailyGrowth);
+    return new Intl.NumberFormat('vi-VN').format(total);
   }
 
-  // Helper to generate virtual sales count for products
+  // Helper to generate virtual sales count for products with daily dynamic growth
   function getVirtualSales(name) {
     if (!name || name === 'Đang tải...') return '850+';
+    const daysSinceStart = Math.floor((new Date() - new Date('2026-07-01')) / (1000 * 60 * 60 * 24));
     const score = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const sales = (score % 550) + 680; // 680 - 1230
-    return new Intl.NumberFormat('vi-VN').format(sales);
+    
+    const baseSales = (score % 500) + 650; // 650 - 1150
+    const dailyGrowth = (score % 5) + 3; // mỗi ngày tăng 3-7 lượt
+    const total = baseSales + (daysSinceStart * dailyGrowth);
+    return new Intl.NumberFormat('vi-VN').format(total);
   }
 
   // 3. Project Grid Component (Full Width Image Card for App display)
@@ -1044,5 +1052,89 @@ document.addEventListener('DOMContentLoaded', () => {
     lightbox.getBoundingClientRect();
     lightbox.classList.add('show');
   }
+
+  // 9. Social Proof Toast Generator (Popup thông báo ngẫu nhiên)
+  function initSocialToasts() {
+    // Không chạy popup trong trang quản lý
+    if (window.location.pathname.includes('quanly')) return;
+
+    let toastContainer = document.getElementById('social-toast-container');
+    if (!toastContainer) {
+      toastContainer = document.createElement('div');
+      toastContainer.id = 'social-toast-container';
+      toastContainer.className = 'social-toast-container';
+      document.body.appendChild(toastContainer);
+    }
+
+    const actors = ['Một bệnh nhân', 'Một khách hàng', 'Một đồng niên 1981', 'Anh Tuấn', 'Chị Hương', 'Anh Bình', 'Chị Lan', 'Chú Hùng', 'Cô Thanh', 'Đồng niên từ'];
+    const locations = ['Thái Nguyên', 'Hà Nội', 'Bắc Giang', 'Phú Thọ', 'Tuyên Quang', 'Vĩnh Phúc', 'Nam Định', 'Lạng Sơn', 'Bắc Kạn', 'Hòa Bình'];
+    const actions = [
+      { text: 'vừa đặt lịch khám trực tiếp tại phòng khám', icon: 'calendar', color: 'var(--color-primary)' },
+      { text: 'vừa mua Trà Thảo Mộc túi lọc organic', icon: 'shopping-cart', color: '#10b981' },
+      { text: 'vừa mua Tinh dầu massage ngải cứu & gừng xoa bóp', icon: 'shopping-cart', color: '#10b981' },
+      { text: 'vừa sử dụng ứng dụng quản lý Vidu Family', icon: 'external-link', color: '#3b82f6' },
+      { text: 'vừa đăng ký tư vấn điều trị sỏi thận, sỏi mật', icon: 'phone', color: 'var(--color-primary)' },
+      { text: 'vừa đăng ký tư vấn trị trào ngược dạ dày', icon: 'phone', color: 'var(--color-primary)' },
+      { text: 'vừa tra cứu quẻ số cát hung trên app Dịch Tâm', icon: 'external-link', color: '#3b82f6' },
+      { text: 'vừa tham gia nhóm Kết Nối Tân Dậu Toàn Cầu', icon: 'users', color: '#3b82f6' }
+    ];
+
+    const showToast = () => {
+      const actor = actors[Math.floor(Math.random() * actors.length)];
+      const location = locations[Math.floor(Math.random() * locations.length)];
+      const action = actions[Math.floor(Math.random() * actions.length)];
+      
+      const fullText = `${actor} <strong>${location}</strong> ${action.text}.`;
+      const timeStr = `${Math.floor(Math.random() * 5) + 1} phút trước`;
+
+      const toast = document.createElement('div');
+      toast.className = 'social-toast';
+      toast.innerHTML = `
+        <div class="social-toast-avatar" style="background-color: rgba(var(--color-primary-rgb), 0.1);">
+          <i data-lucide="${action.icon}" style="color: ${action.color};"></i>
+        </div>
+        <div class="social-toast-content">
+          <div class="social-toast-text">${fullText}</div>
+          <div class="social-toast-time">${timeStr}</div>
+        </div>
+      `;
+
+      toastContainer.appendChild(toast);
+      
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons({
+          attrs: {
+            style: 'width: 16px; height: 16px;'
+          },
+          nameAttr: 'data-lucide'
+        });
+      }
+
+      // Fade in
+      setTimeout(() => toast.classList.add('show'), 100);
+
+      // Fade out sau 5.5s
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 600);
+      }, 5500);
+    };
+
+    // Lần đầu kích hoạt sau 10s
+    setTimeout(() => {
+      showToast();
+      // Kích hoạt ngẫu nhiên sau mỗi 20-35s
+      const triggerNext = () => {
+        const delay = (Math.random() * 15 + 20) * 1000;
+        setTimeout(() => {
+          showToast();
+          triggerNext();
+        }, delay);
+      };
+      triggerNext();
+    }, 10000);
+  }
+
+  initSocialToasts();
 
 });

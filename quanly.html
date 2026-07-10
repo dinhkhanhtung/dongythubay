@@ -809,7 +809,7 @@
       } else if (currentTab === 'my-apps') {
         renderItemsTab(container, 'my-apps', 'Ứng dụng / Web App', 'Chỉ cần điền URL, hệ thống sẽ tự động lấy ảnh và mô tả từ liên kết.');
       } else if (currentTab === 'affiliates') {
-        renderItemsTab(container, 'affiliates', 'Sản phẩm khuyên dùng', 'Hiển thị dạng Shopee Grid 2 cột. Chỉ cần điền URL, hệ thống tự cào thông tin.');
+        renderAffiliatesTab(container);
       } else if (currentTab === 'reviews') {
         renderItemsTab(container, 'patient-reviews', 'Ý Kiến Bệnh Nhân (Review)', 'Hiển thị các ảnh chụp màn hình feedback/nhận xét của người bệnh (khuyên dùng tỉ lệ ảnh dọc của tin nhắn điện thoại).');
       } else if (currentTab === 'payment') {
@@ -1175,7 +1175,16 @@
         if (sectionId === 'my-apps') {
           section.items.unshift({ previewUrl: 'https://', tag: 'Web App' });
         } else if (sectionId === 'patient-reviews') {
-          section.items.unshift({ image: 'assets/review/120396173_3669040766462528_7282720382376266470_n.jpg', caption: 'Nhận xét bệnh nhân mới' });
+          // Tìm ảnh chưa sử dụng trong REVIEWS_GALLERY
+          const usedImages = section.items.map(it => it.image ? it.image.replace('assets/review/', '') : '');
+          let defaultImg = REVIEWS_GALLERY[0];
+          for (const img of REVIEWS_GALLERY) {
+            if (!usedImages.includes(img)) {
+              defaultImg = img;
+              break;
+            }
+          }
+          section.items.unshift({ image: 'assets/review/' + defaultImg, caption: 'Nhận xét bệnh nhân mới' });
         } else {
           section.items.unshift({ affiliateUrl: 'https://', priceNote: '', discountNote: '', ctaLabel: 'Mua trên TikTok' });
         }
@@ -1184,6 +1193,310 @@
       });
 
       renderItemsList();
+    }
+
+    let activeAffiliateSectionId = '';
+
+    function renderAffiliatesTab(container) {
+      const getAffiliateSections = () => {
+        return localConfig.sections.filter(s => s.type === 'affiliate-list');
+      };
+
+      const affiliateSections = getAffiliateSections();
+      if (affiliateSections.length > 0 && !activeAffiliateSectionId) {
+        activeAffiliateSectionId = affiliateSections[0].id;
+      }
+
+      container.innerHTML = `
+        <div class="section-header">
+          <h3>Quản Lý Danh Mục Sản Phẩm</h3>
+          <p>Hiển thị các khối danh mục sản phẩm khác nhau trên trang chủ (Sức khỏe, Công nghệ, Khác...). Bạn có thể tự do thêm, xóa, đổi tên và sắp xếp các danh mục sản phẩm.</p>
+        </div>
+
+        <!-- 1. Danh sách Danh mục sản phẩm -->
+        <div class="editor-card" style="margin-bottom: 20px;">
+          <div style="font-weight: 700; font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <span>Các Danh mục Hiện có (${affiliateSections.length})</span>
+            <button id="add-aff-sec" class="btn" style="width: auto; height: 32px; padding: 0 12px; font-size: 12px; background-color: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; gap: 4px;">
+              <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Thêm danh mục mới
+            </button>
+          </div>
+          <div id="aff-sec-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+        </div>
+
+        <!-- 2. Quản lý sản phẩm của danh mục đang chọn -->
+        <div id="aff-items-manager" style="display: ${activeAffiliateSectionId ? 'block' : 'none'};">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span style="font-size: 14px; font-weight: 700; color: var(--text-muted);" id="aff-items-title">Sản phẩm thuộc danh mục</span>
+            <button id="add-aff-item" class="btn" style="width: auto; height: 36px; padding: 0 16px; font-size: 13px;">
+              <i data-lucide="plus"></i> Thêm sản phẩm
+            </button>
+          </div>
+          <div id="items-list"></div>
+        </div>
+      `;
+
+      const listSecDiv = document.getElementById('aff-sec-list');
+      const listItemsDiv = document.getElementById('items-list');
+
+      // Vẽ danh sách danh mục (Sections)
+      const renderSectionsList = () => {
+        const secs = getAffiliateSections();
+        listSecDiv.innerHTML = '';
+        
+        if (secs.length === 0) {
+          listSecDiv.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 12px;">Chưa có danh mục sản phẩm nào. Vui lòng bấm nút thêm ở trên!</div>`;
+          document.getElementById('aff-items-manager').style.display = 'none';
+          return;
+        }
+
+        document.getElementById('aff-items-manager').style.display = 'block';
+
+        secs.forEach((sec, idx) => {
+          const row = document.createElement('div');
+          row.className = `editor-card-header ${sec.id === activeAffiliateSectionId ? 'active-sec-row' : ''}`;
+          row.style.padding = '10px 14px';
+          row.style.borderRadius = '8px';
+          row.style.backgroundColor = sec.id === activeAffiliateSectionId ? 'rgba(16, 185, 129, 0.08)' : 'rgba(255,255,255,0.02)';
+          row.style.border = sec.id === activeAffiliateSectionId ? '1px solid var(--color-primary)' : '1px solid var(--border-color)';
+          row.style.display = 'flex';
+          row.style.alignItems = 'center';
+          row.style.gap = '12px';
+          row.style.cursor = 'pointer';
+
+          row.innerHTML = `
+            <div style="flex-grow: 1; display: flex; align-items: center; gap: 8px;">
+              <input type="text" class="form-input inp-sec-title" value="${sec.title || ''}" style="height: 34px; font-size: 13px; font-weight: 700; width: 220px; background-color: var(--bg-card); border: 1px solid var(--border-color);" placeholder="Tên danh mục..." data-id="${sec.id}">
+              <span style="font-size: 11.5px; color: var(--text-muted);">(${sec.items ? sec.items.length : 0} SP)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;" onclick="event.stopPropagation();">
+              <label style="font-size: 12px; display: flex; align-items: center; gap: 4px; margin-right: 8px; cursor: pointer; color: var(--text-secondary);">
+                <input type="checkbox" class="chk-sec-enabled" data-id="${sec.id}" ${sec.enabled !== false ? 'checked' : ''}> Hiển thị
+              </label>
+              <button class="icon-btn btn-sec-up" data-id="${sec.id}"><i data-lucide="arrow-up" style="width: 14px; height: 14px;"></i></button>
+              <button class="icon-btn btn-sec-down" data-id="${sec.id}"><i data-lucide="arrow-down" style="width: 14px; height: 14px;"></i></button>
+              <button class="icon-btn btn-sec-delete" data-id="${sec.id}" style="color: var(--color-danger);"><i data-lucide="trash-2" style="width: 14px; height: 14px;"></i></button>
+            </div>
+          `;
+
+          // Click to select section
+          row.addEventListener('click', () => {
+            activeAffiliateSectionId = sec.id;
+            renderAffiliatesTab(container);
+          });
+
+          // Input title change
+          row.querySelector('.inp-sec-title').addEventListener('input', (e) => {
+            sec.title = e.target.value;
+          });
+          row.querySelector('.inp-sec-title').addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+
+          // Checkbox toggle
+          row.querySelector('.chk-sec-enabled').addEventListener('change', (e) => {
+            sec.enabled = e.target.checked;
+          });
+
+          // Up/Down/Delete
+          row.querySelector('.btn-sec-up').addEventListener('click', () => {
+            const currIdx = localConfig.sections.findIndex(s => s.id === sec.id);
+            let prevIdx = -1;
+            for (let i = currIdx - 1; i >= 0; i--) {
+              if (localConfig.sections[i].type === 'affiliate-list') { prevIdx = i; break; }
+            }
+            if (prevIdx !== -1) {
+              const tempOrder = localConfig.sections[currIdx].order;
+              localConfig.sections[currIdx].order = localConfig.sections[prevIdx].order;
+              localConfig.sections[prevIdx].order = tempOrder;
+              const temp = localConfig.sections[currIdx];
+              localConfig.sections[currIdx] = localConfig.sections[prevIdx];
+              localConfig.sections[prevIdx] = temp;
+              renderAffiliatesTab(container);
+            }
+          });
+
+          row.querySelector('.btn-sec-down').addEventListener('click', () => {
+            const currIdx = localConfig.sections.findIndex(s => s.id === sec.id);
+            let nextIdx = -1;
+            for (let i = currIdx + 1; i < localConfig.sections.length; i++) {
+              if (localConfig.sections[i].type === 'affiliate-list') { nextIdx = i; break; }
+            }
+            if (nextIdx !== -1) {
+              const tempOrder = localConfig.sections[currIdx].order;
+              localConfig.sections[currIdx].order = localConfig.sections[nextIdx].order;
+              localConfig.sections[nextIdx].order = tempOrder;
+              const temp = localConfig.sections[currIdx];
+              localConfig.sections[currIdx] = localConfig.sections[nextIdx];
+              localConfig.sections[nextIdx] = temp;
+              renderAffiliatesTab(container);
+            }
+          });
+
+          row.querySelector('.btn-sec-delete').addEventListener('click', () => {
+            if (confirm(`Bạn có chắc muốn xóa danh mục "${sec.title || sec.id}" và tất cả sản phẩm bên trong không?`)) {
+              const currIdx = localConfig.sections.findIndex(s => s.id === sec.id);
+              localConfig.sections.splice(currIdx, 1);
+              if (activeAffiliateSectionId === sec.id) {
+                activeAffiliateSectionId = '';
+              }
+              renderAffiliatesTab(container);
+            }
+          });
+
+          listSecDiv.appendChild(row);
+        });
+
+        lucide.createIcons();
+      };
+
+      // Vẽ danh sách sản phẩm thuộc danh mục đang chọn
+      const renderProductsList = () => {
+        const sec = localConfig.sections.find(s => s.id === activeAffiliateSectionId);
+        if (!sec) {
+          listItemsDiv.innerHTML = '';
+          return;
+        }
+
+        document.getElementById('aff-items-title').textContent = `Sản phẩm thuộc: ${sec.title || sec.id} (${sec.items ? sec.items.length : 0})`;
+        listItemsDiv.innerHTML = '';
+
+        if (!sec.items || sec.items.length === 0) {
+          listItemsDiv.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 30px; background-color: rgba(255,255,255,0.01); border-radius: 8px; border: 1px dashed var(--border-color);">Chưa có sản phẩm nào trong danh mục này. Hãy bấm "Thêm sản phẩm" ở trên!</div>`;
+          return;
+        }
+
+        sec.items.forEach((item, index) => {
+          const card = document.createElement('div');
+          card.className = 'editor-card';
+
+          card.innerHTML = `
+            <div class="editor-card-header">
+              <span class="editor-card-title">Sản phẩm #${index + 1}</span>
+              <div class="editor-card-actions">
+                <button class="icon-btn btn-item-up" data-index="${index}"><i data-lucide="arrow-up"></i></button>
+                <button class="icon-btn btn-item-down" data-index="${index}"><i data-lucide="arrow-down"></i></button>
+                <button class="icon-btn btn-item-delete" data-index="${index}"><i data-lucide="trash-2"></i></button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Đường dẫn mua hàng (affiliateUrl) - *Bắt buộc</label>
+              <input type="text" class="form-input inp-affiliate-url" value="${item.affiliateUrl || ''}" data-index="${index}">
+            </div>
+            <div class="field-grid">
+              <div class="form-group">
+                <label>Giá bán (priceNote)</label>
+                <input type="text" class="form-input inp-price" value="${item.priceNote || ''}" data-index="${index}">
+              </div>
+              <div class="form-group">
+                <label>Nhãn nút bấm (ctaLabel)</label>
+                <input type="text" class="form-input inp-cta-label" value="${item.ctaLabel || ''}" data-index="${index}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Ưu đãi / Chiết khấu (discountNote)</label>
+              <input type="text" class="form-input inp-discount" value="${item.discountNote || ''}" data-index="${index}">
+            </div>
+            <p style="font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 4px;">
+              Các trường Tên, Mô tả, Hình ảnh được tự động cào từ đường dẫn sau khi lưu.
+            </p>
+          `;
+
+          // Binds inputs
+          card.querySelector('.inp-affiliate-url').addEventListener('input', (e) => {
+            sec.items[index].affiliateUrl = e.target.value;
+          });
+          card.querySelector('.inp-price').addEventListener('input', (e) => {
+            sec.items[index].priceNote = e.target.value;
+          });
+          card.querySelector('.inp-cta-label').addEventListener('input', (e) => {
+            sec.items[index].ctaLabel = e.target.value;
+          });
+          card.querySelector('.inp-discount').addEventListener('input', (e) => {
+            sec.items[index].discountNote = e.target.value;
+          });
+
+          // Up/Down/Delete
+          card.querySelector('.btn-item-delete').addEventListener('click', () => {
+            if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+              sec.items.splice(index, 1);
+              renderProductsList();
+              renderSectionsList();
+            }
+          });
+
+          card.querySelector('.btn-item-up').addEventListener('click', () => {
+            if (index > 0) {
+              const temp = sec.items[index];
+              sec.items[index] = sec.items[index - 1];
+              sec.items[index - 1] = temp;
+              renderProductsList();
+            }
+          });
+
+          card.querySelector('.btn-item-down').addEventListener('click', () => {
+            if (index < sec.items.length - 1) {
+              const temp = sec.items[index];
+              sec.items[index] = sec.items[index + 1];
+              sec.items[index + 1] = temp;
+              renderProductsList();
+            }
+          });
+
+          listItemsDiv.appendChild(card);
+        });
+
+        lucide.createIcons();
+      };
+
+      // Thêm danh mục
+      document.getElementById('add-aff-sec').addEventListener('click', () => {
+        const title = prompt('Nhập tên danh mục sản phẩm mới (ví dụ: Sức khỏe, Công nghệ, Đồ dùng...):');
+        if (!title) return;
+        
+        const id = 'affiliates-' + Date.now();
+        const maxOrder = localConfig.sections
+          .filter(s => s.type === 'affiliate-list')
+          .reduce((max, s) => Math.max(max, s.order || 5), 5);
+
+        const newSec = {
+          id: id,
+          type: 'affiliate-list',
+          title: title,
+          enabled: true,
+          order: maxOrder + 1,
+          items: []
+        };
+
+        let lastAffIdx = -1;
+        for (let i = localConfig.sections.length - 1; i >= 0; i--) {
+          if (localConfig.sections[i].type === 'affiliate-list') { lastAffIdx = i; break; }
+        }
+        
+        if (lastAffIdx !== -1) {
+          localConfig.sections.splice(lastAffIdx + 1, 0, newSec);
+        } else {
+          localConfig.sections.push(newSec);
+        }
+
+        activeAffiliateSectionId = id;
+        renderAffiliatesTab(container);
+      });
+
+      // Thêm sản phẩm
+      document.getElementById('add-aff-item').addEventListener('click', () => {
+        const sec = localConfig.sections.find(s => s.id === activeAffiliateSectionId);
+        if (sec) {
+          if (!sec.items) sec.items = [];
+          sec.items.unshift({ affiliateUrl: 'https://', priceNote: '', discountNote: '', ctaLabel: 'Mua trên TikTok' });
+          renderProductsList();
+          renderSectionsList();
+          document.getElementById('editor-container').scrollTop = 0;
+        }
+      });
+
+      renderSectionsList();
+      renderProductsList();
     }
 
     // TAB: Bank Details
