@@ -82,6 +82,7 @@ body {
   align-items: flex-start;
   transition: background-color 0.4s ease, color 0.4s ease;
   overflow-x: hidden;
+  padding-bottom: 80px; /* Chống đè bottom bar trên mọi màn hình */
 }
 
 /* Custom Scrollbar */
@@ -2123,9 +2124,3 @@ body {
   color: var(--color-primary);
 }
 
-/* Thêm padding bottom cho toàn bộ trang trên mobile để tránh đè nội dung footer */
-@media (max-width: 768px) {
-  body {
-    padding-bottom: 70px !important;
-  }
-}
