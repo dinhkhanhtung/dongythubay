@@ -159,6 +159,166 @@ window.CONFIG = {
       "order": 8,
       "items": [
         {
+          "image": "assets/review/Screenshot_20180420-115519.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180420-004613.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180419-123937.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180415-140432.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180410-143318.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180410-142844.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180410-142732.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180407-081416.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180320-055527.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180314-165116.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180309-225058.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180222-211502.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180221-222958.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180126-125032.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180124-193648.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180124-181806.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180110-164510.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20171206-214003.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_2017-06-14-17-53-12.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/PicsArt_10-08-09.59.23.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/PicsArt_10-08-09.59.03.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/PicsArt_10-08-09.58.38.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/PicsArt_10-08-09.57.34.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/PicsArt_10-08-09.56.11.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/PicsArt_10-08-09.53.28.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/PicsArt_10-08-09.51.46.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/713604748_27552275084379095_7067007425365101739_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/712133407_27552275811045689_6466122159718115581_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/494603559_23876212268652080_7440734004755404226_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/494524314_23874680122138628_7899976094920287467_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120774201_3669041673129104_7539167273749124820_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120750108_3669040973129174_7735462684997202330_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120727654_3669283563104915_1901691268953820130_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120701766_3669283479771590_2574227877268738352_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120639634_3669040479795890_7120132453014020250_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120576460_3669041399795798_7454453491417638102_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120570444_3669041519795786_2480623520808149528_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120544636_3669040379795900_6036671405998403636_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120532737_3669040246462580_1408726629923083722_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120444782_3669040846462520_5053258556032856683_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
           "image": "assets/review/120396173_3669040766462528_7282720382376266470_n.jpg",
           "caption": "Phản hồi điều trị sỏi mật hiệu quả sau 1 liệu trình thuốc nam"
         },
@@ -250,4 +410,3 @@ window.CONFIG = {
     }
   ]
 };
-
