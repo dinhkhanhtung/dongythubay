@@ -55,7 +55,7 @@ window.CONFIG = {
         },
         {
           "platform": "facebook-group",
-          "label": "Cộng Đồng Tân Dậu 1981",
+          "label": "Kết Nối Tân Dậu Toàn Cầu",
           "url": "https://web.facebook.com/groups/ketnoitandautoancau",
           "icon": "https://img.icons8.com/color/144/facebook-new.png"
         }
