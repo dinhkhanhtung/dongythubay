@@ -526,7 +526,7 @@ window.CONFIG = {
           "subtitle": "Android App",
           "description": "Ứng dụng phù hợp với quy trình nội bộ, hỗ trợ kinh doanh hiệu quả.",
           "icon": "smartphone",
-          "image": "https://cdn.pixabay.com/photo/2017/04/26/16/06/mobile-phone-2262928_640.jpg",
+          "image": "https://i.ibb.co/Rk7snxFW/android-app-service-image.png",
           "features": [
             "Phát triển ứng dụng theo yêu cầu thực tế.",
             "Đảm bảo bảo mật, trải nghiệm mượt mà."
