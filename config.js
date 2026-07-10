@@ -6,7 +6,7 @@ window.CONFIG = {
     "name": "Đông y Thu Bẩy",
     "title": "Phòng Chẩn Trị YHCT Thu Bẩy",
     "subtitle": "Đinh Khánh Tùng",
-    "tiktokHandle": "@dongy_thubay",
+    "tiktokHandle": "@khanhtungdinh",
     "bio": "💊 Cường Dương | Sỏi Thận | Dạ Dày | Rụng Tóc | Hiếm Muộn | Trĩ | Xương Khớp | Phụ Khoa \n☎️ Hotline tư vấn: 0982581222"
   },
   "seo": {
