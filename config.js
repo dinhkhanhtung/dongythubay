@@ -110,6 +110,10 @@ window.CONFIG = {
         {
           "previewUrl": "https://batdongsancrm.vercel.app/",
           "tag": "Bất động sản"
+        },
+        {
+          "previewUrl": "https://autopostx.vercel.app/",
+          "tag": "Facebook Auto"
         }
       ]
     },
