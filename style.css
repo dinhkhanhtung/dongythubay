@@ -1469,7 +1469,7 @@ body {
 .social-toast-container {
   position: fixed;
   bottom: 20px;
-  left: 20px;
+  left: calc(50% - 220px);
   z-index: 9999;
   pointer-events: none;
   font-family: var(--font-sans);
