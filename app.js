@@ -88,25 +88,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2.5. Page View Counter Integration (Using api.counterapi.dev)
   const incrementPageView = () => {
-    // Tạo pill counter ngay lập tức với placeholder để hiện sớm
     const profileHeader = document.querySelector('.profile-header');
 
-    // --- Top Counter (Pill bên dưới bio, trên social links) ---
+    // --- Top Counter: chỳ nhỏ mờ ngay dưới profile, không có nền/viền ---
     let topCounter = document.getElementById('top-page-counter');
     if (!topCounter && profileHeader) {
-      topCounter = document.createElement('div');
+      topCounter = document.createElement('p');
       topCounter.id = 'top-page-counter';
       topCounter.style.cssText = `
-        font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
-        color: var(--color-primary);
-        margin: 10px auto 0 auto;
-        display: inline-flex; align-items: center; gap: 5px;
-        background-color: rgba(21, 128, 61, 0.08);
-        padding: 5px 14px; border-radius: 20px;
-        border: 1px solid rgba(21, 128, 61, 0.2);
-        width: fit-content;
+        font-size: 11.5px; font-weight: 500;
+        color: var(--text-muted);
+        margin: 8px auto 0 auto;
+        display: inline-flex; align-items: center; gap: 4px;
+        opacity: 0.75;
       `;
-      topCounter.innerHTML = `<i data-lucide="eye" style="width:13px;height:13px;"></i><span>Đang tải...</span>`;
+      topCounter.innerHTML = `<i data-lucide="eye" style="width:12px;height:12px;"></i><span>Đang tải...</span>`;
       profileHeader.appendChild(topCounter);
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
@@ -528,8 +524,8 @@ document.addEventListener('DOMContentLoaded', () => {
       card.target = '_blank';
       card.setAttribute('rel', 'noopener noreferrer');
 
-      // HOT badge: gắn cho 1 item bất kỳ dựa trên hash
-      const isHotApp = ((title + linkUrl).split('').reduce((a,c,i) => a + c.charCodeAt(0)*(i+1), 0) % 7 === 0);
+      // HOT badge: hiện ở vị trí index 1 và 4 (tạo cảm giác có chọn lọc, không đều)
+      const isHotApp = (index === 1 || index === 4);
       const hotBadgeHtml = isHotApp ? '<span class="hot-badge">🔥 Hot</span>' : '';
 
       card.innerHTML = `
@@ -631,8 +627,8 @@ document.addEventListener('DOMContentLoaded', () => {
         card.removeAttribute('rel');
       }
 
-      // HOT badge: gắn cho 1 sản phẩm bất kỳ dựa trên hash
-      const isHotProduct = ((name + linkUrl).split('').reduce((a,c,i) => a + c.charCodeAt(0)*(i+1), 0) % 5 === 0);
+      // HOT badge: hiện ở sản phẩm đầu tiên mỗi section
+      const isHotProduct = (index === 0);
       const hotProductBadge = isHotProduct ? '<span class="hot-badge">🔥 Hot</span>' : '';
 
       card.innerHTML = `

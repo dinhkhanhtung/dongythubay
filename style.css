@@ -1374,7 +1374,7 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Toast luôn tối để đọc được cả light/dark mode */
+/* Toast luôn trái ngược với theme: tối trên nền sáng, sáng trên nền tối */
 .social-toast {
   background-color: rgba(10, 15, 30, 0.92);
   backdrop-filter: blur(16px) saturate(180%);
@@ -1392,6 +1392,13 @@ body {
   opacity: 0;
   transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: auto;
+}
+
+/* Dark mode: đổi sang nền sáng */
+[data-theme="dark"] .social-toast {
+  background-color: rgba(240, 245, 255, 0.96);
+  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 .social-toast.show {
@@ -1412,17 +1419,27 @@ body {
   justify-content: center;
 }
 
+[data-theme="dark"] .social-toast-avatar {
+  background-color: rgba(21, 128, 61, 0.12);
+  border-color: rgba(21, 128, 61, 0.25);
+}
+
 .social-toast-avatar i, .social-toast-avatar svg {
   color: #22c55e;
   width: 16px;
   height: 16px;
 }
 
+[data-theme="dark"] .social-toast-avatar i,
+[data-theme="dark"] .social-toast-avatar svg {
+  color: #15803d;
+}
+
 .social-toast-content {
   flex-grow: 1;
 }
 
-/* Text luôn trắng bất kể theme */
+/* Text luôn trắng trên light mode */
 .social-toast-text {
   font-size: 11.5px;
   line-height: 1.4;
@@ -1430,11 +1447,20 @@ body {
   font-weight: 500;
 }
 
+/* Text đổi sang tối trên dark mode */
+[data-theme="dark"] .social-toast-text {
+  color: rgba(15, 23, 42, 0.9);
+}
+
 .social-toast-time {
   font-size: 10px;
   color: rgba(255, 255, 255, 0.45);
   margin-top: 2px;
   font-weight: 500;
+}
+
+[data-theme="dark"] .social-toast-time {
+  color: rgba(15, 23, 42, 0.45);
 }
 
 /* HOT Label badge */
