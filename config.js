@@ -84,34 +84,58 @@ window.CONFIG = {
       "order": 5,
       "items": [
         {
+          "title": "Vidu Family",
+          "description": "Ứng dụng theo dõi, lập kế hoạch và quản lý tài chính thông minh cho các thành viên trong gia đình.",
+          "image": "https://i.ibb.co/gFZv6Fff/vidu-family-og-share.jpg",
           "previewUrl": "https://vidu-family.vercel.app/",
           "tag": "Chi tiêu gia đình"
         },
         {
+          "title": "Kim Kê",
+          "description": "Hệ thống quản lý chuyên sâu cho cửa hàng tiệm gà rán, tối ưu hóa quy trình order và báo cáo doanh thu chi tiết.",
+          "image": "https://i.ibb.co/RpMx8DcP/kimke-og-share.jpg",
           "previewUrl": "https://kimke.vercel.app/",
           "tag": "Sàn thương mại"
         },
         {
+          "title": "Dịch Tâm",
+          "description": "Tra cứu, học tập và ứng dụng Dịch học vào đời sống một cách khoa học và dễ hiểu.",
+          "image": "https://i.ibb.co/jv4f1xVZ/dichtam-og-share.jpg",
           "previewUrl": "https://dichtam.vercel.app/",
           "tag": "Dịch lý số"
         },
         {
+          "title": "Thiên Thư Công Sở",
+          "description": "Chia sẻ bí quyết, kỹ năng và tư duy ứng xử thông minh chốn công sở giúp bạn thăng tiến nhanh chóng.",
+          "image": "https://i.ibb.co/k6hN7dWY/thienthucongso-og-share.jpg",
           "previewUrl": "https://thienthucongso.vercel.app/",
           "tag": "Mưu lược công sở"
         },
         {
+          "title": "TG Sender",
+          "description": "Công cụ tự động gửi tin nhắn giới thiệu sản phẩm đến hàng ngàn khách hàng trên Telegram chỉ với 1 click.",
+          "image": "https://i.ibb.co/Gvrj2j4m/tgsender-og-share.jpg",
           "previewUrl": "https://tg-bulk-sender.vercel.app/",
           "tag": "Telegram Auto"
         },
         {
+          "title": "Tiền Mãn Kinh",
+          "description": "Ứng dụng hỗ trợ theo dõi chu kỳ, ghi nhận triệu chứng và tư vấn sức khỏe dành riêng cho phụ nữ tuổi 40+.",
+          "image": "https://i.ibb.co/6R2N2T9H/tienmankinh-og-share.jpg",
           "previewUrl": "https://tienmankinh.vercel.app/",
           "tag": "Sức khỏe phụ nữ"
         },
         {
+          "title": "Bất Động Sản CRM",
+          "description": "Hệ thống lưu trữ dữ liệu, quản lý khách hàng và phân tích thị trường bất động sản chuyên nghiệp.",
+          "image": "https://i.ibb.co/VWVwDskB/batdongsancrm-og.jpg",
           "previewUrl": "https://batdongsancrm.vercel.app/",
           "tag": "Bất động sản"
         },
         {
+          "title": "Auto Post X",
+          "description": "Hệ thống lên lịch và đăng bài viết tự động lên hàng loạt Fanpage và Group Facebook tiện lợi.",
+          "image": "https://i.ibb.co/k6G7vNtf/autopostx-og.png",
           "previewUrl": "https://autopostx.vercel.app/",
           "tag": "Facebook Auto"
         }
@@ -130,7 +154,8 @@ window.CONFIG = {
           "rating": "4.8",
           "downloads": "100+",
           "title": "MoneyFlow Smart",
-          "description": "MoneyFlow Smart là giải pháp quản lý tài chính cá nhân hiện đại, trực quan và dễ sử dụng, giúp bạn kiểm soát tài chính một cách thông minh và hiệu quả. Với giao diện người dùng thân thiện và đầy đủ tính năng, ứng dụng giúp bạn theo dõi thu chi, lập kế hoạch tài chính và đạt được mục tiêu tiết kiệm."
+          "description": "MoneyFlow Smart là giải pháp quản lý tài chính cá nhân hiện đại, trực quan và dễ sử dụng, giúp bạn kiểm soát tài chính một cách thông minh và hiệu quả. Với giao diện người dùng thân thiện và đầy đủ tính năng, ứng dụng giúp bạn theo dõi thu chi, lập kế hoạch tài chính và đạt được mục tiêu tiết kiệm.",
+          "image": "https://play-lh.googleusercontent.com/YNu9gjjD3oRoLdRVmoeLIepStqxGT3qOwJRHn-oVaGWrbryUcadKTk93gAnkshui4xOyeBlPr0FP60V9QHW2Nc8"
         },
         {
           "playStoreUrl": "https://play.google.com/store/apps/details?id=com.dinhkhanhtung.selleasy",
@@ -138,7 +163,8 @@ window.CONFIG = {
           "rating": "4.9",
           "downloads": "500+",
           "title": "SellEasy - Nhật Ký Bán Hàng",
-          "description": "SellEasy là ứng dụng quản lý bán hàng toàn diện, giúp doanh nghiệp của bạn vận hành hiệu quả hơn. Với các tính năng mạnh mẽ và dễ sử dụng, SellEasy là giải pháp hoàn hảo cho việc quản lý kho, theo dõi doanh thu và phân tích hiệu suất kinh doanh."
+          "description": "SellEasy là ứng dụng quản lý bán hàng toàn diện, giúp doanh nghiệp của bạn vận hành hiệu quả hơn. Với các tính năng mạnh mẽ và dễ sử dụng, SellEasy là giải pháp hoàn hảo cho việc quản lý kho, theo dõi doanh thu và phân tích hiệu suất kinh doanh.",
+          "image": "https://play-lh.googleusercontent.com/N4WG5Wf3AUlKC4ISS1NtvXIokA_9vZ-ezsPZ6pwHvSatVghbJRrBvw0iIUWMyv_HRGPKt0pAK5dFTNowpwfLfg"
         }
       ]
     },
