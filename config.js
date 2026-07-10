@@ -78,11 +78,11 @@ window.CONFIG = {
       "items": [
         {
           "previewUrl": "https://vidu-family.vercel.app/",
-          "tag": "CHi tiêu gia đình"
+          "tag": "Chi tiêu gia đình"
         },
         {
           "previewUrl": "https://kimke.vercel.app/",
-          "tag": "Cộng đồng 1981"
+          "tag": "Sàn thương mại"
         },
         {
           "previewUrl": "https://dichtam.vercel.app/",
@@ -102,7 +102,7 @@ window.CONFIG = {
         },
         {
           "previewUrl": "https://batdongsancrm.vercel.app/",
-          "tag": "Web App"
+          "tag": "Bất động sản"
         }
       ]
     },
