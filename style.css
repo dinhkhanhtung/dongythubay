@@ -2520,3 +2520,73 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* ============ SCROLL NAVIGATION BUTTONS FOR PC ============ */
+.scroll-container-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) scale(0.9);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--bg-card);
+  border: var(--border-card);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              background-color 0.2s ease, 
+              border-color 0.2s ease, 
+              color 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+}
+
+.scroll-nav-btn.prev {
+  left: -20px;
+}
+
+.scroll-nav-btn.next {
+  right: -20px;
+}
+
+.scroll-nav-btn.show {
+  opacity: 0.95;
+  pointer-events: auto;
+  transform: translateY(-50%) scale(1);
+}
+
+.scroll-nav-btn:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 6px 18px rgba(var(--color-primary-rgb), 0.35);
+}
+
+.scroll-nav-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.scroll-nav-btn i, .scroll-nav-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Ẩn hoàn toàn trên Mobile và Tablet để nhường chỗ cho vuốt tay */
+@media (max-width: 1024px) {
+  .scroll-nav-btn {
+    display: none !important;
+  }
+}
+
+

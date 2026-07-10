@@ -1800,5 +1800,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initBottomBar();
 
+  // 12. Generic Scroll Navigation Buttons for PC
+  function initScrollNavigation() {
+    const scrollClasses = ['.project-bento-grid', '.affiliate-container', '.reviews-container', '.service-grid'];
+    
+    scrollClasses.forEach(className => {
+      const containers = document.querySelectorAll(className);
+      containers.forEach(container => {
+        if (container.parentElement.classList.contains('scroll-container-wrapper')) return;
+
+        // Tạo wrapper bọc quanh container
+        const wrapper = document.createElement('div');
+        wrapper.className = 'scroll-container-wrapper';
+        container.parentNode.insertBefore(wrapper, container);
+        wrapper.appendChild(container);
+
+        // Tạo nút Prev và Next
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'scroll-nav-btn prev';
+        prevBtn.setAttribute('aria-label', 'Cuộn sang trái');
+        prevBtn.innerHTML = '<i data-lucide="chevron-left"></i>';
+
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'scroll-nav-btn next';
+        nextBtn.setAttribute('aria-label', 'Cuộn sang phải');
+        nextBtn.innerHTML = '<i data-lucide="chevron-right"></i>';
+
+        wrapper.appendChild(prevBtn);
+        wrapper.appendChild(nextBtn);
+
+        // Hàm ẩn hiện nút điều hướng thông minh
+        const updateButtons = () => {
+          const scrollLeft = container.scrollLeft;
+          const maxScrollLeft = container.scrollWidth - container.clientWidth;
+          
+          if (scrollLeft <= 5) {
+            prevBtn.classList.remove('show');
+          } else {
+            prevBtn.classList.add('show');
+          }
+
+          if (scrollLeft >= maxScrollLeft - 5) {
+            nextBtn.classList.remove('show');
+          } else {
+            nextBtn.classList.add('show');
+          }
+        };
+
+        // Gán sự kiện cuộn
+        prevBtn.addEventListener('click', () => {
+          container.scrollBy({ left: -320, behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+          container.scrollBy({ left: 320, behavior: 'smooth' });
+        });
+
+        // Lắng nghe sự kiện scroll trên container
+        container.addEventListener('scroll', updateButtons);
+        
+        // Khởi chạy kiểm tra lần đầu sau khi UI render ổn định
+        setTimeout(updateButtons, 300);
+
+        // Theo dõi resize cửa sổ trình duyệt
+        window.addEventListener('resize', updateButtons);
+      });
+    });
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  // Chờ UI render ổn định rồi kích hoạt nút cuộn PC
+  setTimeout(initScrollNavigation, 500);
+
 });
 
