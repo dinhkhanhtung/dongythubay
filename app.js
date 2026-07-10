@@ -1427,7 +1427,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="bb-icon-wrapper"><i data-lucide="shopping-bag"></i></div>
         <span>Sản phẩm</span>
       </a>
-      <a href="#section-appointment-booking" class="bottom-bar-item" id="bb-booking">
+      <a href="#section-appointment-booking" class="bottom-bar-item bb-item-center" id="bb-booking">
         <div class="bb-icon-wrapper active-booking"><i data-lucide="calendar"></i></div>
         <span>Đặt lịch</span>
       </a>
