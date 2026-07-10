@@ -857,7 +857,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       // Prepare text to copy
-      const textToCopy = `Chào anh Đinh Khánh Tùng, tôi đăng ký đặt lịch tư vấn:\n` +
+      const textToCopy = `Chào Tùng, mình đăng ký đặt lịch tư vấn:\n` +
         `- Họ tên: ${name}\n` +
         `- Số điện thoại: ${phone}\n` +
         `- Bệnh lý: ${disease}\n` +
@@ -887,7 +887,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
               <h3 class="booking-success-title">Đăng Ký Thành Công!</h3>
               <p class="booking-success-desc" style="margin-bottom: 8px;">
-                Đã gửi thông tin đến Telegram phòng khám YHCT Thu Bẩy.<br>
+                Đã gửi thông tin đến Telegram của Tùng.<br>
                 Đồng thời, nội dung đã được <strong>tự động sao chép vào bộ nhớ đệm</strong> của bạn.
               </p>
               <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">

@@ -52,6 +52,12 @@ window.CONFIG = {
           "label": "Kênh TikTok",
           "url": "https://www.tiktok.com/@dongy_thubay",
           "icon": "https://img.icons8.com/color/144/tiktok.png"
+        },
+        {
+          "platform": "facebook-group",
+          "label": "Cộng Đồng Tân Dậu 1981",
+          "url": "https://web.facebook.com/groups/ketnoitandautoancau",
+          "icon": "https://img.icons8.com/color/144/facebook-new.png"
         }
       ]
     },
@@ -104,7 +110,7 @@ window.CONFIG = {
       "id": "appointment-booking",
       "type": "booking",
       "title": "Đăng Ký Khám & Tư Vấn Trực Tuyến",
-      "subtitle": "Điền thông tin dưới đây, phòng khám sẽ liên hệ tư vấn trực tiếp cho bạn sau ít phút.",
+      "subtitle": "Điền thông tin dưới đây, Tùng sẽ nhắn tin hoặc gọi điện lại trao đổi với bạn nhé.",
       "enabled": true,
       "order": 4
     },
