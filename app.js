@@ -1,4 +1,89 @@
+// ==========================================================================
+// IN-APP BROWSER DETECT & REDIRECT SYSTEM (TIKTOK/FACEBOOK)
+// ==========================================================================
+(function() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isTikTok = /TikTok/i.test(ua);
+  const isFacebook = /FBAN|FBAV/i.test(ua);
+  const isInstagram = /Instagram/i.test(ua);
+  const isMessenger = /Messenger/i.test(ua);
+  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger;
+
+  if (isInAppBrowser) {
+    const isAndroid = /Android/i.test(ua);
+    if (isAndroid && !window.location.hash.includes('no-redirect')) {
+      // Ép Android mở bằng trình duyệt mặc định của hệ thống
+      const urlWithoutProtocol = window.location.host + window.location.pathname + window.location.search;
+      window.location.href = `intent://${urlWithoutProtocol}#Intent;scheme=https;end`;
+    }
+  }
+})();
+
+function showInAppBrowserWarning() {
+  if (sessionStorage.getItem('inapp_warning_dismissed') === 'true') {
+    return;
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'inapp-warning-overlay';
+  
+  overlay.innerHTML = `
+    <div class="inapp-arrow-indicator">
+      <svg class="inapp-arrow-icon" viewBox="0 0 24 24" stroke="currentColor">
+        <path d="M12 5v14M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Nhấn nút 3 chấm ở đây</span>
+    </div>
+    
+    <div class="inapp-warning-card">
+      <h2 class="inapp-warning-title">Mở Bằng Trình Duyệt Ngoài</h2>
+      <p class="inapp-warning-desc">
+        Bạn đang mở từ trình duyệt nội bộ của ứng dụng. Để các liên kết <strong>Zalo, Messenger, Bản đồ, CH Play</strong> hoạt động chính xác, vui lòng chuyển sang trình duyệt chính thức.
+      </p>
+      
+      <div class="inapp-steps">
+        <div class="inapp-step">
+          <span class="inapp-step-num">1</span>
+          <p class="inapp-step-content">Nhấn vào biểu tượng <strong>Ba Dấu Chấm (...)</strong> ở góc trên cùng bên phải.</p>
+        </div>
+        <div class="inapp-step">
+          <span class="inapp-step-num">2</span>
+          <p class="inapp-step-content">Chọn <strong>"Mở bằng trình duyệt ngoài"</strong> (hoặc <strong>"Mở trong Safari / Chrome"</strong>).</p>
+        </div>
+      </div>
+      
+      <div class="inapp-actions">
+        <button class="inapp-btn-continue">Tôi tự mở / Xem tiếp trang web</button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(overlay);
+  
+  overlay.querySelector('.inapp-btn-continue').addEventListener('click', () => {
+    overlay.style.animation = 'inappFadeIn 0.3s reverse forwards';
+    setTimeout(() => {
+      overlay.remove();
+      sessionStorage.setItem('inapp_warning_dismissed', 'true');
+    }, 300);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Check and show In-App Browser Warning overlay (iOS / Android fallback)
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isTikTok = /TikTok/i.test(ua);
+  const isFacebook = /FBAN|FBAV/i.test(ua);
+  const isInstagram = /Instagram/i.test(ua);
+  const isMessenger = /Messenger/i.test(ua);
+  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger;
+
+  if (isInAppBrowser) {
+    setTimeout(() => {
+      showInAppBrowserWarning();
+    }, 400);
+  }
+
   // Initialize Lucide Icons
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
