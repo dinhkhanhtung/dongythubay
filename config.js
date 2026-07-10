@@ -12,7 +12,7 @@ window.CONFIG = {
   "seo": {
     "title": "Đông y Thu Bẩy - Phòng Chẩn Trị YHCT Thu Bẩy",
     "description": "Trang thông tin, đặt lịch và sản phẩm thảo dược của Phòng chẩn trị Y học cổ truyền Thu Bẩy - Đinh Khánh Tùng.",
-    "ogImage": "assets/avatar_doctor.png",
+    "ogImage": "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=1200&h=630&q=80",
     "keywords": "đông y thu bẩy, y học cổ truyền thái nguyên, đinh khánh tùng, châm cứu thái nguyên, thuốc nam gia truyền"
   },
   "sections": [
