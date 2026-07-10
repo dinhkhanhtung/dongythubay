@@ -19,6 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const config = window.CONFIG;
 
+  // 0. Helper function to scroll to element with Sticky Header offset (72px)
+  function scrollToElement(element) {
+    if (!element) return;
+    const headerOffset = 72; // 56px sticky header + 16px safe buffer
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = elementPosition - headerOffset;
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+
   // 1. Populate SEO Meta Tags
   if (config.seo) {
     document.title = config.seo.title || document.title;
@@ -1074,7 +1086,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctaBtn.addEventListener('click', (e) => {
         e.preventDefault();
         const target = document.getElementById(ctaUrl.replace('#', ''));
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
+        if (target) scrollToElement(target);
       });
     }
 
@@ -1204,7 +1216,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', () => {
         const bookingSection = document.getElementById('section-appointment-booking');
         if (bookingSection) {
-          bookingSection.scrollIntoView({ behavior: 'smooth' });
+          scrollToElement(bookingSection);
           
           const formWrapper = bookingSection.querySelector('#booking-form-wrapper');
           const chevron = bookingSection.querySelector('#booking-chevron');
@@ -1446,7 +1458,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const promoSection = document.getElementById('section-promo-countdown');
       if (promoSection) {
-        promoSection.scrollIntoView({ behavior: 'smooth' });
+        scrollToElement(promoSection);
       }
       trackClick('bottom_bar', 'promo', 'Ưu đãi bottom bar', '#');
     });
@@ -1456,7 +1468,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const productSection = document.querySelector('[id*="section-affiliate"]') || document.getElementById('section-affiliates');
       if (productSection) {
-        productSection.scrollIntoView({ behavior: 'smooth' });
+        scrollToElement(productSection);
       }
       trackClick('bottom_bar', 'products', 'Sản phẩm bottom bar', '#');
     });
@@ -1467,7 +1479,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const bookingSection = document.getElementById('section-appointment-booking');
       if (bookingSection) {
-        bookingSection.scrollIntoView({ behavior: 'smooth' });
+        scrollToElement(bookingSection);
         
         const formWrapper = bookingSection.querySelector('#booking-form-wrapper');
         const chevron = bookingSection.querySelector('#booking-chevron');
@@ -1484,7 +1496,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const giftSection = document.getElementById('section-free-gifts');
       if (giftSection) {
-        giftSection.scrollIntoView({ behavior: 'smooth' });
+        scrollToElement(giftSection);
       }
       trackClick('bottom_bar', 'gifts', 'Quà tặng bottom bar', '#');
     });
@@ -1551,7 +1563,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const targetEl = document.querySelector(selector);
           if (targetEl) {
-            targetEl.scrollIntoView({ behavior: 'smooth' });
+            scrollToElement(targetEl);
             
             // Auto open booking form if selected
             if (target === 'booking') {
