@@ -551,15 +551,18 @@
 
   <!-- Screen 4: Gallery Selector Overlay -->
   <div id="gallery-overlay" class="overlay">
-    <div class="progress-box" style="max-width: 800px; width: 90%; height: 80vh; display: flex; flex-direction: column; padding: 24px; text-align: left;">
+    <div class="progress-box" style="max-width: 850px; width: 95%; height: 85vh; display: flex; flex-direction: column; padding: 24px; text-align: left;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 0;">Kho Ảnh Phản Hồi (Review)</h3>
         <button id="btn-close-gallery" class="icon-btn" style="border: none;"><i data-lucide="x"></i></button>
       </div>
-      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
         Nhấp chọn một ảnh dưới đây để điền nhanh vào mục review (đây là các ảnh thực tế trong thư mục <code>assets/review</code>).
       </p>
-      <div id="gallery-grid" style="flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; padding: 8px; background-color: rgba(0,0,0,0.25); border-radius: 8px; border: 1px solid var(--border-color);">
+      <div style="margin-bottom: 14px;">
+        <input type="text" id="gallery-search" class="form-input" placeholder="🔍 Nhập tên file để lọc ảnh nhanh (ví dụ: PicsArt, Screenshot, 2018...)" style="height: 42px; font-size: 13.5px; border-radius: 8px;">
+      </div>
+      <div id="gallery-grid" style="flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; padding: 12px; background-color: rgba(0,0,0,0.25); border-radius: 8px; border: 1px solid var(--border-color);">
         <!-- Tự động load danh sách ảnh review bằng Javascript -->
       </div>
     </div>
