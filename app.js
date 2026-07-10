@@ -761,6 +761,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const titleText = section.title || 'Đặt Lịch Tư Vấn & Hẹn Khám';
     const subtitleText = section.subtitle || 'Vui lòng điền thông tin bên dưới, Lương y sẽ liên hệ tư vấn sớm nhất.';
 
+    // Helper for clipboard copy
+    function copyTextToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).catch(err => {
+          return fallbackCopyText(text);
+        });
+      } else {
+        return Promise.resolve(fallbackCopyText(text));
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.top = '0';
+      textArea.style.left = '0';
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      let successful = false;
+      try {
+        successful = document.execCommand('copy');
+      } catch (err) {
+        console.error('[Booking Clipboard] Fallback copy failed:', err);
+      }
+      document.body.removeChild(textArea);
+      return successful;
+    }
+
     // Dropdown list for diseases
     const diseaseOptions = [
       'Dạ dày / HP',
@@ -825,6 +856,16 @@ document.addEventListener('DOMContentLoaded', () => {
         <span>Đang gửi đăng ký...</span>
       `;
 
+      // Prepare text to copy
+      const textToCopy = `Chào Lương y Đinh Khánh Tùng, tôi đăng ký đặt lịch tư vấn:\n` +
+        `- Họ tên: ${name}\n` +
+        `- Số điện thoại: ${phone}\n` +
+        `- Bệnh lý: ${disease}\n` +
+        `- Lời nhắn: ${message || 'Không có'}`;
+
+      // Copy to Clipboard immediately on user interaction to avoid browser block
+      copyTextToClipboard(textToCopy);
+
       try {
         const response = await fetch('/api/booking', {
           method: 'POST',
@@ -845,13 +886,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 <i data-lucide="check" style="width: 28px; height: 28px;"></i>
               </div>
               <h3 class="booking-success-title">Đăng Ký Thành Công!</h3>
-              <p class="booking-success-desc">
-                Cảm ơn anh/chị <strong>${name}</strong>. Thông tin đã được gửi trực tiếp đến Lương y Đinh Khánh Tùng.<br>
-                Phòng khám sẽ gọi điện tư vấn cho anh/chị trong thời gian sớm nhất.
+              <p class="booking-success-desc" style="margin-bottom: 8px;">
+                Đã gửi thông tin đến Telegram Lương y Đinh Khánh Tùng.<br>
+                Đồng thời, nội dung đã được <strong>tự động sao chép vào bộ nhớ đệm</strong> của bạn.
               </p>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
+                Bạn đang được chuyển hướng sang Zalo... Hãy <strong>DÁN (PASTE)</strong> tin nhắn vào ô chat của Lương y để gửi đi.
+              </p>
+              <a href="https://zalo.me/0982581222" class="booking-submit-btn" style="background-color: #0068ff; color: #ffffff; text-decoration: none; width: 100%; border-radius: var(--radius-sm); font-size: 14.5px; font-weight: 700; margin-top: 0; min-height: 48px;">
+                <i data-lucide="message-square" style="width: 18px; height: 18px;"></i>
+                <span>Mở Zalo và Dán gửi ngay</span>
+              </a>
             </div>
           `;
           if (typeof lucide !== 'undefined') lucide.createIcons();
+
+          // Auto redirect to Zalo after 2 seconds
+          setTimeout(() => {
+            window.location.href = 'https://zalo.me/0982581222';
+          }, 2000);
+
         } else {
           alert(resData.error || 'Có lỗi xảy ra khi gửi lịch hẹn. Vui lòng thử lại!');
           submitBtn.disabled = false;
