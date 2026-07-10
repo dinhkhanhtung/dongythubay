@@ -78,7 +78,7 @@ window.CONFIG = {
       "items": [
         {
           "previewUrl": "https://vidu-family.vercel.app/",
-          "tag": "Gia phả & Chi tiêu"
+          "tag": "CHi tiêu gia đình"
         },
         {
           "previewUrl": "https://kimke.vercel.app/",
@@ -93,7 +93,7 @@ window.CONFIG = {
           "tag": "Mưu lược công sở"
         },
         {
-          "previewUrl": "https://tgsender.vercel.app/",
+          "previewUrl": "https://tg-bulk-sender.vercel.app/",
           "tag": "Telegram Auto"
         },
         {
@@ -155,7 +155,7 @@ window.CONFIG = {
           "caption": "Bệnh nhân dạ dày ăn ngon ngủ tốt, không còn triệu chứng khó chịu"
         },
         {
-          "image": "assets/review/120532737_3669040246462580_1408726629923083722_n.jpg",
+          "image": "assets/review/Screenshot_20190619-105243.jpg",
           "caption": "Review chữa yếu sinh lý, tăng cường sinh lực nam giới thành công"
         },
         {
@@ -165,6 +165,10 @@ window.CONFIG = {
         {
           "image": "assets/review/120657978_3669041579795780_2831823502133140860_n.jpg",
           "caption": "Cảm ơn phòng khám giúp chữa trị trĩ nội co teo rụng tự nhiên"
+        },
+        {
+          "image": "assets/review/120396173_3669040766462528_7282720382376266470_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
         }
       ]
     },
