@@ -938,6 +938,7 @@ body {
 @media (max-width: 520px) {
   .back-to-top {
     right: 20px;
+    bottom: 80px; /* Tránh đè bottom bar di động */
   }
 }
 
@@ -2019,4 +2020,101 @@ body {
   animation: pulse-hot 2s ease-in-out infinite;
   box-shadow: 0 2px 6px rgba(239, 68, 68, 0.35);
   z-index: 10;
+}
+
+/* ============ NATIVE BOTTOM BAR (MOBILE ONLY) ============ */
+.native-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--viewport-max-width);
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 9999;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  padding: 0 10px;
+}
+
+[data-theme="dark"] .native-bottom-bar {
+  background-color: rgba(15, 23, 42, 0.85);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+}
+
+.bottom-bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-grow: 1;
+  height: 100%;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.bottom-bar-item span {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .bottom-bar-item span {
+  color: var(--text-muted);
+}
+
+.bb-img-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: grayscale(5%) contrast(1.05);
+  transition: transform 0.2s ease;
+}
+
+.bb-icon-wrapper {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.bb-icon-wrapper i, .bb-icon-wrapper svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Đặt lịch có điểm nhấn */
+.bb-icon-wrapper.active-booking {
+  color: var(--color-primary);
+}
+
+.bottom-bar-item:active .bb-img-icon,
+.bottom-bar-item:active .bb-icon-wrapper {
+  transform: scale(0.85);
+}
+
+.bottom-bar-item:hover span {
+  color: var(--color-primary);
+}
+
+/* Thêm padding bottom cho toàn bộ trang trên mobile để tránh đè nội dung footer */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 70px !important;
+  }
 }

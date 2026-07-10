@@ -1409,22 +1409,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initSocialToasts();
 
-  // Fixed Call Button
-  if (!window.location.pathname.includes('quanly')) {
+  // 10. Native Bottom Navigation Bar for Mobile (5 items)
+  function initBottomBar() {
+    if (window.location.pathname.includes('quanly')) return;
+
+    const bottomBar = document.createElement('div');
+    bottomBar.className = 'native-bottom-bar';
+    
+    const zaloIcon = 'https://i.ibb.co/Wjz9N4P/AVv-Xs-Eg3-Dr-Zo-Aw-Hqb-R-Du-Iy32r-VDU8jh-XVN5-BI1-EFLFgt6-TLycc0-Ww9n1xen-D4-7r-MP4-jgdv-Hbyu-2-Gu-TN2h-O.png';
+    const messengerIcon = 'https://i.ibb.co/B523cQD3/3c39891bc36c.png';
+    const mapsIcon = 'https://i.ibb.co/fdtwLz7F/397619b871de.png';
     const phoneNumber = (window.CONFIG && window.CONFIG.profile && window.CONFIG.profile.phone) || '0982581222';
-    const callBtn = document.createElement('a');
-    callBtn.id = 'fixed-call-btn';
-    callBtn.href = `tel:${phoneNumber}`;
-    callBtn.className = 'fixed-call-btn';
-    callBtn.setAttribute('aria-label', 'Gọi điện tư vấn');
-    callBtn.innerHTML = `
-      <div class="call-btn-ring"></div>
-      <i data-lucide="phone" style="width:20px;height:20px;"></i>
+
+    bottomBar.innerHTML = `
+      <a href="tel:${phoneNumber}" class="bottom-bar-item" id="bb-call">
+        <div class="bb-icon-wrapper"><i data-lucide="phone"></i></div>
+        <span>Gọi điện</span>
+      </a>
+      <a href="https://zalo.me/${phoneNumber}" target="_blank" rel="noopener noreferrer" class="bottom-bar-item" id="bb-zalo">
+        <img src="${zaloIcon}" alt="Zalo" class="bb-img-icon">
+        <span>Zalo</span>
+      </a>
+      <a href="#section-appointment-booking" class="bottom-bar-item" id="bb-booking">
+        <div class="bb-icon-wrapper active-booking"><i data-lucide="calendar"></i></div>
+        <span>Đặt lịch</span>
+      </a>
+      <a href="https://maps.google.com/?q=Phòng+Chẩn+Trị+YHCT+Thu+Bẩy+Tổ+10+Quan+Triều+Thái+Nguyên" target="_blank" rel="noopener noreferrer" class="bottom-bar-item" id="bb-maps">
+        <img src="${mapsIcon}" alt="Bản đồ" class="bb-img-icon">
+        <span>Chỉ đường</span>
+      </a>
+      <a href="https://m.me/dinhkhanhtung" target="_blank" rel="noopener noreferrer" class="bottom-bar-item" id="bb-messenger">
+        <img src="${messengerIcon}" alt="Messenger" class="bb-img-icon">
+        <span>Nhắn tin</span>
+      </a>
     `;
-    callBtn.addEventListener('click', () => trackClick('call_button', 'phone', `Gọi: ${phoneNumber}`, `tel:${phoneNumber}`));
-    document.body.appendChild(callBtn);
+
+    // Click "Đặt lịch" cuộn xuống form booking và mở form
+    const bookingBtn = bottomBar.querySelector('#bb-booking');
+    bookingBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const bookingSection = document.getElementById('section-appointment-booking');
+      if (bookingSection) {
+        bookingSection.scrollIntoView({ behavior: 'smooth' });
+        
+        const formWrapper = bookingSection.querySelector('#booking-form-wrapper');
+        const chevron = bookingSection.querySelector('#booking-chevron');
+        if (formWrapper && (formWrapper.style.maxHeight === '0px' || formWrapper.style.maxHeight === '')) {
+          formWrapper.style.maxHeight = formWrapper.scrollHeight + 'px';
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
+        }
+      }
+      trackClick('bottom_bar', 'booking', 'Đặt lịch bottom bar', '#');
+    });
+
+    bottomBar.querySelector('#bb-call').addEventListener('click', () => trackClick('bottom_bar', 'phone', 'Gọi điện bottom bar', `tel:${phoneNumber}`));
+    bottomBar.querySelector('#bb-zalo').addEventListener('click', () => trackClick('bottom_bar', 'zalo', 'Zalo bottom bar', `https://zalo.me/${phoneNumber}`));
+    bottomBar.querySelector('#bb-maps').addEventListener('click', () => trackClick('bottom_bar', 'maps', 'Bản đồ bottom bar', 'https://maps.google.com/?q=Phòng+Chẩn+Trị+YHCT+Thu+Bẩy+Tổ+10+Quan+Triều+Thái+Nguyên'));
+    bottomBar.querySelector('#bb-messenger').addEventListener('click', () => trackClick('bottom_bar', 'messenger', 'Messenger bottom bar', 'https://m.me/dinhkhanhtung'));
+
+    document.body.appendChild(bottomBar);
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
+
+  initBottomBar();
 
 });
 
