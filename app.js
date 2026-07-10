@@ -1660,9 +1660,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="bb-icon-wrapper"><i data-lucide="gift"></i></div>
         <span>Quà tặng</span>
       </a>
-      <a href="tel:${phoneNumber}" class="bottom-bar-item" id="bb-call">
-        <div class="bb-icon-wrapper"><i data-lucide="phone"></i></div>
-        <span>Gọi điện</span>
+      <a href="#section-services-digital" class="bottom-bar-item" id="bb-services">
+        <div class="bb-icon-wrapper"><i data-lucide="layers"></i></div>
+        <span>Dịch vụ</span>
       </a>
     `;
 
@@ -1714,9 +1714,14 @@ document.addEventListener('DOMContentLoaded', () => {
       trackClick('bottom_bar', 'gifts', 'Quà tặng bottom bar', '#');
     });
 
-    // Click "Gọi điện"
-    bottomBar.querySelector('#bb-call').addEventListener('click', () => {
-      trackClick('bottom_bar', 'phone', 'Gọi điện bottom bar', `tel:${phoneNumber}`);
+    // Click "Dịch vụ"
+    bottomBar.querySelector('#bb-services').addEventListener('click', (e) => {
+      e.preventDefault();
+      const servicesSection = document.getElementById('section-services-digital');
+      if (servicesSection) {
+        scrollToElement(servicesSection);
+      }
+      trackClick('bottom_bar', 'services', 'Dịch vụ bottom bar', '#');
     });
 
     document.body.appendChild(bottomBar);
