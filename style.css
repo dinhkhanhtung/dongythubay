@@ -1920,6 +1920,11 @@ body {
   font-weight: 800;
   color: var(--text-primary);
   line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .service-desc {
@@ -1927,6 +1932,12 @@ body {
   color: var(--text-secondary);
   line-height: 1.45;
   text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 38px; /* Giữ chiều cao tối thiểu cho 2 dòng để cân đối nút báo giá */
 }
 
 .service-features-list {
