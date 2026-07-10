@@ -559,7 +559,7 @@ window.CONFIG = {
           "subtitle": "Tư vấn Thương hiệu",
           "description": "Đồng hành xây dựng thương hiệu, phát triển kênh số phù hợp thực tế.",
           "icon": "compass",
-          "image": "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849822_640.jpg",
+          "image": "https://i.ibb.co/S7MnHywF/brand-consulting-service-image.jpg",
           "features": [
             "Tư vấn xây dựng thương hiệu cá nhân/doanh nghiệp.",
             "Định hướng phát triển kênh Facebook, TikTok."
