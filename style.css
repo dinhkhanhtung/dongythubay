@@ -1016,7 +1016,7 @@ body {
 /* Back to Top Button */
 .back-to-top {
   position: fixed;
-  bottom: 24px;
+  bottom: 80px; /* Đẩy lên trên Bottom Bar trên mọi thiết bị để không bị che khuất */
   right: calc(50% - (var(--viewport-max-width) / 2) + 20px);
   width: 48px;
   height: 48px;
@@ -1039,7 +1039,6 @@ body {
 @media (max-width: 520px) {
   .back-to-top {
     right: 20px;
-    bottom: 80px; /* Tránh đè bottom bar di động */
   }
 }
 
