@@ -479,7 +479,7 @@ window.CONFIG = {
       "items": [
         {
           "title": "Chạy quảng cáo Facebook",
-          "subtitle": "Facebook Ads Demo",
+          "subtitle": "Facebook Ads",
           "description": "Giúp bạn tiếp cận khách hàng tiềm năng, tối ưu chi phí quảng cáo.",
           "icon": "facebook",
           "image": "https://i.ibb.co/bjsrRMc0/fb-ads-service-image.png",
@@ -490,7 +490,7 @@ window.CONFIG = {
         },
         {
           "title": "Quản lý fanpage & Nội dung",
-          "subtitle": "Fanpage Content Demo",
+          "subtitle": "Fanpage Content",
           "description": "Fanpage chuyên nghiệp, nội dung gần gũi, hỗ trợ phát triển cộng đồng.",
           "icon": "edit-3",
           "image": "https://i.ibb.co/NdTcQWqs/fb-content-service-image.png",
@@ -501,7 +501,7 @@ window.CONFIG = {
         },
         {
           "title": "Hỗ trợ tài khoản Facebook",
-          "subtitle": "Facebook Account Support Demo",
+          "subtitle": "Facebook Account Support",
           "description": "An tâm sử dụng Facebook, bảo vệ tài sản số cá nhân/doanh nghiệp.",
           "icon": "shield",
           "image": "https://cdn.pixabay.com/photo/2016/11/29/05/45/computer-1867614_640.jpg",
@@ -512,7 +512,7 @@ window.CONFIG = {
         },
         {
           "title": "Thiết kế Website",
-          "subtitle": "Thiết kế Website Demo",
+          "subtitle": "Thiết kế Website",
           "description": "Website chuyên nghiệp, hỗ trợ phát triển thương hiệu online.",
           "icon": "globe",
           "image": "https://cdn.pixabay.com/photo/2017/01/22/22/11/mobile-devices-2001180_640.jpg",
@@ -523,7 +523,7 @@ window.CONFIG = {
         },
         {
           "title": "Phát triển ứng dụng Android",
-          "subtitle": "Android App Demo",
+          "subtitle": "Android App",
           "description": "Ứng dụng phù hợp với quy trình nội bộ, hỗ trợ kinh doanh hiệu quả.",
           "icon": "smartphone",
           "image": "https://cdn.pixabay.com/photo/2017/04/26/16/06/mobile-phone-2262928_640.jpg",
@@ -534,7 +534,7 @@ window.CONFIG = {
         },
         {
           "title": "Xây dựng AI Agent",
-          "subtitle": "AI Agent Demo",
+          "subtitle": "AI Agent",
           "description": "Tự động hóa một số tác vụ, hỗ trợ chăm sóc khách hàng cơ bản.",
           "icon": "bot",
           "image": "https://cdn.pixabay.com/photo/2023/07/04/19/43/machine-learning-8106981_640.jpg",
@@ -545,7 +545,7 @@ window.CONFIG = {
         },
         {
           "title": "Thiết kế Đồ họa & Video",
-          "subtitle": "Thiết kế Đồ họa & Video Demo",
+          "subtitle": "Thiết kế Đồ họa & Video",
           "description": "Hình ảnh, video chuyên nghiệp, hỗ trợ nhận diện thương hiệu.",
           "icon": "video",
           "image": "https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_640.jpg",
@@ -556,7 +556,7 @@ window.CONFIG = {
         },
         {
           "title": "Tư vấn thương hiệu & kênh số",
-          "subtitle": "Tư vấn Thương hiệu Demo",
+          "subtitle": "Tư vấn Thương hiệu",
           "description": "Đồng hành xây dựng thương hiệu, phát triển kênh số phù hợp thực tế.",
           "icon": "compass",
           "image": "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849822_640.jpg",
