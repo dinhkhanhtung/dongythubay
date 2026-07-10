@@ -101,21 +101,12 @@ window.CONFIG = {
       ]
     },
     {
-      "id": "services",
-      "type": "project-grid",
-      "title": "Dịch vụ & Đặt Lịch",
+      "id": "appointment-booking",
+      "type": "booking",
+      "title": "Đăng Ký Khám & Tư Vấn Trực Tuyến",
+      "subtitle": "Điền thông tin dưới đây, Lương y Đinh Khánh Tùng sẽ liên hệ tư vấn trực tiếp cho bạn sau ít phút.",
       "enabled": true,
-      "order": 4,
-      "items": [
-        {
-          "previewUrl": "https://zalo.me/0982581222",
-          "tag": "Tư vấn Zalo"
-        },
-        {
-          "previewUrl": "https://www.facebook.com/dinhkhanhtung",
-          "tag": "Facebook cá nhân"
-        }
-      ]
+      "order": 4
     },
     {
       "id": "affiliates",
@@ -127,14 +118,47 @@ window.CONFIG = {
         {
           "priceNote": "120.000đ",
           "discountNote": "Hộp 30 túi lọc - Mua combo 3 hộp free ship",
-          "affiliateUrl": "https://www.tiktok.com/view/product/1735112219487536176?_d=f052mj9gb8j443&_svg=1&chain_key=%7B%22t%22%3A1%2C%22k%22%3A%22000000000000000007656995557143987989%22%2C%22sc%22%3A%22copy%22%7D&checksum=914742807669b59c1a05c2b1cf27f2b555fb5a4276c1206489fe12fcfbdb8c73&encode_params=MIIBUwQMCon0c2Z1NPyQQAI1BIIBL_qVyCC1tTHhQt-BANAG1wnYzPiJbvDTpLOcUynzFAmMBvo6b8qqQMfEhim0Bp2LkAHHI3GPnOILY8jAA9XS7BvBTXQzZjqAsR7JDEboGZiEbb-ixyDIlccXHwUX4ipboL8IJ2wnnepjHTDtMdEQvxyiVNh_YOJyy0HPbMKL7gmwRtSUaVQtUxbnObWoXhxWfrIBohZUBPm3wmXCLnjtH9CcWe8fvoIeRAX_tVqu_STAB3FP5Ab_ecTeUHsUYhrjoPJ0x6FHwgjgtXsxVdxdQEghEgYDBbRTko8E_mI1J6h9Nl22iu1FS-IihlaH2AhuWTjLE_DVFj1s7YQNOb0Iu5Do9FT2Vk5Q1aQ2lnyEJiTYWn29UOuxWHR2jc5NS7k1n5Z_LXkYtqj20rpDYq01LQQQ8sh9_tv09iUYFWi9YKwFug%3D%3D&og_info=%7B%22title%22%3A%22Tinh+d%E1%BA%A7u+massage+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A1ng+th%E1%BB%83+100g+th%C6%B0+gi%C3%A3n+gi%E1%BA%A3m+m%E1%BB%87t+m%E1%BB%8Fi+l%C6%B0u+th%C3%B4ng+kh%C3%AD+huy%E1%BA%BFt+gi%C3%BAp+ng%E1%BB%A7+ngon+m%E1%BB%8Fng+nh%E1%BA%B9+th%E1%BA%A5m+nhanh%22%2C%22image%22%3A%22https%3A%5C%2F%5C%2Fp16-oec-general.tiktokcdn.com%5C%2Ftos-alisg-i-aphluv4xwc-sg%5C%2F78b1f199d18544c597832f328853c42e~tplv-aphluv4xwc-resize-webp%3A260%3A260.webp%3Fdr%3D15582%26t%3D555f072d%26ps%3D933b5bde%26shp%3D7745054a%26shcp%3D9b759fb9%26idc%3Dmy2%26from%3D2001012042%22%7D&sec_user_id=MS4wLjABAAAAm6aHnDQFhWdRNz5xUlD8q1n8443WhSmuav77ny6fKY9MxZR5b9GKkk5g286Qsdgk&share_app_id=1180&share_iid=7653300326657640212&share_link_id=d0ee96f0-6d50-4141-a045-d7e0ed39f8f4&share_region=VN&social_share_type=15&timestamp=1782783215&trackParams=%7B%22traffic_source_list%22%3A%5B3%5D%2C%22traffic_source%22%3A3%2C%22enable_shop_tab_popup%22%3A1%2C%22device_id%22%3A%227565433477211555335%22%7D&u_code=d55c9342jc4ch3&ug_btm=b2631%2Cb6661&ugbiz_name=UNKNOWN&unique_id=khanhtungdinh&user_id=6667323453606297602&utm_campaign=client_share&utm_medium=android&utm_source=copy",
+          "affiliateUrl": "https://www.tiktok.com/view/product/1735112219487536176?_d=f052mj9gb8j443&_svg=1&chain_key=%7B%22t%22%3A1%2C%22k%22%3A%22000000000000000007656995557143987989%22%2C%22sc%22%3A%22copy%22%7D&checksum=914742807669b59c1a05c2b1cf27f2b555fb5a4276c1206489fe12fcfbdb8c73&encode_params=MIIBUwQMCon0c2Z1NPyQQAI1BIIBL_qVyCC1tTHhQt-BANAG1wnYzPiJbvDTpLOcUynzFAmMBvo6b8qqQMfEhim0Bp2LkAHHI3GPnOILY8jAA9XS7BvBTXQzZjqAsR7JDEboGZiEbb-ixyDIlccXHwUX4ipboL8IJ2wnnepjHTDtMdEQvxyiVNh_YOJyy0HPbMKL7gmwRtSUaVQtUxbnObWoXhxWfrIBohZUBPm3wmXCLnjtH9CcWe8fvoIeRAX_tVqu_STAB3FP5Ab_ecTeUHsUYhrjoPJ0x6FHwgjgtXsxVdxdQEghEgYDBbRTko8E_mI1J6h9Nl22iu1FS-IihlaH2AhuWTjLE_DVFj1s7YQNOb0Iu5Do9FT2Vk5Q1aQ2lnyEJiTYWn29UOuxWHR2jc5NS7k1n5Z_LXkYtqj20rpDYq01LQQQ8sh9_tv09iUYFWi9YKwFug%3D%3D&og_info=%7B%22title%22%3A%22Tinh+d%E1%BA%A7u+massage+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u%22%2C%22image%22%3A%22https%3A%2F%2Fp16-oec-general.tiktokcdn.com%2Ftos-alisg-i-aphluv4xwc-sg%2F78b1f199d18544c597832f328853c42e~tplv-aphluv4xwc-resize-webp%3A260%3A260.webp%22%7D&sec_user_id=MS4wLjABAAAAm6aHnDQFhWdRNz5xUlD8q1n8443WhSmuav77ny6fKY9MxZR5b9GKkk5g286Qsdgk&share_app_id=1180&share_iid=7653300326657640212&share_link_id=d0ee96f0-6d50-4141-a045-d7e0ed39f8f4&share_region=VN&social_share_type=15&timestamp=1782783215&trackParams=%7B%22traffic_source_list%22%3A%5B3%5D%2C%22traffic_source%22%3A3%2C%22enable_shop_tab_popup%22%3A1%2C%22device_id%22%3A%227565433477211555335%22%7D&u_code=d55c9342jc4ch3&ug_btm=b2631%2Cb6661&ugbiz_name=UNKNOWN&unique_id=khanhtungdinh&user_id=6667323453606297602&utm_campaign=client_share&utm_medium=android&utm_source=copy",
           "ctaLabel": "Mua trên TikTok"
         },
         {
           "priceNote": "85.000đ",
           "discountNote": "Chai xịt 100ml - Hỗ trợ giảm đau cơ xương khớp",
-          "affiliateUrl": "https://www.tiktok.com/view/product/1735112219487536176?_d=f052mj9gb8j443&_svg=1&chain_key=%7B%22t%22%3A1%2C%22k%22%3A%22000000000000000007656995557143987989%22%2C%22sc%22%3A%22copy%22%7D&checksum=914742807669b59c1a05c2b1cf27f2b555fb5a4276c1206489fe12fcfbdb8c73&encode_params=MIIBUwQMCon0c2Z1NPyQQAI1BIIBL_qVyCC1tTHhQt-BANAG1wnYzPiJbvDTpLOcUynzFAmMBvo6b8qqQMfEhim0Bp2LkAHHI3GPnOILY8jAA9XS7BvBTXQzZjqAsR7JDEboGZiEbb-ixyDIlccXHwUX4ipboL8IJ2wnnepjHTDtMdEQvxyiVNh_YOJyy0HPbMKL7gmwRtSUaVQtUxbnObWoXhxWfrIBohZUBPm3wmXCLnjtH9CcWe8fvoIeRAX_tVqu_STAB3FP5Ab_ecTeUHsUYhrjoPJ0x6FHwgjgtXsxVdxdQEghEgYDBbRTko8E_mI1J6h9Nl22iu1FS-IihlaH2AhuWTjLE_DVFj1s7YQNOb0Iu5Do9FT2Vk5Q1aQ2lnyEJiTYWn29UOuxWHR2jc5NS7k1n5Z_LXkYtqj20rpDYq01LQQQ8sh9_tv09iUYFWi9YKwFug%3D%3D&og_info=%7B%22title%22%3A%22Tinh+d%E1%BA%A7u+massage+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A1ng+th%E1%BB%83+100g+th%C6%B0+gi%C3%A3n+gi%E1%BA%A3m+m%E1%BB%87t+m%E1%BB%8Fi+l%C6%B0u+th%C3%B4ng+kh%C3%AD+huy%E1%BA%BFt+gi%C3%BAp+ng%E1%BB%A7+ngon+m%E1%BB%8Fng+nh%E1%BA%B9+th%E1%BA%A5m+nhanh%22%2C%22image%22%3A%22https%3A%5C%2F%5C%2Fp16-oec-general.tiktokcdn.com%5C%2Ftos-alisg-i-aphluv4xwc-sg%5C%2F78b1f199d18544c597832f328853c42e~tplv-aphluv4xwc-resize-webp%3A260%3A260.webp%3Fdr%3D15582%26t%3D555f072d%26ps%3D933b5bde%26shp%3D7745054a%26shcp%3D9b759fb9%26idc%3Dmy2%26from%3D2001012042%22%7D&sec_user_id=MS4wLjABAAAAm6aHnDQFhWdRNz5xUlD8q1n8443WhSmuav77ny6fKY9MxZR5b9GKkk5g286Qsdgk&share_app_id=1180&share_iid=7653300326657640212&share_link_id=d0ee96f0-6d50-4141-a045-d7e0ed39f8f4&share_region=VN&social_share_type=15&timestamp=1782783215&trackParams=%7B%22traffic_source_list%22%3A%5B3%5D%2C%22traffic_source%22%3A3%2C%22enable_shop_tab_popup%22%3A1%2C%22device_id%22%3A%227565433477211555335%22%7D&u_code=d55c9342jc4ch3&ug_btm=b2631%2Cb6661&ugbiz_name=UNKNOWN&unique_id=khanhtungdinh&user_id=6667323453606297602&utm_campaign=client_share&utm_medium=android&utm_source=copy",
+          "affiliateUrl": "https://www.tiktok.com/view/product/1735112219487536176?_d=f052mj9gb8j443&_svg=1&chain_key=%7B%22t%22%3A1%2C%22k%22%3A%22000000000000000007656995557143987989%22%2C%22sc%22%3A%22copy%22%7D&checksum=914742807669b59c1a05c2b1cf27f2b555fb5a4276c1206489fe12fcfbdb8c73&encode_params=MIIBUwQMCon0c2Z1NPyQQAI1BIIBL_qVyCC1tTHhQt-BANAG1wnYzPiJbvDTpLOcUynzFAmMBvo6b8qqQMfEhim0Bp2LkAHHI3GPnOILY8jAA9XS7BvBTXQzZjqAsR7JDEboGZiEbb-ixyDIlccXHwUX4ipboL8IJ2wnnepjHTDtMdEQvxyiVNh_YOJyy0HPbMKL7gmwRtSUaVQtUxbnObWoXhxWfrIBohZUBPm3wmXCLnjtH9CcWe8fvoIeRAX_tVqu_STAB3FP5Ab_ecTeUHsUYhrjoPJ0x6FHwgjgtXsxVdxdQEghEgYDBbRTko8E_mI1J6h9Nl22iu1FS-IihlaH2AhuWTjLE_DVFj1s7YQNOb0Iu5Do9FT2Vk5Q1aQ2lnyEJiTYWn29UOuxWHR2jc5NS7k1n5Z_LXkYtqj20rpDYq01LQQQ8sh9_tv09iUYFWi9YKwFug%3D%3D&og_info=%7B%22title%22%3A%22Tinh+d%E1%BA%A7u+massage+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u%22%2C%22image%22%3A%22https%3A%2F%2Fp16-oec-general.tiktokcdn.com%2Ftos-alisg-i-aphluv4xwc-sg%2F78b1f199d18544c597832f328853c42e~tplv-aphluv4xwc-resize-webp%3A260%3A260.webp%22%7D&sec_user_id=MS4wLjABAAAAm6aHnDQFhWdRNz5xUlD8q1n8443WhSmuav77ny6fKY9MxZR5b9GKkk5g286Qsdgk&share_app_id=1180&share_iid=7653300326657640212&share_link_id=d0ee96f0-6d50-4141-a045-d7e0ed39f8f4&share_region=VN&social_share_type=15&timestamp=1782783215&trackParams=%7B%22traffic_source_list%22%3A%5B3%5D%2C%22traffic_source%22%3A3%2C%22enable_shop_tab_popup%22%3A1%2C%22device_id%22%3A%227565433477211555335%22%7D&u_code=d55c9342jc4ch3&ug_btm=b2631%2Cb6661&ugbiz_name=UNKNOWN&unique_id=khanhtungdinh&user_id=6667323453606297602&utm_campaign=client_share&utm_medium=android&utm_source=copy",
           "ctaLabel": "Mua trên TikTok"
+        }
+      ]
+    },
+    {
+      "id": "patient-reviews",
+      "type": "reviews",
+      "title": "Cảm Nhận Từ Người Bệnh",
+      "enabled": true,
+      "order": 6,
+      "items": [
+        {
+          "image": "assets/review/120396173_3669040766462528_7282720382376266470_n.jpg",
+          "caption": "Phản hồi điều trị sỏi mật hiệu quả sau 1 liệu trình thuốc nam"
+        },
+        {
+          "image": "assets/review/120422179_3669283266438278_2448357116553594135_n.jpg",
+          "caption": "Bệnh nhân trào ngược dạ dày hết hẳn ợ chua và đau rát thượng vị"
+        },
+        {
+          "image": "assets/review/120424120_3669283353104936_6603051118602376791_n.jpg",
+          "caption": "Bệnh nhân dạ dày ăn ngon ngủ tốt, không còn triệu chứng khó chịu"
+        },
+        {
+          "image": "assets/review/120532737_3669040246462580_1408726629923083722_n.jpg",
+          "caption": "Review chữa yếu sinh lý, tăng cường sinh lực nam giới thành công"
+        },
+        {
+          "image": "assets/review/120561590_3669040613129210_5846319400958690505_n.jpg",
+          "caption": "Bệnh nhân sỏi thận 7mm tiêu sỏi hoàn toàn sau thời gian ngắn"
+        },
+        {
+          "image": "assets/review/120657978_3669041579795780_2831823502133140860_n.jpg",
+          "caption": "Cảm ơn Lương y giúp chữa trị trĩ nội co teo rụng tự nhiên"
         }
       ]
     },
@@ -143,7 +167,7 @@ window.CONFIG = {
       "type": "bank-transfer",
       "title": "Thông tin Donate",
       "enabled": true,
-      "order": 6,
+      "order": 7,
       "bankName": "Ngân hàng BIDV",
       "accountNumber": "0982581222",
       "accountName": "DINH KHANH TUNG",

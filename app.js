@@ -343,6 +343,12 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'bank-transfer':
           renderBankTransfer(section, sectionEl);
           break;
+        case 'booking':
+          renderBookingForm(section, sectionEl);
+          break;
+        case 'reviews':
+          renderPatientReviews(section, sectionEl);
+          break;
         default:
           console.warn(`Unknown section type: ${section.type}`);
           break;
@@ -746,5 +752,189 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   });
+
+  // 6. Booking Form Component
+  function renderBookingForm(section, container) {
+    const card = document.createElement('div');
+    card.className = 'booking-card';
+
+    const titleText = section.title || 'Đặt Lịch Tư Vấn & Hẹn Khám';
+    const subtitleText = section.subtitle || 'Vui lòng điền thông tin bên dưới, Lương y sẽ liên hệ tư vấn sớm nhất.';
+
+    // Dropdown list for diseases
+    const diseaseOptions = [
+      'Dạ dày / HP',
+      'Sỏi thận / Sỏi mật',
+      'Cường dương / Yếu sinh lý',
+      'Rụng tóc / Bạc tóc',
+      'Hiếm muộn / Vô sinh',
+      'Trĩ (Nội, Ngoại)',
+      'Xương khớp / Gút',
+      'Phụ khoa / Nam khoa',
+      'Khác'
+    ];
+
+    card.innerHTML = `
+      <div id="booking-form-wrapper">
+        <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.45; text-align: center; margin-bottom: 8px;">
+          ${subtitleText}
+        </p>
+        <form class="booking-form" id="appointment-form">
+          <div class="booking-field">
+            <label for="book-name">Họ và Tên <span style="color:#ef4444">*</span></label>
+            <input type="text" id="book-name" class="booking-input" required placeholder="Nhập tên của bạn...">
+          </div>
+          <div class="booking-field">
+            <label for="book-phone">Số điện thoại <span style="color:#ef4444">*</span></label>
+            <input type="tel" id="book-phone" class="booking-input" required placeholder="Nhập số điện thoại...">
+          </div>
+          <div class="booking-field">
+            <label for="book-disease">Bệnh lý cần khám</label>
+            <select id="book-disease" class="booking-select">
+              ${diseaseOptions.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+            </select>
+          </div>
+          <div class="booking-field">
+            <label for="book-message">Lời nhắn / Triệu chứng</label>
+            <textarea id="book-message" class="booking-textarea" placeholder="Ghi chú triệu chứng hoặc thời gian tiện nghe điện thoại..."></textarea>
+          </div>
+          <button type="submit" class="booking-submit-btn" id="book-submit">
+            <i data-lucide="send" style="width: 16px; height: 16px;"></i>
+            <span>Gửi Đăng Ký Ngay</span>
+          </button>
+        </form>
+      </div>
+    `;
+
+    const form = card.querySelector('#appointment-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = card.querySelector('#book-submit');
+      const name = card.querySelector('#book-name').value.trim();
+      const phone = card.querySelector('#book-phone').value.trim();
+      const disease = card.querySelector('#book-disease').value;
+      const message = card.querySelector('#book-message').value.trim();
+
+      if (!name || !phone) return alert('Vui lòng điền đầy đủ Họ tên và Số điện thoại!');
+
+      // Set Loading
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <div class="spinner-inline" style="width: 16px; height: 16px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+        <span>Đang gửi đăng ký...</span>
+      `;
+
+      try {
+        const response = await fetch('/api/booking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, phone, disease, message })
+        });
+
+        const resData = await response.json();
+
+        if (response.ok && resData.success) {
+          // Track booking click
+          trackClick('booking', slugify(disease), `Đăng ký khám: ${disease}`, '#');
+
+          // Render Success Screen
+          card.querySelector('#booking-form-wrapper').innerHTML = `
+            <div class="booking-success-message">
+              <div class="booking-success-icon">
+                <i data-lucide="check" style="width: 28px; height: 28px;"></i>
+              </div>
+              <h3 class="booking-success-title">Đăng Ký Thành Công!</h3>
+              <p class="booking-success-desc">
+                Cảm ơn anh/chị <strong>${name}</strong>. Thông tin đã được gửi trực tiếp đến Lương y Đinh Khánh Tùng.<br>
+                Phòng khám sẽ gọi điện tư vấn cho anh/chị trong thời gian sớm nhất.
+              </p>
+            </div>
+          `;
+          if (typeof lucide !== 'undefined') lucide.createIcons();
+        } else {
+          alert(resData.error || 'Có lỗi xảy ra khi gửi lịch hẹn. Vui lòng thử lại!');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i data-lucide="send" style="width: 16px; height: 16px;"></i><span>Gửi Đăng Ký Ngay</span>`;
+          if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Lỗi kết nối mạng. Vui lòng kiểm tra lại đường truyền của bạn!');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<i data-lucide="send" style="width: 16px; height: 16px;"></i><span>Gửi Đăng Ký Ngay</span>`;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    });
+
+    container.appendChild(card);
+  }
+
+  // 7. Patient Reviews (Testimonials) Component with Zoom Lightbox
+  function renderPatientReviews(section, container) {
+    const slider = document.createElement('div');
+    slider.className = 'reviews-container';
+
+    // Populate reviews
+    section.items.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      
+      const image = item.image;
+      const caption = item.caption || `Đánh giá bệnh nhân #${index + 1}`;
+
+      card.innerHTML = `
+        <div class="review-image-wrapper">
+          <img src="${image}" alt="${caption}" class="review-image" loading="lazy">
+        </div>
+        <div class="review-info">
+          <div class="review-caption">${caption}</div>
+        </div>
+      `;
+
+      // Zoom click handler (open lightbox)
+      card.addEventListener('click', () => {
+        openLightbox(image, caption);
+      });
+
+      slider.appendChild(card);
+    });
+
+    container.appendChild(slider);
+  }
+
+  // Lightbox utility function
+  function openLightbox(src, caption) {
+    let lightbox = document.getElementById('review-lightbox-modal');
+    if (!lightbox) {
+      lightbox = document.createElement('div');
+      lightbox.id = 'review-lightbox-modal';
+      lightbox.className = 'review-lightbox';
+      lightbox.innerHTML = `
+        <div class="lightbox-content-wrapper">
+          <img src="" alt="" class="lightbox-img" id="lightbox-img-el">
+          <div class="lightbox-caption" id="lightbox-caption-el"></div>
+        </div>
+      `;
+      
+      // Close lightbox on click
+      lightbox.addEventListener('click', () => {
+        lightbox.classList.remove('show');
+      });
+
+      document.body.appendChild(lightbox);
+    }
+
+    const imgEl = lightbox.querySelector('#lightbox-img-el');
+    const captionEl = lightbox.querySelector('#lightbox-caption-el');
+
+    imgEl.src = src;
+    imgEl.alt = caption;
+    captionEl.textContent = caption;
+
+    // Show Lightbox with transition
+    lightbox.getBoundingClientRect();
+    lightbox.classList.add('show');
+  }
 
 });
