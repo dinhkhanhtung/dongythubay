@@ -389,12 +389,24 @@ body {
 /* Section Type: Project Grid (Full Width Image Card for App display) */
 .project-bento-grid {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 16px;
   width: 100%;
+  padding-bottom: 12px;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.project-bento-grid::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
 }
 
 .project-card {
+  flex: 0 0 85%;
+  scroll-snap-align: start;
   background-color: var(--bg-card);
   backdrop-filter: var(--glass-blur);
   border: var(--border-card);
@@ -403,14 +415,13 @@ body {
   box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  width: 100%;
   transition: var(--transition-cubic);
   text-decoration: none;
   cursor: pointer;
 }
 
 .project-card:hover, .project-card:active {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   box-shadow: var(--hover-shadow);
   border-color: rgba(var(--color-primary-rgb), 0.25);
 }
@@ -508,13 +519,25 @@ body {
 
 /* Section Type: Affiliate List (E-commerce Style List 1 Column like TikTok Shop) */
 .affiliate-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
   gap: 12px;
   width: 100%;
+  padding-bottom: 12px;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.affiliate-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
 }
 
 .affiliate-card {
+  flex: 0 0 65%;
+  scroll-snap-align: start;
   background-color: var(--bg-card);
   backdrop-filter: var(--glass-blur);
   border: var(--border-card);
@@ -523,14 +546,14 @@ body {
   box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
   transition: var(--transition-cubic);
   text-decoration: none;
   cursor: pointer;
 }
 
 .affiliate-card:hover, .affiliate-card:active {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: rgba(var(--color-primary-rgb), 0.25);
   box-shadow: var(--hover-shadow);
 }
