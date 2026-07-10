@@ -1644,9 +1644,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const phoneNumber = (window.CONFIG && window.CONFIG.profile && window.CONFIG.profile.phone) || '0982581222';
 
     bottomBar.innerHTML = `
-      <a href="#section-promo-countdown" class="bottom-bar-item" id="bb-promo">
-        <div class="bb-icon-wrapper"><i data-lucide="sparkles"></i></div>
-        <span>Ưu đãi</span>
+      <a href="#section-my-apps" class="bottom-bar-item" id="bb-apps">
+        <div class="bb-icon-wrapper"><i data-lucide="layout-grid"></i></div>
+        <span>Ứng dụng</span>
       </a>
       <a href="#" class="bottom-bar-item" id="bb-products">
         <div class="bb-icon-wrapper"><i data-lucide="shopping-bag"></i></div>
@@ -1666,14 +1666,14 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
     `;
 
-    // Click "Ưu đãi"
-    bottomBar.querySelector('#bb-promo').addEventListener('click', (e) => {
+    // Click "Ứng dụng"
+    bottomBar.querySelector('#bb-apps').addEventListener('click', (e) => {
       e.preventDefault();
-      const promoSection = document.getElementById('section-promo-countdown');
-      if (promoSection) {
-        scrollToElement(promoSection);
+      const appsSection = document.getElementById('section-my-apps');
+      if (appsSection) {
+        scrollToElement(appsSection);
       }
-      trackClick('bottom_bar', 'promo', 'Ưu đãi bottom bar', '#');
+      trackClick('bottom_bar', 'apps', 'Ứng dụng bottom bar', '#');
     });
 
     // Click "Sản phẩm"
