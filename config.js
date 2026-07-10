@@ -537,7 +537,7 @@ window.CONFIG = {
           "subtitle": "AI Agent",
           "description": "Tự động hóa một số tác vụ, hỗ trợ chăm sóc khách hàng cơ bản.",
           "icon": "bot",
-          "image": "https://cdn.pixabay.com/photo/2023/07/04/19/43/machine-learning-8106981_640.jpg",
+          "image": "https://i.ibb.co/VXz3Dv5/ai-agent-service-image.png",
           "features": [
             "Tạo chatbot, trợ lý AI cho fanpage/doanh nghiệp.",
             "Tùy chỉnh kịch bản, tích hợp đa kênh."
