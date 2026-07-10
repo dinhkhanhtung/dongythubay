@@ -570,7 +570,7 @@ window.CONFIG = {
           "subtitle": "Dịch vụ theo yêu cầu",
           "description": "Giải pháp linh hoạt, cá nhân hóa theo nhu cầu thực tế của bạn.",
           "icon": "layers",
-          "image": "https://cdn.pixabay.com/photo/2015/01/09/11/08/startup-594090_640.jpg",
+          "image": "https://i.ibb.co/mr0p8Vz4/custom-solutions-service-image.jpg",
           "features": [
             "Tư vấn, triển khai các giải pháp số, marketing, công nghệ phù hợp riêng cho từng khách hàng.",
             "Phân tích, xây dựng lộ trình chuyển đổi số, tối ưu quy trình kinh doanh."
