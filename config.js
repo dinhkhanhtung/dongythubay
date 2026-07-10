@@ -482,7 +482,7 @@ window.CONFIG = {
           "subtitle": "Facebook Ads Demo",
           "description": "Giúp bạn tiếp cận khách hàng tiềm năng, tối ưu chi phí quảng cáo.",
           "icon": "facebook",
-          "image": "https://cdn.pixabay.com/photo/2016/11/19/14/00/code-1839406_640.jpg",
+          "image": "https://i.ibb.co/bjsrRMc0/fb-ads-service-image.png",
           "features": [
             "Tư vấn chiến lược phù hợp với ngân sách thực tế.",
             "Đo lường, báo cáo minh bạch, hỗ trợ tối ưu liên tục."
