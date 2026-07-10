@@ -971,8 +971,9 @@
       };
 
       document.getElementById('add-social').addEventListener('click', () => {
-        section.items.push({ platform: 'new', label: 'Tên liên kết mới', url: 'https://', icon: '' });
+        section.items.unshift({ platform: 'new', label: 'Tên liên kết mới', url: 'https://', icon: '' });
         renderSocialItems();
+        document.getElementById('editor-container').scrollTop = 0;
       });
 
       renderSocialItems();
@@ -1152,13 +1153,14 @@
 
       document.getElementById('add-item').addEventListener('click', () => {
         if (sectionId === 'my-apps') {
-          section.items.push({ previewUrl: 'https://', tag: 'Web App' });
+          section.items.unshift({ previewUrl: 'https://', tag: 'Web App' });
         } else if (sectionId === 'patient-reviews') {
-          section.items.push({ image: 'assets/review/120396173_3669040766462528_7282720382376266470_n.jpg', caption: 'Nhận xét bệnh nhân mới' });
+          section.items.unshift({ image: 'assets/review/120396173_3669040766462528_7282720382376266470_n.jpg', caption: 'Nhận xét bệnh nhân mới' });
         } else {
-          section.items.push({ affiliateUrl: 'https://', priceNote: '', discountNote: '', ctaLabel: 'Mua trên TikTok' });
+          section.items.unshift({ affiliateUrl: 'https://', priceNote: '', discountNote: '', ctaLabel: 'Mua trên TikTok' });
         }
         renderItemsList();
+        document.getElementById('editor-container').scrollTop = 0;
       });
 
       renderItemsList();
