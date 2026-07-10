@@ -74,7 +74,7 @@ window.CONFIG = {
       "type": "project-grid",
       "title": "Ứng Dụng Độc Quyền Của Tôi",
       "enabled": true,
-      "order": 3,
+      "order": 5,
       "items": [
         {
           "previewUrl": "https://vidu-family.vercel.app/",
@@ -119,7 +119,7 @@ window.CONFIG = {
       "type": "affiliate-list",
       "title": "Sản phẩm Sức khỏe & Đông y",
       "enabled": true,
-      "order": 5,
+      "order": 3,
       "items": [
         {
           "priceNote": "120.000đ",
@@ -140,7 +140,7 @@ window.CONFIG = {
       "type": "affiliate-list",
       "title": "Sản phẩm Công nghệ tiện ích",
       "enabled": true,
-      "order": 6,
+      "order": 9,
       "items": []
     },
     {
@@ -148,7 +148,7 @@ window.CONFIG = {
       "type": "affiliate-list",
       "title": "Sản phẩm Khuyên dùng khác",
       "enabled": true,
-      "order": 7,
+      "order": 10,
       "items": []
     },
     {
@@ -156,7 +156,7 @@ window.CONFIG = {
       "type": "reviews",
       "title": "Cảm Nhận Từ Người Bệnh",
       "enabled": true,
-      "order": 8,
+      "order": 3.5,
       "items": [
         {
           "image": "assets/review/Screenshot_20180420-115519.jpg",
@@ -353,7 +353,7 @@ window.CONFIG = {
       "type": "bank-transfer",
       "title": "Thông tin Donate",
       "enabled": true,
-      "order": 9,
+      "order": 8,
       "bankName": "Ngân hàng BIDV",
       "accountNumber": "0982581222",
       "accountName": "DINH KHANH TUNG",
@@ -365,7 +365,7 @@ window.CONFIG = {
       "type": "gift-list",
       "title": "🎁 Quà Tặng Miễn Phí",
       "enabled": true,
-      "order": 10,
+      "order": 6,
       "items": []
     },
     {
@@ -373,7 +373,7 @@ window.CONFIG = {
       "type": "faq",
       "title": "Câu Hỏi Thường Gặp",
       "enabled": true,
-      "order": 11,
+      "order": 7,
       "items": [
         {
           "question": "Phòng khám có nhận khám và tư vấn online không?",
@@ -406,7 +406,7 @@ window.CONFIG = {
       "ctaLabel": "Đăng ký ngay",
       "ctaUrl": "#section-appointment-booking",
       "enabled": true,
-      "order": 3
+      "order": 2.5
     },
     {
       "id": "services-digital",
