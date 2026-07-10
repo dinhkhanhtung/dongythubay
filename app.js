@@ -392,6 +392,15 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'reviews':
           renderPatientReviews(section, sectionEl);
           break;
+        case 'gift-list':
+          renderGiftSection(section, sectionEl);
+          break;
+        case 'faq':
+          renderFAQSection(section, sectionEl);
+          break;
+        case 'countdown':
+          renderCountdown(section, sectionEl);
+          break;
         default:
           console.warn(`Unknown section type: ${section.type}`);
           break;
@@ -529,13 +538,13 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="project-tag">${tag}</span>
         </div>
         <div class="project-info">
-          <div>
+          <div class="project-text">
             <h3>${title}${hotBadgeHtml}</h3>
             <p>${description}</p>
-            <div style="font-size: 11.5px; color: var(--color-primary); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px;">
-              <i data-lucide="users" style="width: 12px; height: 12px;"></i>
-              <span>${getVirtualUsage(title, index, linkUrl)} lượt sử dụng</span>
-            </div>
+          </div>
+          <div class="project-usage">
+            <i data-lucide="users" style="width: 12px; height: 12px;"></i>
+            <span>${getVirtualUsage(title, index, linkUrl)} lượt sử dụng</span>
           </div>
           <div class="project-cta">
             <span>Sử dụng ngay</span>
@@ -1017,6 +1026,157 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(card);
   }
 
+  // 6b. Countdown Timer Component
+  function renderCountdown(section, container) {
+    const endDate = new Date(section.endDate || '2026-07-31T23:59:59');
+    const ctaUrl = section.ctaUrl || '#';
+    const ctaLabel = section.ctaLabel || 'Đặt lịch ngay';
+    const subtitle = section.subtitle || 'Ưu đãi đặc biệt – Hết hạn sau:';
+
+    const banner = document.createElement('div');
+    banner.className = 'countdown-banner';
+    banner.innerHTML = `
+      <div class="countdown-subtitle">${subtitle}</div>
+      <div class="countdown-digits" id="countdown-digits-${section.id}">
+        <div class="countdown-unit"><span class="cd-num" id="cd-days-${section.id}">00</span><span class="cd-label">Ngày</span></div>
+        <span class="cd-sep">:</span>
+        <div class="countdown-unit"><span class="cd-num" id="cd-hours-${section.id}">00</span><span class="cd-label">Giờ</span></div>
+        <span class="cd-sep">:</span>
+        <div class="countdown-unit"><span class="cd-num" id="cd-mins-${section.id}">00</span><span class="cd-label">Phút</span></div>
+        <span class="cd-sep">:</span>
+        <div class="countdown-unit"><span class="cd-num" id="cd-secs-${section.id}">00</span><span class="cd-label">Giây</span></div>
+      </div>
+      <a href="${ctaUrl}" class="countdown-cta" id="countdown-cta-${section.id}">${ctaLabel}</a>
+    `;
+
+    const pad = n => String(n).padStart(2, '0');
+    const tick = () => {
+      const now = new Date();
+      const diff = endDate - now;
+      if (diff <= 0) {
+        banner.querySelector(`#countdown-digits-${section.id}`).innerHTML = '<span style="font-size:14px;color:var(--text-muted)">Chương trình đã kết thúc</span>';
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      banner.querySelector(`#cd-days-${section.id}`).textContent = pad(d);
+      banner.querySelector(`#cd-hours-${section.id}`).textContent = pad(h);
+      banner.querySelector(`#cd-mins-${section.id}`).textContent = pad(m);
+      banner.querySelector(`#cd-secs-${section.id}`).textContent = pad(s);
+    };
+    tick();
+    setInterval(tick, 1000);
+
+    // CTA scroll to booking
+    const ctaBtn = banner.querySelector(`#countdown-cta-${section.id}`);
+    if (ctaUrl.startsWith('#')) {
+      ctaBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById(ctaUrl.replace('#', ''));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    container.appendChild(banner);
+  }
+
+  // 6c. Gift Section Component
+  function renderGiftSection(section, container) {
+    const defaultItems = [
+      { id: 'g1', icon: 'bot', title: 'Prompt AI: Phân tích triệu chứng', description: 'Dán vào ChatGPT để được phân tích sơ bộ theo đông y.', type: 'copy', content: 'Bạn là chuyên gia y học cổ truyền Việt Nam. Tôi có các triệu chứng sau: [liệt kê triệu chứng]. Hãy phân tích theo quan điểm đông y, gợi ý nguyên nhân và thảo dược phổ biến có thể hỗ trợ. Lưu ý đây chỉ là tham khảo, tôi sẽ đến gặp bác sĩ để được tư vấn chính thức.' },
+      { id: 'g2', icon: 'salad', title: 'Prompt AI: Thực đơn theo bệnh lý', description: 'Nhận gợi ý thực đơn hàng ngày phù hợp với thể trạng.', type: 'copy', content: 'Bạn là chuyên gia dinh dưỡng y học cổ truyền. Tôi bị [tên bệnh], [tuổi] tuổi. Hãy gợi ý thực đơn 3 ngày: thực phẩm nên ăn, nên kiêng và cách chế biến đơn giản. Ưu tiên nguyên liệu dễ mua tại Việt Nam.' },
+      { id: 'g3', icon: 'leaf', title: '🌿 Trà Gừng Mật Ong (Hỗ trợ dạ dày)', description: 'Bài thuốc dân gian giảm ợ chua, đau bụng hiệu quả.', type: 'copy', content: '🌿 TRÀ GỪNG MẬT ONG – Hỗ trợ dạ dày\n\nNguyên liệu:\n- 2-3 lát gừng tươi\n- 1 thìa mật ong nguyên chất\n- 300ml nước sôi\n\nCách làm:\n1. Hãm gừng trong nước sôi 5-7 phút\n2. Để nguội bớt (~60°C) rồi thêm mật ong\n\nDùng: 1-2 lần/ngày, sau ăn 30 phút.\n⚠️ Không uống khi đói. Phụ nữ có thai hỏi bác sĩ trước.' },
+      { id: 'g4', icon: 'sparkles', title: '🌿 Ngâm Chân Thảo Dược', description: 'Giảm mệt mỏi, đau nhức xương khớp, ngủ ngon hơn.', type: 'copy', content: '🌿 NGÂM CHÂN THẢO DƯỢC\n\nCông thức:\n- Muối hạt: 2 thìa canh\n- Gừng tươi: 50g giã nát\n- Ngải cứu khô: 1 nắm\n- Nước ấm 40-42°C vừa ngập cổ chân\n\nCách dùng:\n✓ Ngâm 20-30 phút trước khi ngủ\n✓ Thực hiện 3-4 lần/tuần\n✓ Kết hợp massage nhẹ lòng bàn chân\n\n⚠️ Không ngâm khi có vết thương hở.' },
+      { id: 'g5', icon: 'moon', title: 'Prompt AI: Cải thiện giấc ngủ', description: 'Prompt giúp AI tư vấn cách ngủ ngon theo đông y.', type: 'copy', content: 'Tôi đang gặp vấn đề giấc ngủ: [mô tả: khó ngủ/hay thức giấc]. Tôi [tuổi] tuổi. Theo y học cổ truyền, nguyên nhân có thể là gì? Hãy gợi ý: 1) Thảo dược giúp ngủ ngon, 2) Thói quen cần thay đổi, 3) Bài tập thư giãn trước ngủ. Giải thích đơn giản, dễ hiểu.' }
+    ];
+    const items = (section.items && section.items.length > 0) ? section.items : defaultItems;
+
+    const grid = document.createElement('div');
+    grid.className = 'gift-grid';
+
+    items.forEach(gift => {
+      const card = document.createElement('div');
+      card.className = 'gift-card';
+      card.innerHTML = `
+        <div class="gift-icon"><i data-lucide="${gift.icon || 'gift'}"></i></div>
+        <div class="gift-body">
+          <h4 class="gift-title">${gift.title}</h4>
+          <p class="gift-desc">${gift.description}</p>
+        </div>
+        <button class="gift-btn" data-content="${encodeURIComponent(gift.content || '')}">Sao chép</button>
+      `;
+
+      const btn = card.querySelector('.gift-btn');
+      btn.addEventListener('click', () => {
+        const text = decodeURIComponent(btn.dataset.content);
+        navigator.clipboard.writeText(text)
+          .then(() => {
+            btn.textContent = '✓ Đã copy!';
+            btn.style.backgroundColor = 'var(--color-primary)';
+            setTimeout(() => { btn.textContent = 'Sao chép'; btn.style.backgroundColor = ''; }, 2500);
+          })
+          .catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+            document.body.appendChild(ta); ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            btn.textContent = '✓ Đã copy!'; setTimeout(() => { btn.textContent = 'Sao chép'; }, 2500);
+          });
+        trackClick('gift', gift.id, gift.title, '#');
+      });
+
+      grid.appendChild(card);
+    });
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    container.appendChild(grid);
+  }
+
+  // 6d. FAQ Accordion Component
+  function renderFAQSection(section, container) {
+    const list = document.createElement('div');
+    list.className = 'faq-list';
+
+    const items = section.items || [];
+    items.forEach((item, idx) => {
+      const el = document.createElement('div');
+      el.className = 'faq-item' + (idx === 0 ? ' open' : '');
+      el.innerHTML = `
+        <button class="faq-question">
+          <span>${item.question}</span>
+          <i data-lucide="chevron-down" class="faq-chevron"></i>
+        </button>
+        <div class="faq-answer">${item.answer}</div>
+      `;
+
+      const q = el.querySelector('.faq-question');
+      const a = el.querySelector('.faq-answer');
+      // Set initial open state
+      if (idx === 0) a.style.maxHeight = a.scrollHeight + 'px';
+
+      q.addEventListener('click', () => {
+        const isOpen = el.classList.contains('open');
+        // Close all
+        list.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-answer').style.maxHeight = '0';
+        });
+        if (!isOpen) {
+          el.classList.add('open');
+          a.style.maxHeight = a.scrollHeight + 'px';
+        }
+      });
+
+      list.appendChild(el);
+    });
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    container.appendChild(list);
+  }
+
   // 7. Patient Reviews (Testimonials) Component with Zoom Lightbox
   function renderPatientReviews(section, container) {
     const slider = document.createElement('div');
@@ -1153,4 +1313,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initSocialToasts();
 
+  // Fixed Call Button
+  if (!window.location.pathname.includes('quanly')) {
+    const phoneNumber = (window.CONFIG && window.CONFIG.profile && window.CONFIG.profile.phone) || '0982581222';
+    const callBtn = document.createElement('a');
+    callBtn.id = 'fixed-call-btn';
+    callBtn.href = `tel:${phoneNumber}`;
+    callBtn.className = 'fixed-call-btn';
+    callBtn.setAttribute('aria-label', 'Gọi điện tư vấn');
+    callBtn.innerHTML = `
+      <div class="call-btn-ring"></div>
+      <i data-lucide="phone" style="width:20px;height:20px;"></i>
+    `;
+    callBtn.addEventListener('click', () => trackClick('call_button', 'phone', `Gọi: ${phoneNumber}`, `tel:${phoneNumber}`));
+    document.body.appendChild(callBtn);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
 });
+

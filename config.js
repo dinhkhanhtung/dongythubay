@@ -199,6 +199,55 @@ window.CONFIG = {
       "accountName": "DINH KHANH TUNG",
       "qrUrl": "https://img.vietqr.io/image/bidv-0982581222-compact2.jpg?amount=0&addInfo=Donate%20Dong%20y%20Thu%20Bay&accountName=DINH%20KHANH%20TUNG",
       "note": "Mọi đóng góp, ủng hộ (donate) từ các bạn và đồng niên sẽ được Tùng sử dụng toàn bộ vào chi phí duy trì vận hành máy chủ và phát triển thêm các ứng dụng công nghệ miễn phí phục vụ cộng đồng."
+    },
+    {
+      "id": "free-gifts",
+      "type": "gift-list",
+      "title": "🎁 Quà Tặng Miễn Phí",
+      "enabled": true,
+      "order": 10,
+      "items": []
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "title": "Câu Hỏi Thường Gặp",
+      "enabled": true,
+      "order": 11,
+      "items": [
+        {
+          "question": "Phòng khám có nhận khám và tư vấn online không?",
+          "answer": "Có. Tùng nhận tư vấn qua Zalo và Messenger. Bạn có thể gửi ảnh kết quả xét nghiệm, mô tả triệu chứng để Tùng phân tích và tư vấn bài thuốc phù hợp trước khi đến khám trực tiếp."
+        },
+        {
+          "question": "Một liệu trình điều trị thường kéo dài bao lâu?",
+          "answer": "Tùy từng bệnh lý. Thông thường một liệu trình cơ bản từ 1–3 tháng. Các bệnh mãn tính như sỏi thận, dạ dày HP có thể cần 3–6 tháng. Tùng sẽ đánh giá và điều chỉnh phù hợp với từng người."
+        },
+        {
+          "question": "Thuốc nam có an toàn không? Có tác dụng phụ không?",
+          "answer": "Thuốc của phòng khám Thu Bẩy sử dụng 100% dược liệu thiên nhiên, không pha trộn tân dược. An toàn cho cả người cao tuổi. Tuy nhiên, cần khai báo đầy đủ bệnh nền và thuốc đang dùng để tránh tương tác."
+        },
+        {
+          "question": "Chi phí khám và thuốc như thế nào?",
+          "answer": "Chi phí hợp lý, phù hợp với thu nhập người dân, không niêm yết giá cố định vì mỗi bệnh lý có phác đồ khác nhau. Bạn có thể hỏi qua Zalo sau khi mô tả bệnh tình để được báo giá cụ thể."
+        },
+        {
+          "question": "Có thể đặt thuốc và giao hàng tận nơi không?",
+          "answer": "Có. Phòng khám hỗ trợ giao thuốc qua bưu điện/vận chuyển cho bệnh nhân ở xa. Sau khi tư vấn online và chốt phác đồ, Tùng sẽ gửi thuốc kèm hướng dẫn sử dụng chi tiết."
+        }
+      ]
+    },
+    {
+      "id": "promo-countdown",
+      "type": "countdown",
+      "title": "Ưu Đãi Tháng 7 – Tư Vấn Miễn Phí",
+      "subtitle": "🎉 Miễn phí tư vấn online cho bệnh nhân mới trong tháng 7/2026. Ưu đãi kết thúc sau:",
+      "endDate": "2026-07-31T23:59:59",
+      "ctaLabel": "Đăng ký ngay",
+      "ctaUrl": "#section-appointment-booking",
+      "enabled": true,
+      "order": 3
     }
   ]
 };
+
