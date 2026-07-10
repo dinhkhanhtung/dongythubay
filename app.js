@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const virtualCount = realCount * 12 + 8400;
           const formattedCount = new Intl.NumberFormat('vi-VN').format(virtualCount);
           
+          // 1. Render bottom footer counter
           const footer = document.querySelector('.app-footer');
           if (footer) {
             let counterEl = document.getElementById('public-page-counter');
@@ -119,9 +120,35 @@ document.addEventListener('DOMContentLoaded', () => {
               footer.appendChild(counterEl);
             }
             counterEl.innerHTML = `<i data-lucide="eye" style="width: 14px; height: 14px; opacity: 0.8;"></i><span>${formattedCount} lượt truy cập</span>`;
-            if (typeof lucide !== 'undefined') {
-              lucide.createIcons();
+          }
+
+          // 2. Render top profile counter (Pill-style) for high social proof
+          const bioEl = document.getElementById('profile-bio');
+          if (bioEl) {
+            let topCounter = document.getElementById('top-page-counter');
+            if (!topCounter) {
+              topCounter = document.createElement('div');
+              topCounter.id = 'top-page-counter';
+              topCounter.style.fontSize = '12px';
+              topCounter.style.color = 'var(--text-secondary)';
+              topCounter.style.marginTop = '10px';
+              topCounter.style.display = 'flex';
+              topCounter.style.alignItems = 'center';
+              topCounter.style.justifyContent = 'center';
+              topCounter.style.gap = '5px';
+              topCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.04)';
+              topCounter.style.padding = '4px 12px';
+              topCounter.style.borderRadius = '20px';
+              topCounter.style.border = '1px solid rgba(255, 255, 255, 0.06)';
+              topCounter.style.width = 'fit-content';
+              topCounter.style.margin = '10px auto 0 auto';
+              bioEl.parentNode.insertBefore(topCounter, bioEl.nextSibling);
             }
+            topCounter.innerHTML = `<i data-lucide="eye" style="width: 13px; height: 13px; color: var(--color-primary);"></i><span style="font-weight: 600; letter-spacing: 0.3px;">${formattedCount} lượt truy cập</span>`;
+          }
+
+          if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
           }
         }
       })
@@ -426,6 +453,22 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(card);
   }
 
+  // Helper to generate virtual usage count for apps
+  function getVirtualUsage(title) {
+    if (!title || title === 'Đang tải...') return '1.2k+';
+    const score = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const count = (score % 750) + 1200; // 1200 - 1950
+    return new Intl.NumberFormat('vi-VN').format(count);
+  }
+
+  // Helper to generate virtual sales count for products
+  function getVirtualSales(name) {
+    if (!name || name === 'Đang tải...') return '850+';
+    const score = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const sales = (score % 550) + 680; // 680 - 1230
+    return new Intl.NumberFormat('vi-VN').format(sales);
+  }
+
   // 3. Project Grid Component (Full Width Image Card for App display)
   function renderProjectGrid(section, container) {
     const grid = document.createElement('div');
@@ -455,6 +498,10 @@ document.addEventListener('DOMContentLoaded', () => {
           <div>
             <h3>${title}</h3>
             <p>${description}</p>
+            <div style="font-size: 11.5px; color: var(--color-primary); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px;">
+              <i data-lucide="users" style="width: 12px; height: 12px;"></i>
+              <span>${getVirtualUsage(title)} lượt sử dụng</span>
+            </div>
           </div>
           <div class="project-cta">
             <span>Sử dụng ngay</span>
@@ -550,6 +597,13 @@ document.addEventListener('DOMContentLoaded', () => {
             <h3 class="affiliate-name">${name}</h3>
             <div class="affiliate-price">${price}</div>
             <div class="affiliate-discount">${discount}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 6px;">
+              <span style="color: #eab308; display: flex; align-items: center; gap: 2px; font-weight: 700;">
+                <i data-lucide="star" style="width: 11px; height: 11px; fill: #eab308;"></i> 4.9
+              </span>
+              <span style="opacity: 0.4;">|</span>
+              <span style="opacity: 0.85; font-weight: 500;">Đã bán ${getVirtualSales(name)}</span>
+            </div>
           </div>
           <div class="affiliate-cta ${platformClass}">
             <span>${ctaLabel}</span>
