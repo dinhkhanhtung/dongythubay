@@ -178,7 +178,7 @@ window.CONFIG = {
       "accountNumber": "0982581222",
       "accountName": "DINH KHANH TUNG",
       "qrUrl": "https://img.vietqr.io/image/bidv-0982581222-compact2.jpg?amount=0&addInfo=Donate%20Dong%20y%20Thu%20Bay&accountName=DINH%20KHANH%20TUNG",
-      "note": "Mọi đóng góp, ủng hộ (donate) từ quý bà con sẽ được phòng khám sử dụng vào việc quỹ phát thuốc miễn phí cho người nghèo và nâng cấp dịch vụ khám chữa bệnh."
+      "note": "Mọi đóng góp, ủng hộ (donate) từ các bạn và đồng niên sẽ được Tùng sử dụng toàn bộ vào chi phí duy trì vận hành máy chủ và phát triển thêm các ứng dụng công nghệ miễn phí phục vụ cộng đồng."
     }
   ]
 };
