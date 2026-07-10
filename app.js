@@ -1163,6 +1163,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const title = item.title || '';
       const subtitle = item.subtitle || '';
       const description = item.description || '';
+      const image = item.image || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4=';
       const features = item.features || [];
       const iconName = item.icon || 'layers';
 
@@ -1173,22 +1174,29 @@ document.addEventListener('DOMContentLoaded', () => {
         </ul>`;
       }
 
+      // HOT badge: hiện ở dịch vụ đầu tiên và dịch vụ thứ 4
+      const isHotService = (index === 0 || index === 3);
+
       card.innerHTML = `
-        <div class="service-header">
-          <div class="service-icon-wrapper">
-            <i data-lucide="${iconName}"></i>
-          </div>
-          <div class="service-title-block">
-            <span class="service-subtitle">${subtitle}</span>
+        <div class="service-image-wrapper">
+          <img src="${image}" alt="${title}" class="service-image" loading="lazy">
+          <span class="service-tag">${subtitle}</span>
+          ${isHotService ? '<span class="project-hot-badge">🔥 Hot</span>' : ''}
+        </div>
+        <div class="service-body-info">
+          <div class="service-header">
+            <div class="service-icon-wrapper">
+              <i data-lucide="${iconName}"></i>
+            </div>
             <h3 class="service-title">${title}</h3>
           </div>
+          <p class="service-desc">${description}</p>
+          ${featuresHtml}
+          <button class="service-cta-btn" data-service-title="${title}">
+            <span>Báo Giá</span>
+            <i data-lucide="arrow-right"></i>
+          </button>
         </div>
-        <p class="service-desc">${description}</p>
-        ${featuresHtml}
-        <button class="service-cta-btn" data-service-title="${title}">
-          <span>Báo Giá</span>
-          <i data-lucide="arrow-right"></i>
-        </button>
       `;
 
       // Click "Báo giá" scroll tới form booking và ghi chú dịch vụ

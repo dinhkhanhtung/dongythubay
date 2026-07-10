@@ -1815,11 +1815,10 @@ body {
   backdrop-filter: var(--glass-blur);
   border: var(--border-card);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  overflow: hidden; /* Cho phép bo góc ảnh */
   box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  gap: 12px;
   transition: var(--transition-cubic);
 }
 
@@ -1833,6 +1832,48 @@ body {
   transform: translateY(-2px);
   border-color: rgba(var(--color-primary-rgb), 0.25);
   box-shadow: var(--hover-shadow);
+}
+
+.service-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: rgba(0,0,0,0.02);
+}
+
+.service-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cắt ảnh đẹp */
+  transition: var(--transition-cubic);
+}
+
+.service-card:hover .service-image {
+  transform: scale(1.04);
+}
+
+.service-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: rgba(15, 23, 42, 0.8);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+  letter-spacing: 0.5px;
+}
+
+.service-body-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
 }
 
 .service-header {

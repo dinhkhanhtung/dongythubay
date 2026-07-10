@@ -1057,6 +1057,10 @@
                 </div>
               </div>
               <div class="form-group">
+                <label>Đường dẫn ảnh minh họa (image)</label>
+                <input type="text" class="form-input inp-service-image" value="${item.image || ''}" data-index="${index}">
+              </div>
+              <div class="form-group">
                 <label>Các đặc điểm chính (mỗi dòng là 1 đặc điểm, tối đa 3 dòng)</label>
                 <textarea class="form-input inp-service-features" data-index="${index}" style="height: 80px; padding: 10px; resize: vertical;">${(item.features || []).join('\n')}</textarea>
               </div>
@@ -1187,6 +1191,9 @@
             });
             card.querySelector('.inp-service-icon').addEventListener('input', (e) => {
               section.items[index].icon = e.target.value;
+            });
+            card.querySelector('.inp-service-image').addEventListener('input', (e) => {
+              section.items[index].image = e.target.value;
             });
             card.querySelector('.inp-service-features').addEventListener('input', (e) => {
               section.items[index].features = e.target.value.split('\n').filter(l => l.trim() !== '');
