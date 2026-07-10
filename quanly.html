@@ -465,8 +465,10 @@
       <div class="panel-sidebar">
         <div class="nav-item active" data-tab="profile"><i data-lucide="user"></i> Profile cá nhân</div>
         <div class="nav-item" data-tab="socials"><i data-lucide="share-2"></i> Mạng xã hội</div>
+        <div class="nav-item" data-tab="booking"><i data-lucide="calendar"></i> Đặt Lịch Hẹn Khám</div>
         <div class="nav-item" data-tab="my-apps"><i data-lucide="layout-grid"></i> Ứng dụng/Web App</div>
         <div class="nav-item" data-tab="affiliates"><i data-lucide="shopping-bag"></i> Sản phẩm khuyên dùng</div>
+        <div class="nav-item" data-tab="reviews"><i data-lucide="message-square"></i> Ý kiến bệnh nhân</div>
         <div class="nav-item" data-tab="payment"><i data-lucide="wallet"></i> Thông tin Donate</div>
         <div class="nav-item" data-tab="stats"><i data-lucide="bar-chart-2"></i> Thống kê truy cập</div>
       </div>
@@ -581,10 +583,14 @@
         renderProfileTab(container);
       } else if (currentTab === 'socials') {
         renderSocialsTab(container);
+      } else if (currentTab === 'booking') {
+        renderBookingTab(container);
       } else if (currentTab === 'my-apps') {
         renderItemsTab(container, 'my-apps', 'Ứng dụng / Web App', 'Chỉ cần điền URL, hệ thống sẽ tự động lấy ảnh và mô tả từ liên kết.');
       } else if (currentTab === 'affiliates') {
         renderItemsTab(container, 'affiliates', 'Sản phẩm khuyên dùng', 'Hiển thị dạng Shopee Grid 2 cột. Chỉ cần điền URL, hệ thống tự cào thông tin.');
+      } else if (currentTab === 'reviews') {
+        renderItemsTab(container, 'patient-reviews', 'Ý Kiến Bệnh Nhân (Review)', 'Hiển thị các ảnh chụp màn hình feedback/nhận xét của người bệnh (khuyên dùng tỉ lệ ảnh dọc của tin nhắn điện thoại).');
       } else if (currentTab === 'payment') {
         renderPaymentTab(container);
       } else if (currentTab === 'stats') {
@@ -834,11 +840,24 @@
                 <input type="text" class="form-input inp-discount" value="${item.discountNote || ''}" data-index="${index}">
               </div>
             `;
+          } else if (sectionId === 'patient-reviews') {
+            specificFieldsHtml = `
+              <div class="field-grid">
+                <div class="form-group">
+                  <label>Đường dẫn ảnh review (image) - *Bắt buộc</label>
+                  <input type="text" class="form-input inp-review-image" value="${item.image || ''}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                  <label>Mô tả ngắn / Chú thích (caption)</label>
+                  <input type="text" class="form-input inp-review-caption" value="${item.caption || ''}" data-index="${index}">
+                </div>
+              </div>
+            `;
           }
 
           card.innerHTML = `
             <div class="editor-card-header">
-              <span class="editor-card-title">${sectionId === 'my-apps' ? 'Ứng dụng' : 'Sản phẩm'} #${index + 1}</span>
+              <span class="editor-card-title">${sectionId === 'my-apps' ? 'Ứng dụng' : (sectionId === 'patient-reviews' ? 'Review' : 'Sản phẩm')} #${index + 1}</span>
               <div class="editor-card-actions">
                 <button class="icon-btn btn-up" data-index="${index}"><i data-lucide="arrow-up"></i></button>
                 <button class="icon-btn btn-down" data-index="${index}"><i data-lucide="arrow-down"></i></button>
@@ -846,9 +865,11 @@
               </div>
             </div>
             ${specificFieldsHtml}
+            ${sectionId !== 'patient-reviews' ? `
             <p style="font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 4px;">
               Các trường Tên, Mô tả, Hình ảnh được tự động cào từ đường dẫn sau khi lưu.
             </p>
+            ` : ''}
           `;
 
           if (sectionId === 'my-apps') {
@@ -870,6 +891,13 @@
             });
             card.querySelector('.inp-discount').addEventListener('input', (e) => {
               section.items[index].discountNote = e.target.value;
+            });
+          } else if (sectionId === 'patient-reviews') {
+            card.querySelector('.inp-review-image').addEventListener('input', (e) => {
+              section.items[index].image = e.target.value;
+            });
+            card.querySelector('.inp-review-caption').addEventListener('input', (e) => {
+              section.items[index].caption = e.target.value;
             });
           }
 
@@ -907,6 +935,8 @@
       document.getElementById('add-item').addEventListener('click', () => {
         if (sectionId === 'my-apps') {
           section.items.push({ previewUrl: 'https://', tag: 'Web App' });
+        } else if (sectionId === 'patient-reviews') {
+          section.items.push({ image: 'assets/review/120396173_3669040766462528_7282720382376266470_n.jpg', caption: 'Nhận xét bệnh nhân mới' });
         } else {
           section.items.push({ affiliateUrl: 'https://', priceNote: '', discountNote: '', ctaLabel: 'Mua trên TikTok' });
         }
@@ -967,6 +997,43 @@
       });
       document.getElementById('bank-qr-url').addEventListener('input', (e) => section.qrUrl = e.target.value);
       document.getElementById('bank-note').addEventListener('input', (e) => section.note = e.target.value);
+    }
+
+    // TAB: Booking Form
+    function renderBookingTab(container) {
+      const secIndex = localConfig.sections.findIndex(s => s.id === 'appointment-booking');
+      const section = localConfig.sections[secIndex];
+
+      container.innerHTML = `
+        <div class="section-header">
+          <h3>Đăng Ký Đặt Lịch Hẹn Khám</h3>
+          <p>Cấu hình biểu mẫu đặt lịch trực tuyến, thông tin đăng ký sẽ được gửi tức thời đến Telegram của bạn.</p>
+        </div>
+        <div class="editor-card">
+          <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <input type="checkbox" id="book-enabled" ${section.enabled !== false ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+            <label for="book-enabled" style="margin-bottom: 0; cursor: pointer; text-transform: none; font-size: 15px; font-weight: 700;">Kích hoạt phần Đăng ký đặt lịch trực tuyến trên Linktree</label>
+          </div>
+          <div class="form-group">
+            <label>Tiêu đề phần Đặt lịch</label>
+            <input type="text" id="book-title" class="form-input" value="${section.title || ''}">
+          </div>
+          <div class="form-group">
+            <label>Mô tả / Hướng dẫn</label>
+            <textarea id="book-subtitle" class="form-input" style="height: 80px; padding: 12px; resize: none;">${section.subtitle || ''}</textarea>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('book-enabled').addEventListener('change', (e) => {
+        section.enabled = e.target.checked;
+      });
+      document.getElementById('book-title').addEventListener('input', (e) => {
+        section.title = e.target.value;
+      });
+      document.getElementById('book-subtitle').addEventListener('input', (e) => {
+        section.subtitle = e.target.value;
+      });
     }
 
     // TAB: Stats & Traffic
