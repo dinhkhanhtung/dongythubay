@@ -515,7 +515,7 @@ window.CONFIG = {
           "subtitle": "Thiết kế Website",
           "description": "Website chuyên nghiệp, hỗ trợ phát triển thương hiệu online.",
           "icon": "globe",
-          "image": "https://cdn.pixabay.com/photo/2017/01/22/22/11/mobile-devices-2001180_640.jpg",
+          "image": "https://i.ibb.co/hJ24SCDJ/web-design-service-image.png",
           "features": [
             "Thiết kế website chuẩn SEO, giao diện thân thiện.",
             "Tối ưu tốc độ, bảo hành 6 tháng."
