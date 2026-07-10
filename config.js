@@ -5,13 +5,13 @@ window.CONFIG = {
     "avatar": "assets/avatar_doctor.png",
     "name": "Đông y Thu Bẩy",
     "title": "Phòng Chẩn Trị YHCT Thu Bẩy",
-    "subtitle": "Lương y Đinh Khánh Tùng",
+    "subtitle": "Đinh Khánh Tùng",
     "tiktokHandle": "@dongy_thubay",
     "bio": "💊 Cường Dương | Sỏi Thận | Dạ Dày | Rụng Tóc | Hiếm Muộn | Trĩ | Xương Khớp | Phụ Khoa \n☎️ Hotline tư vấn: 0982581222"
   },
   "seo": {
     "title": "Đông y Thu Bẩy - Phòng Chẩn Trị YHCT Thu Bẩy",
-    "description": "Trang thông tin, đặt lịch và sản phẩm thảo dược của Phòng chẩn trị Y học cổ truyền Thu Bẩy - Lương y Đinh Khánh Tùng.",
+    "description": "Trang thông tin, đặt lịch và sản phẩm thảo dược của Phòng chẩn trị Y học cổ truyền Thu Bẩy - Đinh Khánh Tùng.",
     "ogImage": "assets/avatar_doctor.png",
     "keywords": "đông y thu bẩy, y học cổ truyền thái nguyên, đinh khánh tùng, châm cứu thái nguyên, thuốc nam gia truyền"
   },
@@ -58,7 +58,7 @@ window.CONFIG = {
     {
       "id": "intro",
       "type": "text-block",
-      "title": "Lời Ngỏ Từ Lương Y",
+      "title": "Lời Ngỏ Từ Phòng Chẩn Trị",
       "enabled": true,
       "order": 2,
       "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của <strong>Phòng chẩn trị YHCT Thu Bẩy</strong>. Tại đây, bà con có thể dễ dàng liên hệ tư vấn điều trị, đặt lịch khám trực tiếp tại Thái Nguyên, hoặc tham khảo các dòng trà thảo mộc organic và tinh dầu thảo dược thiên nhiên do chính phòng khám bào chế và tuyển chọn kỹ lưỡng."
@@ -104,7 +104,7 @@ window.CONFIG = {
       "id": "appointment-booking",
       "type": "booking",
       "title": "Đăng Ký Khám & Tư Vấn Trực Tuyến",
-      "subtitle": "Điền thông tin dưới đây, Lương y Đinh Khánh Tùng sẽ liên hệ tư vấn trực tiếp cho bạn sau ít phút.",
+      "subtitle": "Điền thông tin dưới đây, phòng khám sẽ liên hệ tư vấn trực tiếp cho bạn sau ít phút.",
       "enabled": true,
       "order": 4
     },
@@ -158,7 +158,7 @@ window.CONFIG = {
         },
         {
           "image": "assets/review/120657978_3669041579795780_2831823502133140860_n.jpg",
-          "caption": "Cảm ơn Lương y giúp chữa trị trĩ nội co teo rụng tự nhiên"
+          "caption": "Cảm ơn phòng khám giúp chữa trị trĩ nội co teo rụng tự nhiên"
         }
       ]
     },

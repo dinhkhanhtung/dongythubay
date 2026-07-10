@@ -759,7 +759,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.className = 'booking-card';
 
     const titleText = section.title || 'Đặt Lịch Tư Vấn & Hẹn Khám';
-    const subtitleText = section.subtitle || 'Vui lòng điền thông tin bên dưới, Lương y sẽ liên hệ tư vấn sớm nhất.';
+    const subtitleText = section.subtitle || 'Vui lòng điền thông tin bên dưới, phòng khám sẽ liên hệ tư vấn sớm nhất.';
 
     // Helper for clipboard copy
     function copyTextToClipboard(text) {
@@ -857,7 +857,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       // Prepare text to copy
-      const textToCopy = `Chào Lương y Đinh Khánh Tùng, tôi đăng ký đặt lịch tư vấn:\n` +
+      const textToCopy = `Chào anh Đinh Khánh Tùng, tôi đăng ký đặt lịch tư vấn:\n` +
         `- Họ tên: ${name}\n` +
         `- Số điện thoại: ${phone}\n` +
         `- Bệnh lý: ${disease}\n` +
@@ -887,11 +887,11 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
               <h3 class="booking-success-title">Đăng Ký Thành Công!</h3>
               <p class="booking-success-desc" style="margin-bottom: 8px;">
-                Đã gửi thông tin đến Telegram Lương y Đinh Khánh Tùng.<br>
+                Đã gửi thông tin đến Telegram phòng khám YHCT Thu Bẩy.<br>
                 Đồng thời, nội dung đã được <strong>tự động sao chép vào bộ nhớ đệm</strong> của bạn.
               </p>
               <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
-                Bạn đang được chuyển hướng sang Zalo... Hãy <strong>DÁN (PASTE)</strong> tin nhắn vào ô chat của Lương y để gửi đi.
+                Bạn đang được chuyển hướng sang Zalo... Hãy <strong>DÁN (PASTE)</strong> tin nhắn vào ô chat để gửi đi.
               </p>
               <a href="https://zalo.me/0982581222" class="booking-submit-btn" style="background-color: #0068ff; color: #ffffff; text-decoration: none; width: 100%; border-radius: var(--radius-sm); font-size: 14.5px; font-weight: 700; margin-top: 0; min-height: 48px;">
                 <i data-lucide="message-square" style="width: 18px; height: 18px;"></i>
