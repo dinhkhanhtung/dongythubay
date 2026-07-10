@@ -493,7 +493,7 @@ window.CONFIG = {
           "subtitle": "Fanpage Content Demo",
           "description": "Fanpage chuyên nghiệp, nội dung gần gũi, hỗ trợ phát triển cộng đồng.",
           "icon": "edit-3",
-          "image": "https://cdn.pixabay.com/photo/2015/02/05/08/10/iphone-624709_640.jpg",
+          "image": "https://i.ibb.co/NdTcQWqs/fb-content-service-image.png",
           "features": [
             "Xây dựng hình ảnh thương hiệu trên Facebook.",
             "Lên kế hoạch nội dung, thiết kế hình ảnh, tăng tương tác tự nhiên."
