@@ -430,6 +430,47 @@
       margin-bottom: 10px;
     }
 
+    /* Gallery Image Picker Styles */
+    .gallery-item {
+      aspect-ratio: 9 / 16;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+      background-color: #0b0f19;
+    }
+    .gallery-item:hover {
+      transform: translateY(-2px);
+      border-color: var(--text-muted);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .gallery-item.selected {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .gallery-item-name {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.7);
+      font-size: 10px;
+      color: white;
+      padding: 4px 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      font-weight: 500;
+    }
+
     .progress-box p {
       color: var(--text-muted);
       font-size: 14px;
@@ -508,11 +549,152 @@
     </div>
   </div>
 
+  <!-- Screen 4: Gallery Selector Overlay -->
+  <div id="gallery-overlay" class="overlay">
+    <div class="progress-box" style="max-width: 800px; width: 90%; height: 80vh; display: flex; flex-direction: column; padding: 24px; text-align: left;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 0;">Kho Ảnh Phản Hồi (Review)</h3>
+        <button id="btn-close-gallery" class="icon-btn" style="border: none;"><i data-lucide="x"></i></button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+        Nhấp chọn một ảnh dưới đây để điền nhanh vào mục review (đây là các ảnh thực tế trong thư mục <code>assets/review</code>).
+      </p>
+      <div id="gallery-grid" style="flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; padding: 8px; background-color: rgba(0,0,0,0.25); border-radius: 8px; border: 1px solid var(--border-color);">
+        <!-- Tự động load danh sách ảnh review bằng Javascript -->
+      </div>
+    </div>
+  </div>
+
   <!-- Logic scripts -->
   <script>
+    // List of static images in assets/review folder
+    const REVIEWS_GALLERY = [
+      "120396173_3669040766462528_7282720382376266470_n.jpg",
+      "120422179_3669283266438278_2448357116553594135_n.jpg",
+      "120424120_3669283353104936_6603051118602376791_n.jpg",
+      "120444782_3669040846462520_5053258556032856683_n.jpg",
+      "120532737_3669040246462580_1408726629923083722_n.jpg",
+      "120544636_3669040379795900_6036671405998403636_n.jpg",
+      "120561590_3669040613129210_5846319400958690505_n.jpg",
+      "120570444_3669041519795786_2480623520808149528_n.jpg",
+      "120576460_3669041399795798_7454453491417638102_n.jpg",
+      "120639634_3669040479795890_7120132453014020250_n.jpg",
+      "120657978_3669041579795780_2831823502133140860_n.jpg",
+      "120701766_3669283479771590_2574227877268738352_n.jpg",
+      "120727654_3669283563104915_1901691268953820130_n.jpg",
+      "120750108_3669040973129174_7735462684997202330_n.jpg",
+      "120774201_3669041673129104_7539167273749124820_n.jpg",
+      "494524314_23874680122138628_7899976094920287467_n.jpg",
+      "494603559_23876212268652080_7440734004755404226_n.jpg",
+      "712133407_27552275811045689_6466122159718115581_n.jpg",
+      "713604748_27552275084379095_7067007425365101739_n.jpg",
+      "PicsArt_10-08-09.51.46.jpg",
+      "PicsArt_10-08-09.53.28.jpg",
+      "PicsArt_10-08-09.56.11.jpg",
+      "PicsArt_10-08-09.57.34.jpg",
+      "PicsArt_10-08-09.58.38.jpg",
+      "PicsArt_10-08-09.59.03.jpg",
+      "PicsArt_10-08-09.59.23.jpg",
+      "Screenshot_2017-06-14-17-53-12.jpg",
+      "Screenshot_20171206-214003.jpg",
+      "Screenshot_20180110-164510.jpg",
+      "Screenshot_20180124-181806.jpg",
+      "Screenshot_20180124-193648.jpg",
+      "Screenshot_20180126-125032.jpg",
+      "Screenshot_20180221-222958.jpg",
+      "Screenshot_20180222-211502.jpg",
+      "Screenshot_20180309-225058.jpg",
+      "Screenshot_20180314-165116.jpg",
+      "Screenshot_20180320-055527.jpg",
+      "Screenshot_20180407-081416.jpg",
+      "Screenshot_20180410-142732.jpg",
+      "Screenshot_20180410-142844.jpg",
+      "Screenshot_20180410-143318.jpg",
+      "Screenshot_20180415-140432.jpg",
+      "Screenshot_20180419-123937.jpg",
+      "Screenshot_20180420-004613.jpg",
+      "Screenshot_20180420-115519.jpg",
+      "Screenshot_20180428-170806.jpg",
+      "Screenshot_20180428-175809.jpg",
+      "Screenshot_20180429-081448.jpg",
+      "Screenshot_20180512-074232.jpg",
+      "Screenshot_20180515-162708.jpg",
+      "Screenshot_20180516-204929.jpg",
+      "Screenshot_20180608-005856.jpg",
+      "Screenshot_20180624-194755.jpg",
+      "Screenshot_20180719-142203.jpg",
+      "Screenshot_20180719-142210.jpg",
+      "Screenshot_20180723-214454.jpg",
+      "Screenshot_20180723-233250.jpg",
+      "Screenshot_20180723-233256.jpg",
+      "Screenshot_20180724-080910.jpg",
+      "Screenshot_20180724-130913.jpg",
+      "Screenshot_20180817-205746.jpg",
+      "Screenshot_20180824-092449.jpg",
+      "Screenshot_20180901-222520.jpg",
+      "Screenshot_20190619-105243.jpg",
+      "Screenshot_20190806_082813_com.facebook.orca.jpg",
+      "Screenshot_20190807_215658_com.facebook.katana.jpg",
+      "Screenshot_20210320-203245.png"
+    ];
+
     let adminPassword = '';
     let localConfig = null;
     let currentTab = 'profile';
+    let activeImageSelectIndex = -1;
+
+    function openGalleryModal(index) {
+      activeImageSelectIndex = index;
+      const overlay = document.getElementById('gallery-overlay');
+      const grid = document.getElementById('gallery-grid');
+      
+      grid.innerHTML = REVIEWS_GALLERY.map(img => {
+        const fullPath = 'assets/review/' + img;
+        return `
+          <div class="gallery-item" data-filename="${img}">
+            <img src="${fullPath}" loading="lazy">
+            <div class="gallery-item-name">${img.split('_')[0] || img}</div>
+          </div>
+        `;
+      }).join('');
+      
+      overlay.classList.add('show');
+
+      // Bind click events for gallery items
+      grid.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const filename = item.getAttribute('data-filename');
+          const fullPath = 'assets/review/' + filename;
+          
+          const section = localConfig.sections.find(s => s.id === 'patient-reviews');
+          if (section && section.items[activeImageSelectIndex]) {
+            section.items[activeImageSelectIndex].image = fullPath;
+            
+            // Update input text in DOM
+            const input = document.querySelector(`.inp-review-image[data-index="${activeImageSelectIndex}"]`);
+            if (input) {
+              input.value = fullPath;
+            }
+            
+            // Update preview image in DOM
+            const parent = input.closest('.form-group');
+            if (parent) {
+              const previewDiv = parent.querySelector('.review-image-preview');
+              const previewImg = parent.querySelector('.img-preview-tag');
+              if (previewDiv && previewImg) {
+                previewImg.src = fullPath;
+                previewDiv.style.display = 'block';
+              }
+            }
+          }
+          closeGalleryModal();
+        });
+      });
+    }
+
+    function closeGalleryModal() {
+      document.getElementById('gallery-overlay').classList.remove('show');
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
@@ -524,6 +706,7 @@
       });
       document.getElementById('btn-logout').addEventListener('click', handleLogout);
       document.getElementById('btn-save').addEventListener('click', saveConfigToGithub);
+      document.getElementById('btn-close-gallery').addEventListener('click', closeGalleryModal);
 
       // Tab navigation
       const navItems = document.querySelectorAll('.nav-item');
@@ -862,12 +1045,18 @@
             specificFieldsHtml = `
               <div class="field-grid">
                 <div class="form-group">
-                  <label>Đường dẫn ảnh review (image) - *Bắt buộc</label>
-                  <input type="text" class="form-input inp-review-image" value="${item.image || ''}" data-index="${index}">
+                  <label>Ảnh review (image) - *Bắt buộc</label>
+                  <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                    <input type="text" class="form-input inp-review-image" value="${item.image || ''}" data-index="${index}" style="flex-grow: 1;">
+                    <button class="btn btn-select-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-main);">Kho ảnh</button>
+                  </div>
+                  <div class="review-image-preview" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); width: 80px; height: 120px; display: ${item.image ? 'block' : 'none'}; background-color: #0b0f19;">
+                    <img src="${item.image || ''}" style="width: 100%; height: 100%; object-fit: cover;" class="img-preview-tag">
+                  </div>
                 </div>
                 <div class="form-group">
                   <label>Mô tả ngắn / Chú thích (caption)</label>
-                  <input type="text" class="form-input inp-review-caption" value="${item.caption || ''}" data-index="${index}">
+                  <input type="text" class="form-input inp-review-caption" value="${item.caption || ''}" data-index="${index}" style="height: 48px;">
                 </div>
               </div>
             `;
@@ -913,9 +1102,20 @@
           } else if (sectionId === 'patient-reviews') {
             card.querySelector('.inp-review-image').addEventListener('input', (e) => {
               section.items[index].image = e.target.value;
+              const previewDiv = card.querySelector('.review-image-preview');
+              const previewImg = card.querySelector('.img-preview-tag');
+              if (e.target.value) {
+                previewImg.src = e.target.value;
+                previewDiv.style.display = 'block';
+              } else {
+                previewDiv.style.display = 'none';
+              }
             });
             card.querySelector('.inp-review-caption').addEventListener('input', (e) => {
               section.items[index].caption = e.target.value;
+            });
+            card.querySelector('.btn-select-image').addEventListener('click', () => {
+              openGalleryModal(index);
             });
           }
 
