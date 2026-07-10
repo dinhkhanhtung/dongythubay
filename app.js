@@ -453,26 +453,32 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(card);
   }
 
-  // Helper to generate virtual usage count for apps with daily dynamic growth
-  function getVirtualUsage(title) {
-    if (!title || title === 'Đang tải...') return '1.2k+';
+  // Helper to generate virtual usage count for apps with daily dynamic growth and distinct values
+  function getVirtualUsage(title, index, saltUrl) {
+    if (!title || title === 'Đang tải...') title = 'app-preview-' + index;
     const daysSinceStart = Math.floor((new Date() - new Date('2026-07-01')) / (1000 * 60 * 60 * 24));
-    const score = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     
-    const baseCount = (score % 600) + 1200; // 1200 - 1800
-    const dailyGrowth = (score % 4) + 2; // mỗi ngày tăng 2-5 lượt
+    // Hash string to create a very distinct seed
+    const seedStr = (title + (saltUrl || '') + index);
+    const hash = seedStr.split('').reduce((acc, char, i) => acc + char.charCodeAt(0) * (i + 1), 0);
+    
+    const baseCount = (hash % 200) + 120; // 120 - 320 (Hạ thấp số lượng)
+    const dailyGrowth = (hash % 2) + 1; // mỗi ngày chỉ tăng 1-2 lượt sử dụng
     const total = baseCount + (daysSinceStart * dailyGrowth);
     return new Intl.NumberFormat('vi-VN').format(total);
   }
 
-  // Helper to generate virtual sales count for products with daily dynamic growth
-  function getVirtualSales(name) {
-    if (!name || name === 'Đang tải...') return '850+';
+  // Helper to generate virtual sales count for products with daily dynamic growth and distinct values
+  function getVirtualSales(name, index, saltUrl) {
+    if (!name || name === 'Đang tải...') name = 'product-preview-' + index;
     const daysSinceStart = Math.floor((new Date() - new Date('2026-07-01')) / (1000 * 60 * 60 * 24));
-    const score = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     
-    const baseSales = (score % 500) + 650; // 650 - 1150
-    const dailyGrowth = (score % 5) + 3; // mỗi ngày tăng 3-7 lượt
+    // Hash string to create a very distinct seed
+    const seedStr = (name + (saltUrl || '') + index);
+    const hash = seedStr.split('').reduce((acc, char, i) => acc + char.charCodeAt(0) * (i + 1), 0);
+    
+    const baseSales = (hash % 160) + 30; // 30 - 190 (Hạ thấp số lượng)
+    const dailyGrowth = (hash % 2) + 1; // mỗi ngày chỉ tăng 1-2 lượt bán
     const total = baseSales + (daysSinceStart * dailyGrowth);
     return new Intl.NumberFormat('vi-VN').format(total);
   }
@@ -508,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p>${description}</p>
             <div style="font-size: 11.5px; color: var(--color-primary); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px;">
               <i data-lucide="users" style="width: 12px; height: 12px;"></i>
-              <span>${getVirtualUsage(title)} lượt sử dụng</span>
+              <span>${getVirtualUsage(title, index, linkUrl)} lượt sử dụng</span>
             </div>
           </div>
           <div class="project-cta">
@@ -610,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <i data-lucide="star" style="width: 11px; height: 11px; fill: #eab308;"></i> 4.9
               </span>
               <span style="opacity: 0.4;">|</span>
-              <span style="opacity: 0.85; font-weight: 500;">Đã bán ${getVirtualSales(name)}</span>
+              <span style="opacity: 0.85; font-weight: 500;">Đã bán ${getVirtualSales(name, index, linkUrl)}</span>
             </div>
           </div>
           <div class="affiliate-cta ${platformClass}">
