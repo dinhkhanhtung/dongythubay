@@ -271,8 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check in-memory cache
     if (unfurlCache[url]) return unfurlCache[url];
     
-    // Check localStorage cache
-    const cacheKey = `unfurl::${url}`;
+    // Check localStorage cache - use CONFIG.updatedAt as version buster
+    const cacheVersion = (window.CONFIG && window.CONFIG.updatedAt) || 'v1';
+    const cacheKey = `unfurl::${cacheVersion}::${url}`;
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
       try {

@@ -1022,7 +1022,21 @@
           <p>${descText}</p>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <span style="font-size: 14px; font-weight: 700; colo          let specificFieldsHtml = '';
+          <span style="font-size: 14px; font-weight: 700; color: var(--text-muted);">${section.items.length} items</span>
+          <button class="btn btn-add" id="add-item" style="width: auto; padding: 0 16px; height: 38px; font-size: 13.5px;"><i data-lucide="plus"></i> Thêm mới</button>
+        </div>
+        <div id="items-list-container"></div>
+      `;
+
+      const renderItemsList = () => {
+        const listDiv = document.getElementById('items-list-container');
+        listDiv.innerHTML = '';
+        
+        section.items.forEach((item, index) => {
+          const card = document.createElement('div');
+          card.className = 'editor-card';
+          
+          let specificFieldsHtml = '';
           
           if (sectionId === 'my-apps') {
             specificFieldsHtml = `
