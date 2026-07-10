@@ -1794,19 +1794,23 @@ body {
 
 /* ============ SERVICE LIST ============ */
 .service-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
   gap: 16px;
   width: 100%;
+  padding-bottom: 12px;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
 }
 
-@media (min-width: 480px) {
-  .service-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.service-grid::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
 }
 
 .service-card {
+  flex: 0 0 85%;
+  scroll-snap-align: start;
   background-color: var(--bg-card);
   backdrop-filter: var(--glass-blur);
   border: var(--border-card);
@@ -1817,6 +1821,12 @@ body {
   flex-direction: column;
   gap: 12px;
   transition: var(--transition-cubic);
+}
+
+@media (min-width: 640px) {
+  .service-card {
+    flex: 0 0 47%;
+  }
 }
 
 .service-card:hover {
