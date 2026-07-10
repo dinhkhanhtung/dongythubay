@@ -129,17 +129,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!topCounter) {
               topCounter = document.createElement('div');
               topCounter.id = 'top-page-counter';
-              topCounter.style.fontSize = '12px';
+            topCounter.style.fontSize = '12px';
               topCounter.style.color = 'var(--text-secondary)';
               topCounter.style.marginTop = '10px';
               topCounter.style.display = 'flex';
               topCounter.style.alignItems = 'center';
               topCounter.style.justifyContent = 'center';
               topCounter.style.gap = '5px';
-              topCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.04)';
-              topCounter.style.padding = '4px 12px';
+              topCounter.style.backgroundColor = 'rgba(21, 128, 61, 0.06)';
+              topCounter.style.padding = '5px 14px';
               topCounter.style.borderRadius = '20px';
-              topCounter.style.border = '1px solid rgba(255, 255, 255, 0.06)';
+              topCounter.style.border = '1px solid rgba(21, 128, 61, 0.18)';
               topCounter.style.width = 'fit-content';
               topCounter.style.margin = '10px auto 0 auto';
               bioEl.parentNode.insertBefore(topCounter, bioEl.nextSibling);
