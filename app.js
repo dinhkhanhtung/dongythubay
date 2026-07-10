@@ -311,7 +311,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 3500);
 
-      const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`, {
+      // Thêm cacheVersion để bypass cache CDN của Microlink
+      const bypassUrl = url + (url.includes('?') ? '&' : '?') + 'v=' + cacheVersion;
+
+      const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(bypassUrl)}`, {
         signal: controller.signal
       });
       clearTimeout(timeoutId);
