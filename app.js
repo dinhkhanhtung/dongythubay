@@ -3,8 +3,8 @@
 // ==========================================================================
 (function() {
   const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isTikTok = /TikTok/i.test(ua);
-  const isFacebook = /FBAN|FBAV/i.test(ua);
+  const isTikTok = /TikTok|musical_ly/i.test(ua);
+  const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
   const isInstagram = /Instagram/i.test(ua);
   const isMessenger = /Messenger/i.test(ua);
   const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger;
@@ -69,11 +69,66 @@ function showInAppBrowserWarning() {
   });
 }
 
+function optimizeLinksForInAppBrowser() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isTikTok = /TikTok|musical_ly/i.test(ua);
+  const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
+  const isInstagram = /Instagram/i.test(ua);
+  const isMessenger = /Messenger/i.test(ua);
+  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger;
+
+  if (!isInAppBrowser) return;
+
+  const links = document.querySelectorAll('a');
+  links.forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href) return;
+
+    // 1. Chuyển đổi các link market:// thành link HTTPS
+    if (href.startsWith('market://')) {
+      try {
+        const urlParams = new URLSearchParams(href.split('?')[1]);
+        const id = urlParams.get('id');
+        if (id) {
+          link.href = `https://play.google.com/store/apps/details?id=${id}`;
+        }
+      } catch (e) {
+        console.warn('Error parsing market URL in optimization:', e);
+      }
+    }
+
+    // 2. Chuyển đổi target sang _self đối với các link nhạy cảm trong Webview tích hợp
+    // Đặc biệt là Zalo, Messenger, Google Maps, CH Play, TikTok Shop
+    const isSensitiveLink = 
+      href.includes('zalo.me') || 
+      href.includes('m.me') || 
+      href.includes('maps.google.com') || 
+      href.includes('google.com/maps') ||
+      href.includes('play.google.com') ||
+      href.includes('tiktok.com/view/product');
+
+    if (isSensitiveLink) {
+      if (link.getAttribute('target') === '_blank') {
+        link.setAttribute('target', '_self');
+      }
+      
+      // 3. Đăng ký click handler đặc biệt để ép buộc mở trực tiếp
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetUrl = this.href;
+        
+        // Redirect trực tiếp
+        window.location.href = targetUrl;
+      });
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Check and show In-App Browser Warning overlay (iOS / Android fallback)
   const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isTikTok = /TikTok/i.test(ua);
-  const isFacebook = /FBAN|FBAV/i.test(ua);
+  const isTikTok = /TikTok|musical_ly/i.test(ua);
+  const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
   const isInstagram = /Instagram/i.test(ua);
   const isMessenger = /Messenger/i.test(ua);
   const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger;
@@ -526,6 +581,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
     }
+    
+    // Tối ưu hóa các liên kết cho trình duyệt nhúng (in-app browser)
+    optimizeLinksForInAppBrowser();
   } else {
     sectionsContainer.innerHTML = `
       <div class="text-block-card">
@@ -734,7 +792,8 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Deep link cho thiết bị Android: dùng market://details?id=...
       const isAndroid = /Android/i.test(navigator.userAgent);
-      if (isAndroid && packageName) {
+      // Chỉ dùng market:// nếu KHÔNG phải trình duyệt nhúng (TikTok/Facebook) để tránh lỗi "Không thể hoàn tất hành động"
+      if (isAndroid && packageName && !isInAppBrowser) {
         card.href = `market://details?id=${packageName}`;
       } else {
         card.href = storeUrl || '#';
