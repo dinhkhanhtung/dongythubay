@@ -11,22 +11,22 @@
   --bg-app: #fbfaf8;
   --bg-card: rgba(255, 255, 255, 0.92);
   --bg-card-hover: rgba(255, 255, 255, 0.98);
-  --text-primary: #11271b; /* Đen xanh thảo dược */
-  --text-secondary: #2f4439;
-  --text-muted: #4f675a;
+  --text-primary: #0a1f14; /* Đen xanh thảo mộc */
+  --text-secondary: #243b2e;
+  --text-muted: #445c4e;
   
-  /* Brand Green (Deep Moss Green - Tươi đậm hơn) & Accents */
-  --color-primary: #1a5235; /* Xanh rêu thảo dược đậm đà, tươi tắn hơn */
-  --color-primary-rgb: 26, 82, 53;
-  --color-accent: #113f27;
-  --color-accent-light: rgba(26, 82, 53, 0.06);
-  --color-accent-border: rgba(26, 82, 53, 0.15);
+  /* Brand Green (Vibrant Herbal Green) & Accents */
+  --color-primary: #126c3d; /* Tăng sắc xanh lá thảo mộc tươi tắn, rực rỡ hơn */
+  --color-primary-rgb: 18, 108, 61;
+  --color-accent: #0d522e;
+  --color-accent-light: rgba(18, 108, 61, 0.06);
+  --color-accent-border: rgba(18, 108, 61, 0.15);
   
   /* Borders & Shadows */
-  --border-color: rgba(212, 222, 216, 0.8);
-  --border-card: 1px solid rgba(212, 222, 216, 0.8);
-  --card-shadow: 0 12px 34px -10px rgba(26, 82, 53, 0.06), 0 1px 2px rgba(26, 82, 53, 0.02);
-  --hover-shadow: 0 20px 40px -15px rgba(26, 82, 53, 0.12), 0 1px 5px rgba(26, 82, 53, 0.06);
+  --border-color: rgba(206, 218, 210, 0.8);
+  --border-card: 1px solid rgba(206, 218, 210, 0.8);
+  --card-shadow: 0 12px 34px -10px rgba(18, 108, 61, 0.06), 0 1px 2px rgba(18, 108, 61, 0.02);
+  --hover-shadow: 0 20px 40px -15px rgba(18, 108, 61, 0.12), 0 1px 5px rgba(18, 108, 61, 0.06);
   
   /* Corner Radius */
   --radius-lg: 24px;
@@ -43,24 +43,24 @@
 }
 
 [data-theme="dark"] {
-  --bg-app-gradient: linear-gradient(185deg, #09100c 0%, #0e1a13 100%);
-  --bg-app: #09100c;
-  --bg-card: rgba(18, 30, 24, 0.75);
-  --bg-card-hover: rgba(24, 40, 32, 0.85);
-  --text-primary: #f0f7f3;
-  --text-secondary: #c9d5cd;
-  --text-muted: #91a398;
+  --bg-app-gradient: linear-gradient(185deg, #060e0a 0%, #0c1811 100%);
+  --bg-app: #060e0a;
+  --bg-card: rgba(15, 27, 20, 0.75);
+  --bg-card-hover: rgba(20, 36, 27, 0.85);
+  --text-primary: #ecf5ef;
+  --text-secondary: #c3d2c8;
+  --text-muted: #8ba293;
   
-  --color-primary: #3bae74; /* Xanh tươi mát hơn trên nền tối */
-  --color-primary-rgb: 59, 174, 116;
-  --color-accent: #5ec793;
-  --color-accent-light: rgba(59, 174, 116, 0.08);
-  --color-accent-border: rgba(59, 174, 116, 0.2);
+  --color-primary: #2ecc71; /* Xanh lục tươi sáng hơn nữa trên nền tối */
+  --color-primary-rgb: 46, 204, 113;
+  --color-accent: #58d68d;
+  --color-accent-light: rgba(46, 204, 113, 0.08);
+  --color-accent-border: rgba(46, 204, 113, 0.2);
   
-  --border-color: rgba(24, 40, 32, 0.6);
+  --border-color: rgba(20, 36, 27, 0.6);
   --border-card: 1px solid rgba(255, 255, 255, 0.05);
   --card-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.25);
-  --hover-shadow: 0 24px 44px -16px rgba(59, 174, 116, 0.25), 0 1px 6px rgba(59, 174, 116, 0.1);
+  --hover-shadow: 0 24px 44px -16px rgba(46, 204, 113, 0.25), 0 1px 6px rgba(46, 204, 113, 0.1);
 }
 
 /* Global Reset & Base */
