@@ -1468,7 +1468,7 @@ body {
 /* Social Proof Toast Popup */
 .social-toast-container {
   position: fixed;
-  bottom: 20px;
+  bottom: 80px;
   left: calc(50% - 220px);
   z-index: 9999;
   pointer-events: none;
