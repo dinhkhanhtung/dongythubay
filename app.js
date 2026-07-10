@@ -19,6 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const config = window.CONFIG;
 
+  // Helper to fallback icon name to SVG to avoid CDN bundle missing issues (e.g. facebook)
+  function getDynamicIconHtml(iconName) {
+    if (iconName === 'facebook') {
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`;
+    }
+    return `<i data-lucide="${iconName}"></i>`;
+  }
+
   // 0. Helper function to scroll to element with Sticky Header offset (72px)
   function scrollToElement(element) {
     if (!element) return;
@@ -1237,7 +1245,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (isPdfLink) {
         mediaHtml = `<div class="gift-thumbnail"><div class="gift-pdf-fallback"><i data-lucide="file-text"></i><span>PDF</span></div></div>`;
       } else {
-        mediaHtml = `<div class="gift-icon"><i data-lucide="${gift.icon || 'gift'}"></i></div>`;
+        mediaHtml = `<div class="gift-icon">${getDynamicIconHtml(gift.icon || 'gift')}</div>`;
       }
 
       card.innerHTML = `
@@ -1318,7 +1326,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="service-body-info">
           <div class="service-header">
             <div class="service-icon-wrapper">
-              <i data-lucide="${iconName}"></i>
+              ${getDynamicIconHtml(iconName)}
             </div>
             <h3 class="service-title">${title}</h3>
           </div>
@@ -1590,7 +1598,7 @@ document.addEventListener('DOMContentLoaded', () => {
       toast.className = 'social-toast';
       toast.innerHTML = `
         <div class="social-toast-avatar">
-          <i data-lucide="${action.icon}"></i>
+          ${getDynamicIconHtml(action.icon)}
         </div>
         <div class="social-toast-content">
           <div class="social-toast-text">${action.text}</div>
