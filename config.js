@@ -1,7 +1,7 @@
 // File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.
 window.CONFIG = {
-  "updatedAt": 1783688517398,
+  "updatedAt": 1783690793055,
   "profile": {
     "avatar": "assets/avatar_doctor.png",
     "name": "Đông y Thu Bẩy",
@@ -128,13 +128,17 @@ window.CONFIG = {
           "playStoreUrl": "https://play.google.com/store/apps/details?id=com.financeapp.personal_finance_app",
           "packageName": "com.financeapp.personal_finance_app",
           "rating": "4.8",
-          "downloads": "100+"
+          "downloads": "100+",
+          "title": "MoneyFlow Smart",
+          "description": "MoneyFlow Smart là giải pháp quản lý tài chính cá nhân hiện đại, trực quan và dễ sử dụng, giúp bạn kiểm soát tài chính một cách thông minh và hiệu quả. Với giao diện người dùng thân thiện và đầy đủ tính năng, ứng dụng giúp bạn theo dõi thu chi, lập kế hoạch tài chính và đạt được mục tiêu tiết kiệm."
         },
         {
           "playStoreUrl": "https://play.google.com/store/apps/details?id=com.dinhkhanhtung.selleasy",
           "packageName": "com.dinhkhanhtung.selleasy",
           "rating": "4.9",
-          "downloads": "500+"
+          "downloads": "500+",
+          "title": "SellEasy - Nhật Ký Bán Hàng",
+          "description": "SellEasy là ứng dụng quản lý bán hàng toàn diện, giúp doanh nghiệp của bạn vận hành hiệu quả hơn. Với các tính năng mạnh mẽ và dễ sử dụng, SellEasy là giải pháp hoàn hảo cho việc quản lý kho, theo dõi doanh thu và phân tích hiệu suất kinh doanh."
         }
       ]
     },
