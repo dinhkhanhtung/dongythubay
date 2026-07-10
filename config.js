@@ -504,7 +504,7 @@ window.CONFIG = {
           "subtitle": "Facebook Account Support",
           "description": "An tâm sử dụng Facebook, bảo vệ tài sản số cá nhân/doanh nghiệp.",
           "icon": "shield",
-          "image": "https://cdn.pixabay.com/photo/2016/11/29/05/45/computer-1867614_640.jpg",
+          "image": "https://i.ibb.co/LdgWmp0L/fb-support-service-image.png",
           "features": [
             "Giải quyết các vấn đề về tài khoản, bảo mật.",
             "Hỗ trợ lấy lại tài khoản, tư vấn bảo vệ tài khoản."
