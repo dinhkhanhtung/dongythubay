@@ -420,7 +420,7 @@ window.CONFIG = {
           "subtitle": "Facebook Ads Demo",
           "description": "Giúp bạn tiếp cận khách hàng tiềm năng, tối ưu chi phí quảng cáo.",
           "icon": "facebook",
-          "image": "https://images.unsplash.com/photo-1557804506-6fd96a12b033?auto=format&fit=crop&w=600&q=80",
+          "image": "https://cdn.pixabay.com/photo/2016/11/19/14/00/code-1839406_640.jpg",
           "features": [
             "Tư vấn chiến lược phù hợp với ngân sách thực tế.",
             "Đo lường, báo cáo minh bạch, hỗ trợ tối ưu liên tục."
@@ -431,7 +431,7 @@ window.CONFIG = {
           "subtitle": "Fanpage Content Demo",
           "description": "Fanpage chuyên nghiệp, nội dung gần gũi, hỗ trợ phát triển cộng đồng.",
           "icon": "edit-3",
-          "image": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=600&q=80",
+          "image": "https://cdn.pixabay.com/photo/2015/02/05/08/10/iphone-624709_640.jpg",
           "features": [
             "Xây dựng hình ảnh thương hiệu trên Facebook.",
             "Lên kế hoạch nội dung, thiết kế hình ảnh, tăng tương tác tự nhiên."
@@ -442,7 +442,7 @@ window.CONFIG = {
           "subtitle": "Facebook Account Support Demo",
           "description": "An tâm sử dụng Facebook, bảo vệ tài sản số cá nhân/doanh nghiệp.",
           "icon": "shield",
-          "image": "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80",
+          "image": "https://cdn.pixabay.com/photo/2016/11/29/05/45/computer-1867614_640.jpg",
           "features": [
             "Giải quyết các vấn đề về tài khoản, bảo mật.",
             "Hỗ trợ lấy lại tài khoản, tư vấn bảo vệ tài khoản."
@@ -453,7 +453,7 @@ window.CONFIG = {
           "subtitle": "Thiết kế Website Demo",
           "description": "Website chuyên nghiệp, hỗ trợ phát triển thương hiệu online.",
           "icon": "globe",
-          "image": "https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=600&q=80",
+          "image": "https://cdn.pixabay.com/photo/2017/01/22/22/11/mobile-devices-2001180_640.jpg",
           "features": [
             "Thiết kế website chuẩn SEO, giao diện thân thiện.",
             "Tối ưu tốc độ, bảo hành 6 tháng."
@@ -464,7 +464,7 @@ window.CONFIG = {
           "subtitle": "Android App Demo",
           "description": "Ứng dụng phù hợp với quy trình nội bộ, hỗ trợ kinh doanh hiệu quả.",
           "icon": "smartphone",
-          "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80",
+          "image": "https://cdn.pixabay.com/photo/2017/04/26/16/06/mobile-phone-2262928_640.jpg",
           "features": [
             "Phát triển ứng dụng theo yêu cầu thực tế.",
             "Đảm bảo bảo mật, trải nghiệm mượt mà."
@@ -475,7 +475,7 @@ window.CONFIG = {
           "subtitle": "AI Agent Demo",
           "description": "Tự động hóa một số tác vụ, hỗ trợ chăm sóc khách hàng cơ bản.",
           "icon": "bot",
-          "image": "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=600&q=80",
+          "image": "https://cdn.pixabay.com/photo/2023/07/04/19/43/machine-learning-8106981_640.jpg",
           "features": [
             "Tạo chatbot, trợ lý AI cho fanpage/doanh nghiệp.",
             "Tùy chỉnh kịch bản, tích hợp đa kênh."
@@ -486,7 +486,7 @@ window.CONFIG = {
           "subtitle": "Thiết kế Đồ họa & Video Demo",
           "description": "Hình ảnh, video chuyên nghiệp, hỗ trợ nhận diện thương hiệu.",
           "icon": "video",
-          "image": "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=600&q=80",
+          "image": "https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_640.jpg",
           "features": [
             "Thiết kế banner, logo, video quảng cáo.",
             "Chỉnh sửa video theo yêu cầu."
@@ -497,7 +497,7 @@ window.CONFIG = {
           "subtitle": "Tư vấn Thương hiệu Demo",
           "description": "Đồng hành xây dựng thương hiệu, phát triển kênh số phù hợp thực tế.",
           "icon": "compass",
-          "image": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
+          "image": "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849822_640.jpg",
           "features": [
             "Tư vấn xây dựng thương hiệu cá nhân/doanh nghiệp.",
             "Định hướng phát triển kênh Facebook, TikTok."
@@ -508,7 +508,7 @@ window.CONFIG = {
           "subtitle": "Dịch vụ theo yêu cầu",
           "description": "Giải pháp linh hoạt, cá nhân hóa theo nhu cầu thực tế của bạn.",
           "icon": "layers",
-          "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+          "image": "https://cdn.pixabay.com/photo/2015/01/09/11/08/startup-594090_640.jpg",
           "features": [
             "Tư vấn, triển khai các giải pháp số, marketing, công nghệ phù hợp riêng cho từng khách hàng.",
             "Phân tích, xây dựng lộ trình chuyển đổi số, tối ưu quy trình kinh doanh."
