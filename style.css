@@ -172,6 +172,24 @@ body {
   height: 20px;
 }
 
+/* Cover Banner (caro nhạt) phía trên profile */
+.app-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background-image:
+    linear-gradient(rgba(21, 128, 61, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(21, 128, 61, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* Profile Header - Premium Viewport-locked */
 .profile-header {
   position: relative;
@@ -476,17 +494,25 @@ body {
 }
 
 .project-info h3 {
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 800;
   line-height: 1.3;
   color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .project-info p {
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--text-secondary);
   line-height: 1.5;
   margin-bottom: 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .project-cta {
@@ -1325,22 +1351,23 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Toast luôn tối để đọc được cả light/dark mode */
 .social-toast {
-  background-color: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-lg);
-  padding: 12px 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  background-color: rgba(10, 15, 30, 0.92);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 10px 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
-  gap: 12px;
-  max-width: 320px;
+  gap: 10px;
+  max-width: 280px;
   width: calc(100vw - 40px);
-  transform: translateY(100px);
+  transform: translateY(80px);
   opacity: 0;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: auto;
 }
 
@@ -1350,39 +1377,65 @@ body {
 }
 
 .social-toast-avatar {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: var(--color-primary-light);
+  background-color: rgba(34, 197, 94, 0.15);
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .social-toast-avatar i, .social-toast-avatar svg {
-  color: var(--color-primary);
-  width: 18px;
-  height: 18px;
+  color: #22c55e;
+  width: 16px;
+  height: 16px;
 }
 
 .social-toast-content {
   flex-grow: 1;
 }
 
+/* Text luôn trắng bất kể theme */
 .social-toast-text {
-  font-size: 12px;
+  font-size: 11.5px;
   line-height: 1.4;
-  color: var(--text-primary);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
 }
 
 .social-toast-time {
   font-size: 10px;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.45);
   margin-top: 2px;
   font-weight: 500;
+}
+
+/* HOT Label badge */
+.hot-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  line-height: 1.6;
+  vertical-align: middle;
+  margin-left: 6px;
+  animation: pulse-hot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-hot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
 }
 
 @media (max-width: 640px) {

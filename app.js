@@ -341,6 +341,11 @@ document.addEventListener('DOMContentLoaded', () => {
       .sort((a, b) => (a.order || 99) - (b.order || 99));
 
     activeSections.forEach(section => {
+      // Auto-hide affiliate-list sections with no items
+      if (section.type === 'affiliate-list' && (!section.items || section.items.length === 0)) {
+        return;
+      }
+
       const sectionEl = document.createElement('section');
       sectionEl.className = 'section-wrapper';
       sectionEl.id = `section-${section.id}`;
@@ -503,6 +508,10 @@ document.addEventListener('DOMContentLoaded', () => {
       card.target = '_blank';
       card.setAttribute('rel', 'noopener noreferrer');
 
+      // HOT badge: gắn cho 1 item bất kỳ dựa trên hash
+      const isHotApp = ((title + linkUrl).split('').reduce((a,c,i) => a + c.charCodeAt(0)*(i+1), 0) % 7 === 0);
+      const hotBadgeHtml = isHotApp ? '<span class="hot-badge">🔥 Hot</span>' : '';
+
       card.innerHTML = `
         <div class="project-image-wrapper">
           <img src="${image}" alt="${title}" class="project-image" loading="lazy">
@@ -510,7 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="project-info">
           <div>
-            <h3>${title}</h3>
+            <h3>${title}${hotBadgeHtml}</h3>
             <p>${description}</p>
             <div style="font-size: 11.5px; color: var(--color-primary); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px;">
               <i data-lucide="users" style="width: 12px; height: 12px;"></i>
@@ -602,13 +611,17 @@ document.addEventListener('DOMContentLoaded', () => {
         card.removeAttribute('rel');
       }
 
+      // HOT badge: gắn cho 1 sản phẩm bất kỳ dựa trên hash
+      const isHotProduct = ((name + linkUrl).split('').reduce((a,c,i) => a + c.charCodeAt(0)*(i+1), 0) % 5 === 0);
+      const hotProductBadge = isHotProduct ? '<span class="hot-badge">🔥 Hot</span>' : '';
+
       card.innerHTML = `
         <div class="affiliate-image-wrapper">
           <img src="${image}" alt="${name}" class="affiliate-image" loading="lazy">
         </div>
         <div class="affiliate-info">
           <div class="affiliate-text">
-            <h3 class="affiliate-name">${name}</h3>
+            <h3 class="affiliate-name">${name}${hotProductBadge}</h3>
             <div class="affiliate-price">${price}</div>
             <div class="affiliate-discount">${discount}</div>
             <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 6px;">
@@ -821,20 +834,17 @@ document.addEventListener('DOMContentLoaded', () => {
     URL.revokeObjectURL(url);
   });
 
-  // 6. Booking Form Component
+  // 6. Booking Form Component (Collapsible)
   function renderBookingForm(section, container) {
     const card = document.createElement('div');
     card.className = 'booking-card';
 
-    const titleText = section.title || 'Đặt Lịch Tư Vấn & Hẹn Khám';
     const subtitleText = section.subtitle || 'Vui lòng điền thông tin bên dưới, phòng khám sẽ liên hệ tư vấn sớm nhất.';
 
     // Helper for clipboard copy
     function copyTextToClipboard(text) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        return navigator.clipboard.writeText(text).catch(err => {
-          return fallbackCopyText(text);
-        });
+        return navigator.clipboard.writeText(text).catch(err => fallbackCopyText(text));
       } else {
         return Promise.resolve(fallbackCopyText(text));
       }
@@ -843,39 +853,31 @@ document.addEventListener('DOMContentLoaded', () => {
     function fallbackCopyText(text) {
       const textArea = document.createElement('textarea');
       textArea.value = text;
-      textArea.style.top = '0';
-      textArea.style.left = '0';
-      textArea.style.position = 'fixed';
-      textArea.style.opacity = '0';
+      textArea.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
       document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      let successful = false;
-      try {
-        successful = document.execCommand('copy');
-      } catch (err) {
-        console.error('[Booking Clipboard] Fallback copy failed:', err);
-      }
+      textArea.focus(); textArea.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch(e) {}
       document.body.removeChild(textArea);
-      return successful;
+      return ok;
     }
 
-    // Dropdown list for diseases
     const diseaseOptions = [
-      'Dạ dày / HP',
-      'Sỏi thận / Sỏi mật',
-      'Cường dương / Yếu sinh lý',
-      'Rụng tóc / Bạc tóc',
-      'Hiếm muộn / Vô sinh',
-      'Trĩ (Nội, Ngoại)',
-      'Xương khớp / Gút',
-      'Phụ khoa / Nam khoa',
-      'Khác'
+      'Dạ dày / HP', 'Sỏi thận / Sỏi mật', 'Cường dương / Yếu sinh lý',
+      'Rụng tóc / Bạc tóc', 'Hiếm muộn / Vô sinh', 'Trĩ (Nội, Ngoại)',
+      'Xương khớp / Gút', 'Phụ khoa / Nam khoa', 'Khác'
     ];
 
     card.innerHTML = `
-      <div id="booking-form-wrapper">
-        <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.45; text-align: center; margin-bottom: 8px;">
+      <div id="booking-toggle-btn" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0 8px;">
+        <span style="font-size:14px;font-weight:700;color:var(--color-primary);display:flex;align-items:center;gap:6px;">
+          <i data-lucide="calendar-plus" style="width:16px;height:16px;"></i>
+          Bấm vào đây để điền form đăng ký
+        </span>
+        <i id="booking-chevron" data-lucide="chevron-down" style="width:18px;height:18px;color:var(--color-primary);transition:transform 0.3s ease;"></i>
+      </div>
+      <div id="booking-form-wrapper" style="overflow:hidden;max-height:0;transition:max-height 0.4s ease;">
+        <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.45;text-align:center;margin-bottom:8px;padding-top:8px;">
           ${subtitleText}
         </p>
         <form class="booking-form" id="appointment-form">
@@ -898,12 +900,24 @@ document.addEventListener('DOMContentLoaded', () => {
             <textarea id="book-message" class="booking-textarea" placeholder="Ghi chú triệu chứng hoặc thời gian tiện nghe điện thoại..."></textarea>
           </div>
           <button type="submit" class="booking-submit-btn" id="book-submit">
-            <i data-lucide="send" style="width: 16px; height: 16px;"></i>
+            <i data-lucide="send" style="width:16px;height:16px;"></i>
             <span>Gửi Đăng Ký Ngay</span>
           </button>
         </form>
       </div>
     `;
+
+    // Toggle logic
+    const toggleBtn = card.querySelector('#booking-toggle-btn');
+    const formWrapper = card.querySelector('#booking-form-wrapper');
+    const chevron = card.querySelector('#booking-chevron');
+    let isOpen = false;
+
+    toggleBtn.addEventListener('click', () => {
+      isOpen = !isOpen;
+      formWrapper.style.maxHeight = isOpen ? formWrapper.scrollHeight + 'px' : '0';
+      chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
 
     const form = card.querySelector('#appointment-form');
     form.addEventListener('submit', async (e) => {
@@ -1059,9 +1073,8 @@ document.addEventListener('DOMContentLoaded', () => {
     lightbox.classList.add('show');
   }
 
-  // 9. Social Proof Toast Generator (Popup thông báo ngẫu nhiên)
+  // 9. Social Proof Toast Generator (ngắn gọn, chung chung, không lộ tên)
   function initSocialToasts() {
-    // Không chạy popup trong trang quản lý
     if (window.location.pathname.includes('quanly')) return;
 
     let toastContainer = document.getElementById('social-toast-container');
@@ -1072,73 +1085,59 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.appendChild(toastContainer);
     }
 
-    const actors = ['Một bệnh nhân', 'Một khách hàng', 'Một đồng niên 1981', 'Anh Tuấn', 'Chị Hương', 'Anh Bình', 'Chị Lan', 'Chú Hùng', 'Cô Thanh', 'Đồng niên từ'];
-    const locations = ['Thái Nguyên', 'Hà Nội', 'Bắc Giang', 'Phú Thọ', 'Tuyên Quang', 'Vĩnh Phúc', 'Nam Định', 'Lạng Sơn', 'Bắc Kạn', 'Hòa Bình'];
+    // Nội dung ngắn gọn, chung chung - không nêu tên cụ thể
     const actions = [
-      { text: 'vừa đặt lịch khám trực tiếp tại phòng khám', icon: 'calendar', color: 'var(--color-primary)' },
-      { text: 'vừa mua Trà Thảo Mộc túi lọc organic', icon: 'shopping-cart', color: '#10b981' },
-      { text: 'vừa mua Tinh dầu massage ngải cứu & gừng xoa bóp', icon: 'shopping-cart', color: '#10b981' },
-      { text: 'vừa sử dụng ứng dụng quản lý Vidu Family', icon: 'external-link', color: '#3b82f6' },
-      { text: 'vừa đăng ký tư vấn điều trị sỏi thận, sỏi mật', icon: 'phone', color: 'var(--color-primary)' },
-      { text: 'vừa đăng ký tư vấn trị trào ngược dạ dày', icon: 'phone', color: 'var(--color-primary)' },
-      { text: 'vừa tra cứu quẻ số cát hung trên app Dịch Tâm', icon: 'external-link', color: '#3b82f6' },
-      { text: 'vừa tham gia nhóm Kết Nối Tân Dậu Toàn Cầu', icon: 'users', color: '#3b82f6' }
+      { text: 'Vừa có người đặt lịch khám', icon: 'calendar', color: '#22c55e' },
+      { text: 'Có đơn hàng vừa được đặt', icon: 'shopping-cart', color: '#22c55e' },
+      { text: 'Ai đó vừa đăng ký tư vấn', icon: 'phone', color: '#22c55e' },
+      { text: 'Vừa có người dùng thử ứng dụng', icon: 'external-link', color: '#60a5fa' },
+      { text: 'Có người xem sản phẩm ngay lúc này', icon: 'eye', color: '#60a5fa' },
+      { text: 'Vừa có đăng ký tư vấn bệnh lý', icon: 'activity', color: '#22c55e' },
+      { text: 'Vừa có người tham gia nhóm Tân Dậu', icon: 'users', color: '#60a5fa' },
     ];
 
+    const timeStrs = ['vài giây trước', '1 phút trước', '2 phút trước', '3 phút trước', 'vừa xong'];
+
     const showToast = () => {
-      const actor = actors[Math.floor(Math.random() * actors.length)];
-      const location = locations[Math.floor(Math.random() * locations.length)];
       const action = actions[Math.floor(Math.random() * actions.length)];
-      
-      const fullText = `${actor} <strong>${location}</strong> ${action.text}.`;
-      const timeStr = `${Math.floor(Math.random() * 5) + 1} phút trước`;
+      const timeStr = timeStrs[Math.floor(Math.random() * timeStrs.length)];
 
       const toast = document.createElement('div');
       toast.className = 'social-toast';
       toast.innerHTML = `
-        <div class="social-toast-avatar" style="background-color: rgba(var(--color-primary-rgb), 0.1);">
-          <i data-lucide="${action.icon}" style="color: ${action.color};"></i>
+        <div class="social-toast-avatar">
+          <i data-lucide="${action.icon}"></i>
         </div>
         <div class="social-toast-content">
-          <div class="social-toast-text">${fullText}</div>
+          <div class="social-toast-text">${action.text}</div>
           <div class="social-toast-time">${timeStr}</div>
         </div>
       `;
 
       toastContainer.appendChild(toast);
-      
+
       if (typeof lucide !== 'undefined') {
-        lucide.createIcons({
-          attrs: {
-            style: 'width: 16px; height: 16px;'
-          },
-          nameAttr: 'data-lucide'
-        });
+        lucide.createIcons({ nameAttr: 'data-lucide' });
       }
 
-      // Fade in
-      setTimeout(() => toast.classList.add('show'), 100);
+      setTimeout(() => toast.classList.add('show'), 80);
 
-      // Fade out sau 5.5s
+      // Tự xóa sau 4s
       setTimeout(() => {
         toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 600);
-      }, 5500);
+        setTimeout(() => toast.remove(), 500);
+      }, 4000);
     };
 
-    // Lần đầu kích hoạt sau 10s
+    // Kích hoạt lần đầu sau 18s, sau đó mỗi 40-70s (thưa hơn nhiều)
     setTimeout(() => {
       showToast();
-      // Kích hoạt ngẫu nhiên sau mỗi 20-35s
       const triggerNext = () => {
-        const delay = (Math.random() * 15 + 20) * 1000;
-        setTimeout(() => {
-          showToast();
-          triggerNext();
-        }, delay);
+        const delay = (Math.random() * 30 + 40) * 1000;
+        setTimeout(() => { showToast(); triggerNext(); }, delay);
       };
       triggerNext();
-    }, 10000);
+    }, 18000);
   }
 
   initSocialToasts();
