@@ -64,10 +64,10 @@ window.CONFIG = {
     {
       "id": "intro",
       "type": "text-block",
-      "title": "Lời Ngỏ Từ Phòng Chẩn Trị",
+      "title": "Lời Ngỏ Từ Đinh Khánh Tùng",
       "enabled": true,
       "order": 2,
-      "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của <strong>Phòng chẩn trị YHCT Thu Bẩy</strong>. Tại đây, bà con có thể dễ dàng liên hệ tư vấn điều trị, đặt lịch khám trực tiếp tại Thái Nguyên, hoặc tham khảo các dòng trà thảo mộc organic và tinh dầu thảo dược thiên nhiên do chính phòng khám bào chế và tuyển chọn kỹ lưỡng."
+      "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của Đinh Khánh Tùng. Tại đây, mình mong muốn chia sẻ những giá trị thiết thực nhất cho cuộc sống – từ các bài thuốc Nam gia truyền đặc trị và thảo dược tự nhiên chăm sóc sức khỏe của phòng chẩn trị YHCT Thu Bẩy, cho đến các ứng dụng công nghệ tiện ích do chính mình phát triển giúp công việc và đời sống hàng ngày thêm thuận tiện. Rất vui được kết nối cùng bà con và các đồng niên!"
     },
     {
       "id": "my-apps",
