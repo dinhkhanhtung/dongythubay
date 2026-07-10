@@ -1409,40 +1409,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initSocialToasts();
 
-  // 10. Native Bottom Navigation Bar for Mobile (5 items)
+  // 10. Native Bottom Navigation Bar for Mobile (5 items: Ưu đãi, Sản phẩm, Đặt lịch, Quà tặng, Gọi điện)
   function initBottomBar() {
     if (window.location.pathname.includes('quanly')) return;
 
     const bottomBar = document.createElement('div');
     bottomBar.className = 'native-bottom-bar';
     
-    const zaloIcon = 'https://i.ibb.co/Wjz9N4P/AVv-Xs-Eg3-Dr-Zo-Aw-Hqb-R-Du-Iy32r-VDU8jh-XVN5-BI1-EFLFgt6-TLycc0-Ww9n1xen-D4-7r-MP4-jgdv-Hbyu-2-Gu-TN2h-O.png';
-    const messengerIcon = 'https://i.ibb.co/B523cQD3/3c39891bc36c.png';
-    const mapsIcon = 'https://i.ibb.co/fdtwLz7F/397619b871de.png';
     const phoneNumber = (window.CONFIG && window.CONFIG.profile && window.CONFIG.profile.phone) || '0982581222';
 
     bottomBar.innerHTML = `
-      <a href="tel:${phoneNumber}" class="bottom-bar-item" id="bb-call">
-        <div class="bb-icon-wrapper"><i data-lucide="phone"></i></div>
-        <span>Gọi điện</span>
+      <a href="#section-promo-countdown" class="bottom-bar-item" id="bb-promo">
+        <div class="bb-icon-wrapper"><i data-lucide="sparkles"></i></div>
+        <span>Ưu đãi</span>
       </a>
-      <a href="https://zalo.me/${phoneNumber}" target="_blank" rel="noopener noreferrer" class="bottom-bar-item" id="bb-zalo">
-        <img src="${zaloIcon}" alt="Zalo" class="bb-img-icon">
-        <span>Zalo</span>
+      <a href="#" class="bottom-bar-item" id="bb-products">
+        <div class="bb-icon-wrapper"><i data-lucide="shopping-bag"></i></div>
+        <span>Sản phẩm</span>
       </a>
       <a href="#section-appointment-booking" class="bottom-bar-item" id="bb-booking">
         <div class="bb-icon-wrapper active-booking"><i data-lucide="calendar"></i></div>
         <span>Đặt lịch</span>
       </a>
-      <a href="https://maps.google.com/?q=Phòng+Chẩn+Trị+YHCT+Thu+Bẩy+Tổ+10+Quan+Triều+Thái+Nguyên" target="_blank" rel="noopener noreferrer" class="bottom-bar-item" id="bb-maps">
-        <img src="${mapsIcon}" alt="Bản đồ" class="bb-img-icon">
-        <span>Chỉ đường</span>
+      <a href="#section-free-gifts" class="bottom-bar-item" id="bb-gifts">
+        <div class="bb-icon-wrapper"><i data-lucide="gift"></i></div>
+        <span>Quà tặng</span>
       </a>
-      <a href="https://m.me/dinhkhanhtung" target="_blank" rel="noopener noreferrer" class="bottom-bar-item" id="bb-messenger">
-        <img src="${messengerIcon}" alt="Messenger" class="bb-img-icon">
-        <span>Nhắn tin</span>
+      <a href="tel:${phoneNumber}" class="bottom-bar-item" id="bb-call">
+        <div class="bb-icon-wrapper"><i data-lucide="phone"></i></div>
+        <span>Gọi điện</span>
       </a>
     `;
+
+    // Click "Ưu đãi"
+    bottomBar.querySelector('#bb-promo').addEventListener('click', (e) => {
+      e.preventDefault();
+      const promoSection = document.getElementById('section-promo-countdown');
+      if (promoSection) {
+        promoSection.scrollIntoView({ behavior: 'smooth' });
+      }
+      trackClick('bottom_bar', 'promo', 'Ưu đãi bottom bar', '#');
+    });
+
+    // Click "Sản phẩm"
+    bottomBar.querySelector('#bb-products').addEventListener('click', (e) => {
+      e.preventDefault();
+      const productSection = document.querySelector('[id*="section-affiliate"]') || document.getElementById('section-affiliates');
+      if (productSection) {
+        productSection.scrollIntoView({ behavior: 'smooth' });
+      }
+      trackClick('bottom_bar', 'products', 'Sản phẩm bottom bar', '#');
+    });
 
     // Click "Đặt lịch" cuộn xuống form booking và mở form
     const bookingBtn = bottomBar.querySelector('#bb-booking');
@@ -1462,10 +1479,20 @@ document.addEventListener('DOMContentLoaded', () => {
       trackClick('bottom_bar', 'booking', 'Đặt lịch bottom bar', '#');
     });
 
-    bottomBar.querySelector('#bb-call').addEventListener('click', () => trackClick('bottom_bar', 'phone', 'Gọi điện bottom bar', `tel:${phoneNumber}`));
-    bottomBar.querySelector('#bb-zalo').addEventListener('click', () => trackClick('bottom_bar', 'zalo', 'Zalo bottom bar', `https://zalo.me/${phoneNumber}`));
-    bottomBar.querySelector('#bb-maps').addEventListener('click', () => trackClick('bottom_bar', 'maps', 'Bản đồ bottom bar', 'https://maps.google.com/?q=Phòng+Chẩn+Trị+YHCT+Thu+Bẩy+Tổ+10+Quan+Triều+Thái+Nguyên'));
-    bottomBar.querySelector('#bb-messenger').addEventListener('click', () => trackClick('bottom_bar', 'messenger', 'Messenger bottom bar', 'https://m.me/dinhkhanhtung'));
+    // Click "Quà tặng"
+    bottomBar.querySelector('#bb-gifts').addEventListener('click', (e) => {
+      e.preventDefault();
+      const giftSection = document.getElementById('section-free-gifts');
+      if (giftSection) {
+        giftSection.scrollIntoView({ behavior: 'smooth' });
+      }
+      trackClick('bottom_bar', 'gifts', 'Quà tặng bottom bar', '#');
+    });
+
+    // Click "Gọi điện"
+    bottomBar.querySelector('#bb-call').addEventListener('click', () => {
+      trackClick('bottom_bar', 'phone', 'Gọi điện bottom bar', `tel:${phoneNumber}`);
+    });
 
     document.body.appendChild(bottomBar);
     if (typeof lucide !== 'undefined') lucide.createIcons();
