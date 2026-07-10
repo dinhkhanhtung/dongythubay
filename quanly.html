@@ -526,6 +526,7 @@
         <div class="nav-item" data-tab="socials"><i data-lucide="share-2"></i> Mạng xã hội</div>
         <div class="nav-item" data-tab="booking"><i data-lucide="calendar"></i> Đặt Lịch Hẹn Khám</div>
         <div class="nav-item" data-tab="my-apps"><i data-lucide="layout-grid"></i> Ứng dụng/Web App</div>
+        <div class="nav-item" data-tab="android-apps"><i data-lucide="smartphone"></i> Ứng dụng Android</div>
         <div class="nav-item" data-tab="services"><i data-lucide="layers"></i> Dịch vụ số</div>
         <div class="nav-item" data-tab="affiliates"><i data-lucide="shopping-bag"></i> Sản phẩm khuyên dùng</div>
         <div class="nav-item" data-tab="reviews"><i data-lucide="message-square"></i> Ý kiến bệnh nhân</div>
@@ -811,6 +812,8 @@
         renderBookingTab(container);
       } else if (currentTab === 'my-apps') {
         renderItemsTab(container, 'my-apps', 'Ứng dụng / Web App', 'Chỉ cần điền URL, hệ thống sẽ tự động lấy ảnh và mô tả từ liên kết.');
+      } else if (currentTab === 'android-apps') {
+        renderItemsTab(container, 'android-apps', 'Ứng dụng Android (Google Play)', 'Thêm ứng dụng Android trên cửa hàng Google Play, hỗ trợ hiển thị rating, lượt tải và nút deep link.');
       } else if (currentTab === 'services') {
         renderItemsTab(container, 'services-digital', 'Dịch Vụ Số & Công Nghệ', 'Các dịch vụ bạn cung cấp (Facebook Ads, Web Dev, AI Agent...). Nút bấm Báo Giá sẽ tự cuộn tới form liên hệ và điền dịch vụ.');
       } else if (currentTab === 'affiliates') {
@@ -1034,6 +1037,43 @@
                 </div>
               </div>
             `;
+          } else if (sectionId === 'android-apps') {
+            specificFieldsHtml = `
+              <div class="field-grid">
+                <div class="form-group">
+                  <label>Tên ứng dụng (title) - *Bắt buộc</label>
+                  <input type="text" class="form-input inp-android-title" value="${item.title || ''}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                  <label>Package Name (ví dụ: com.example.myapp) - *Bắt buộc</label>
+                  <input type="text" class="form-input inp-android-pkg" value="${item.packageName || ''}" data-index="${index}">
+                </div>
+              </div>
+              <div class="field-grid">
+                <div class="form-group">
+                  <label>Link Google Play Store (playStoreUrl) - Tuỳ chọn</label>
+                  <input type="text" class="form-input inp-android-url" value="${item.playStoreUrl || ''}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                  <label>Đường dẫn Icon ứng dụng (image URL)</label>
+                  <input type="text" class="form-input inp-android-image" value="${item.image || ''}" data-index="${index}">
+                </div>
+              </div>
+              <div class="field-grid">
+                <div class="form-group">
+                  <label>Số sao đánh giá (rating - ví dụ: 4.9)</label>
+                  <input type="text" class="form-input inp-android-rating" value="${item.rating || '5.0'}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                  <label>Số lượt tải (downloads - ví dụ: 10.000+)</label>
+                  <input type="text" class="form-input inp-android-downloads" value="${item.downloads || '100+'}" data-index="${index}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Mô tả ngắn ứng dụng (description)</label>
+                <input type="text" class="form-input inp-android-desc" value="${item.description || ''}" data-index="${index}">
+              </div>
+            `;
           } else if (sectionId === 'services-digital') {
             specificFieldsHtml = `
               <div class="field-grid">
@@ -1076,21 +1116,30 @@
                   <input type="text" class="form-input inp-gift-title" value="${item.title || ''}" data-index="${index}">
                 </div>
                 <div class="form-group">
-                  <label>Mô tả ngắn (description)</label>
-                  <input type="text" class="form-input inp-gift-desc" value="${item.description || ''}" data-index="${index}">
+                  <label>Ảnh thu nhỏ (image URL) - Bỏ trống nếu muốn hiện icon PDF/Mặc định</label>
+                  <input type="text" class="form-input inp-gift-image" value="${item.image || ''}" data-index="${index}">
                 </div>
               </div>
               <div class="field-grid">
                 <div class="form-group">
+                  <label>Mô tả ngắn (description)</label>
+                  <input type="text" class="form-input inp-gift-desc" value="${item.description || ''}" data-index="${index}">
+                </div>
+                <div class="form-group">
                   <label>Icon Lucide (icon)</label>
                   <input type="text" class="form-input inp-gift-icon" value="${item.icon || 'gift'}" data-index="${index}">
                 </div>
+              </div>
+              <div class="field-grid">
                 <div class="form-group">
                   <label>Loại quà tặng (type)</label>
                   <select class="form-input inp-gift-type" data-index="${index}">
                     <option value="copy" ${item.type === 'copy' ? 'selected' : ''}>Sao chép (Prompt/Bài thuốc)</option>
                     <option value="download" ${item.type === 'download' ? 'selected' : ''}>Tải về/Liên kết (Bắt đầu bằng http)</option>
                   </select>
+                </div>
+                <div class="form-group">
+                  <!-- Empty cell to align -->
                 </div>
               </div>
               <div class="form-group">
@@ -1111,8 +1160,18 @@
             `;
           } else if (sectionId === 'affiliates') {
             specificFieldsHtml = `
+              <div class="field-grid">
+                <div class="form-group">
+                  <label>Tên sản phẩm (name) - Tùy chọn</label>
+                  <input type="text" class="form-input inp-affiliate-name" value="${item.name || ''}" data-index="${index}" placeholder="Nếu để trống sẽ tự cào từ link">
+                </div>
+                <div class="form-group">
+                  <label>Ảnh sản phẩm (image URL) - Tùy chọn</label>
+                  <input type="text" class="form-input inp-affiliate-image" value="${item.image || ''}" data-index="${index}" placeholder="Nếu để trống sẽ tự cào từ link">
+                </div>
+              </div>
               <div class="form-group">
-                <label>Đường dẫn mua hàng (affiliateUrl) - *Bắt buộc</label>
+                <label>Đường dẫn mua hàng / liên kết (affiliateUrl) - *Bắt buộc</label>
                 <input type="text" class="form-input inp-affiliate-url" value="${item.affiliateUrl || ''}" data-index="${index}">
               </div>
               <div class="field-grid">
@@ -1126,8 +1185,12 @@
                 </div>
               </div>
               <div class="form-group">
-                <label>Ưu đãi / Chiết khấu (discountNote)</label>
+                <label>Ưu đãi / Chiết khấu / Mô tả ngắn (discountNote)</label>
                 <input type="text" class="form-input inp-discount" value="${item.discountNote || ''}" data-index="${index}">
+              </div>
+              <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                <input type="checkbox" class="inp-contact-checkbox" id="contact-chk-${index}" data-index="${index}" ${item.isContact ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+                <label for="contact-chk-${index}" style="margin-bottom: 0; cursor: pointer; text-transform: none; font-size: 13.5px; font-weight: 500; color: var(--text-main);">Kích hoạt chế độ Liên hệ tư vấn Zalo (Thay vì nút mua hàng)</label>
               </div>
             `;
           } else if (sectionId === 'patient-reviews') {
@@ -1153,6 +1216,7 @@
  
           let editorTitle = 'Sản phẩm';
           if (sectionId === 'my-apps') editorTitle = 'Ứng dụng';
+          else if (sectionId === 'android-apps') editorTitle = 'Android App';
           else if (sectionId === 'services-digital') editorTitle = 'Dịch vụ';
           else if (sectionId === 'free-gifts') editorTitle = 'Quà tặng';
           else if (sectionId === 'faq') editorTitle = 'Câu hỏi';
@@ -1168,7 +1232,7 @@
               </div>
             </div>
             ${specificFieldsHtml}
-            ${(sectionId !== 'patient-reviews' && sectionId !== 'free-gifts' && sectionId !== 'faq' && sectionId !== 'services-digital') ? `
+            ${(sectionId !== 'patient-reviews' && sectionId !== 'free-gifts' && sectionId !== 'faq' && sectionId !== 'services-digital' && sectionId !== 'android-apps') ? `
             <p style="font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 4px;">
               Các trường Tên, Mô tả, Hình ảnh được tự động cào từ đường dẫn sau khi lưu.
             </p>
@@ -1181,6 +1245,28 @@
             });
             card.querySelector('.inp-tag').addEventListener('input', (e) => {
               section.items[index].tag = e.target.value;
+            });
+          } else if (sectionId === 'android-apps') {
+            card.querySelector('.inp-android-title').addEventListener('input', (e) => {
+              section.items[index].title = e.target.value;
+            });
+            card.querySelector('.inp-android-pkg').addEventListener('input', (e) => {
+              section.items[index].packageName = e.target.value;
+            });
+            card.querySelector('.inp-android-url').addEventListener('input', (e) => {
+              section.items[index].playStoreUrl = e.target.value;
+            });
+            card.querySelector('.inp-android-image').addEventListener('input', (e) => {
+              section.items[index].image = e.target.value;
+            });
+            card.querySelector('.inp-android-rating').addEventListener('input', (e) => {
+              section.items[index].rating = e.target.value;
+            });
+            card.querySelector('.inp-android-downloads').addEventListener('input', (e) => {
+              section.items[index].downloads = e.target.value;
+            });
+            card.querySelector('.inp-android-desc').addEventListener('input', (e) => {
+              section.items[index].description = e.target.value;
             });
           } else if (sectionId === 'services-digital') {
             card.querySelector('.inp-service-title').addEventListener('input', (e) => {
@@ -1213,6 +1299,9 @@
             card.querySelector('.inp-gift-title').addEventListener('input', (e) => {
               section.items[index].title = e.target.value;
             });
+            card.querySelector('.inp-gift-image').addEventListener('input', (e) => {
+              section.items[index].image = e.target.value;
+            });
             card.querySelector('.inp-gift-desc').addEventListener('input', (e) => {
               section.items[index].description = e.target.value;
             });
@@ -1233,6 +1322,12 @@
               section.items[index].answer = e.target.value;
             });
           } else if (sectionId === 'affiliates') {
+            card.querySelector('.inp-affiliate-name').addEventListener('input', (e) => {
+              section.items[index].name = e.target.value;
+            });
+            card.querySelector('.inp-affiliate-image').addEventListener('input', (e) => {
+              section.items[index].image = e.target.value;
+            });
             card.querySelector('.inp-affiliate-url').addEventListener('input', (e) => {
               section.items[index].affiliateUrl = e.target.value;
             });
@@ -1244,6 +1339,9 @@
             });
             card.querySelector('.inp-discount').addEventListener('input', (e) => {
               section.items[index].discountNote = e.target.value;
+            });
+            card.querySelector('.inp-contact-checkbox').addEventListener('change', (e) => {
+              section.items[index].isContact = e.target.checked;
             });
           } else if (sectionId === 'patient-reviews') {
             card.querySelector('.inp-review-image').addEventListener('input', (e) => {
@@ -1299,10 +1397,12 @@
       document.getElementById('add-item').addEventListener('click', () => {
         if (sectionId === 'my-apps') {
           section.items.unshift({ previewUrl: 'https://', tag: 'Web App' });
+        } else if (sectionId === 'android-apps') {
+          section.items.unshift({ title: 'Ứng dụng mới', packageName: 'com.example.app', playStoreUrl: '', image: '', rating: '5.0', downloads: '100+', description: '' });
         } else if (sectionId === 'services-digital') {
           section.items.unshift({ title: 'Dịch vụ mới', subtitle: 'Dịch vụ mới Demo', description: 'Mô tả dịch vụ...', icon: 'layers', features: [] });
         } else if (sectionId === 'free-gifts') {
-          section.items.unshift({ title: 'Quà tặng mới', description: 'Mô tả quà tặng...', icon: 'gift', type: 'copy', content: '' });
+          section.items.unshift({ title: 'Quà tặng mới', image: '', description: 'Mô tả quà tặng...', icon: 'gift', type: 'copy', content: '' });
         } else if (sectionId === 'faq') {
           section.items.unshift({ question: 'Câu hỏi mới?', answer: 'Trả lời mới...' });
         } else if (sectionId === 'patient-reviews') {
@@ -1317,7 +1417,7 @@
           }
           section.items.unshift({ image: 'assets/review/' + defaultImg, caption: 'Nhận xét bệnh nhân mới' });
         } else {
-          section.items.unshift({ affiliateUrl: 'https://', priceNote: '', discountNote: '', ctaLabel: 'Mua trên TikTok' });
+          section.items.unshift({ affiliateUrl: 'https://', priceNote: '', discountNote: '', ctaLabel: 'Mua trên TikTok', name: '', image: '', isContact: false });
         }
         renderItemsList();
         document.getElementById('editor-container').scrollTop = 0;
@@ -1827,6 +1927,9 @@
       desc.textContent = 'Hệ thống đang chuyển đổi dữ liệu thành mã JavaScript và gửi lên máy chủ bảo mật.';
       spinner.style.display = 'block';
       countdownBox.style.display = 'none';
+
+      // Cập nhật timestamp thời điểm lưu cấu hình để bypass cache avatar/config
+      localConfig.updatedAt = Date.now();
 
       const fileContent = `// File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.

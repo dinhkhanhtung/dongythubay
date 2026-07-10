@@ -1,6 +1,7 @@
 // File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.
 window.CONFIG = {
+  "updatedAt": 1783683100000,
   "profile": {
     "avatar": "assets/avatar_doctor.png",
     "name": "Đông y Thu Bẩy",
@@ -58,6 +59,12 @@ window.CONFIG = {
           "label": "Kết Nối Tân Dậu Toàn Cầu",
           "url": "https://web.facebook.com/groups/ketnoitandautoancau",
           "icon": "https://img.icons8.com/color/144/facebook-new.png"
+        },
+        {
+          "platform": "google-review",
+          "label": "Đánh Giá Google 5 Sao",
+          "url": "https://g.page/r/CUXNMH8bivYcEAI/review",
+          "icon": "https://img.icons8.com/color/144/google-logo.png"
         }
       ]
     },
@@ -103,6 +110,27 @@ window.CONFIG = {
         {
           "previewUrl": "https://batdongsancrm.vercel.app/",
           "tag": "Bất động sản"
+        }
+      ]
+    },
+    {
+      "id": "android-apps",
+      "type": "android-apps",
+      "title": "Ứng Dụng Android Trên CH Play",
+      "enabled": true,
+      "order": 5.2,
+      "items": [
+        {
+          "playStoreUrl": "https://play.google.com/store/apps/details?id=com.financeapp.personal_finance_app",
+          "packageName": "com.financeapp.personal_finance_app",
+          "rating": "4.8",
+          "downloads": "100+"
+        },
+        {
+          "playStoreUrl": "https://play.google.com/store/apps/details?id=com.dinhkhanhtung.selleasy",
+          "packageName": "com.dinhkhanhtung.selleasy",
+          "rating": "4.9",
+          "downloads": "500+"
         }
       ]
     },

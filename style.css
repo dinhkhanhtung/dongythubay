@@ -2258,3 +2258,266 @@ body {
   transform: scale(0.9) translateY(-2px) !important;
 }
 
+/* ==========================================================================
+   Android Apps Section - Google Play
+   ========================================================================== */
+.android-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .android-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.android-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  border: var(--border-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: var(--transition-cubic);
+}
+
+.android-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.android-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: 18px; /* Squircle style bo tròn của Android */
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  background-color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.android-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.android-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.android-info h3 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.android-info p {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.android-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.android-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #eab308;
+}
+
+.android-downloads {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.android-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: var(--bg-input);
+  color: var(--color-primary);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-cubic);
+}
+
+.android-card:hover .android-cta {
+  background-color: var(--color-primary);
+  color: #000000;
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Quà tặng PDF / Custom Thumbnail
+   ========================================================================== */
+.gift-thumbnail {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: var(--bg-input);
+}
+
+.gift-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gift-pdf-fallback {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+.gift-pdf-fallback i, .gift-pdf-fallback svg {
+  width: 22px;
+  height: 22px;
+  margin-bottom: -1px;
+}
+
+/* ==========================================================================
+   Sản phẩm Nút Liên Hệ
+   ========================================================================== */
+.affiliate-cta.contact-zalo {
+  background: linear-gradient(135deg, #0068ff, #0050d5);
+  color: #ffffff !important;
+}
+
+.affiliate-cta.contact-zalo:hover {
+  background: linear-gradient(135deg, #0055e0, #0040b0);
+  box-shadow: 0 0 12px rgba(0, 104, 255, 0.4);
+}
+
+/* ==========================================================================
+   Lightbox Swipe Slider (Review Gallery)
+   ========================================================================== */
+.review-lightbox {
+  touch-action: none; /* Ngăn chặn cuộn trang khi vuốt lightbox */
+}
+
+.lightbox-content-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  max-height: 80vh;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lightbox-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1010;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.lightbox-nav-btn:hover {
+  background-color: rgba(34, 197, 94, 0.8);
+  color: #000000;
+  scale: 1.05;
+}
+
+.lightbox-btn-prev {
+  left: -64px;
+}
+
+.lightbox-btn-next {
+  right: -64px;
+}
+
+@media (max-width: 768px) {
+  .lightbox-btn-prev {
+    left: 8px;
+  }
+  .lightbox-btn-next {
+    right: 8px;
+  }
+  .lightbox-nav-btn {
+    width: 38px;
+    height: 38px;
+    background-color: rgba(15, 23, 42, 0.75);
+  }
+}
+
+.lightbox-counter {
+  position: absolute;
+  top: -36px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+

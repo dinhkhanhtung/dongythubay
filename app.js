@@ -69,7 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const tiktokEl = document.getElementById('profile-tiktok');
     const bioEl = document.getElementById('profile-bio');
 
-    if (profile.avatar) avatarImg.src = profile.avatar;
+    if (profile.avatar) {
+      const cacheBuster = config.updatedAt ? `?v=${config.updatedAt}` : `?v=${Date.now()}`;
+      avatarImg.src = profile.avatar + (profile.avatar.includes('?') ? '&' : '?') + cacheBuster;
+    }
     if (profile.name) nameEl.textContent = profile.name;
     
     if (profile.subtitle) {
@@ -388,6 +391,9 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'project-grid':
           renderProjectGrid(section, sectionEl);
           break;
+        case 'android-apps':
+          renderAndroidApps(section, sectionEl);
+          break;
         case 'affiliate-list':
           renderAffiliateList(section, sectionEl);
           break;
@@ -594,6 +600,104 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(grid);
   }
 
+  // 3.5. Android Apps Grid (Google Play Store Apps display)
+  function renderAndroidApps(section, container) {
+    const grid = document.createElement('div');
+    grid.className = 'android-grid';
+
+    const items = section.items || [];
+    items.forEach((item, index) => {
+      const card = document.createElement('a');
+      card.className = 'android-card';
+      card.id = `android-card-${section.id}-${index}`;
+      
+      let storeUrl = item.playStoreUrl || '';
+      let packageName = item.packageName || '';
+
+      // Tự động giải trích xuất packageName từ link nếu thiếu
+      if (!packageName && storeUrl) {
+        try {
+          const urlObj = new URL(storeUrl);
+          const idParam = urlObj.searchParams.get('id');
+          if (idParam) packageName = idParam;
+        } catch (e) {
+          console.warn('[Android App] Error parsing package name:', e);
+        }
+      }
+
+      if (!storeUrl && packageName) {
+        storeUrl = `https://play.google.com/store/apps/details?id=${packageName}`;
+      }
+
+      const title = item.title || 'Đang tải...';
+      const description = item.description || 'Vui lòng đợi giây lát...';
+      const icon = item.image || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4=';
+      const rating = item.rating || '5.0';
+      const downloads = item.downloads || '100+';
+      
+      // Deep link cho thiết bị Android: dùng market://details?id=...
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      if (isAndroid && packageName) {
+        card.href = `market://details?id=${packageName}`;
+      } else {
+        card.href = storeUrl || '#';
+      }
+      
+      card.target = '_blank';
+      card.setAttribute('rel', 'noopener noreferrer');
+
+      card.innerHTML = `
+        <div class="android-icon-wrapper">
+          <img src="${icon}" alt="${title}" class="android-icon-img" loading="lazy">
+        </div>
+        <div class="android-info">
+          <h3>${title}</h3>
+          <p>${description}</p>
+          <div class="android-meta">
+            <span class="android-rating">
+              <i data-lucide="star" style="width: 12px; height: 12px; fill: #eab308; color:#eab308;"></i> ${rating}
+            </span>
+            <span class="android-downloads">
+              <i data-lucide="download" style="width: 12px; height: 12px;"></i> ${downloads} lượt tải
+            </span>
+          </div>
+        </div>
+        <div class="android-cta" title="Tải trên Google Play">
+          <i data-lucide="play" style="width: 16px; height: 16px; fill: currentColor;"></i>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        trackClick('android_app', packageName || slugify(title), title, card.href);
+      });
+
+      // Link Unfurling Trigger if metadata is missing
+      if (storeUrl && (!item.title || !item.image)) {
+        unfurlLink(storeUrl).then(meta => {
+          if (meta) {
+            const imgEl = card.querySelector('.android-icon-img');
+            const titleEl = card.querySelector('.android-info h3');
+            const descEl = card.querySelector('.android-info p');
+            
+            if (imgEl && !item.image && meta.image) imgEl.src = meta.image;
+            if (titleEl && !item.title && meta.title) {
+              titleEl.textContent = meta.title;
+              if (imgEl) imgEl.alt = meta.title;
+            }
+            if (descEl && !item.description && meta.description) {
+              descEl.textContent = meta.description;
+            }
+          }
+        });
+      }
+
+      grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
   // 4. Affiliate List Component (E-commerce Style Grid 2 Columns like TikTok Shop)
   function renderAffiliateList(section, container) {
     const list = document.createElement('div');
@@ -608,28 +712,36 @@ document.addEventListener('DOMContentLoaded', () => {
       const price = item.priceNote || '';
       const discount = item.discountNote || 'Nhấp xem chi tiết ưu đãi';
       const image = item.image || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4=';
-      const linkUrl = item.affiliateUrl;
       
-      const isTikTok = linkUrl.includes('tiktok.com');
-      const isShopee = linkUrl.includes('shopee.vn') || linkUrl.includes('shope.ee');
-      const isLazada = linkUrl.includes('lazada.vn');
-
+      const isContact = item.isContact === true;
+      let linkUrl = item.affiliateUrl;
       let platformClass = 'other';
       let defaultCta = 'Mua ngay';
       let targetAttr = '_blank';
       let relAttr = 'rel="noopener noreferrer"';
 
-      if (isTikTok) {
-        platformClass = 'tiktok';
-        defaultCta = 'Mua trên TikTok';
-        targetAttr = '_self';
-        relAttr = '';
-      } else if (isShopee) {
-        platformClass = 'shopee';
-        defaultCta = 'Mua trên Shopee';
-      } else if (isLazada) {
-        platformClass = 'lazada';
-        defaultCta = 'Mua trên Lazada';
+      if (isContact) {
+        platformClass = 'contact-zalo';
+        defaultCta = 'Tư vấn Zalo';
+        // Số điện thoại của admin là 0982581222
+        linkUrl = `https://zalo.me/0982581222?text=${encodeURIComponent('Tôi cần tư vấn về sản phẩm: ' + name)}`;
+      } else {
+        const isTikTok = linkUrl && linkUrl.includes('tiktok.com');
+        const isShopee = linkUrl && (linkUrl.includes('shopee.vn') || linkUrl.includes('shope.ee'));
+        const isLazada = linkUrl && linkUrl.includes('lazada.vn');
+
+        if (isTikTok) {
+          platformClass = 'tiktok';
+          defaultCta = 'Mua trên TikTok';
+          targetAttr = '_self';
+          relAttr = '';
+        } else if (isShopee) {
+          platformClass = 'shopee';
+          defaultCta = 'Mua trên Shopee';
+        } else if (isLazada) {
+          platformClass = 'lazada';
+          defaultCta = 'Mua trên Lazada';
+        }
       }
 
       const ctaLabel = item.ctaLabel || defaultCta;
@@ -657,15 +769,15 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="affiliate-discount">${discount}</div>
             <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 6px;">
               <span style="color: #eab308; display: flex; align-items: center; gap: 2px; font-weight: 700;">
-                <i data-lucide="star" style="width: 11px; height: 11px; fill: #eab308;"></i> 4.9
+                <i data-lucide="star" style="width: 11px; height: 11px; fill: #eab308; color:#eab308;"></i> 4.9
               </span>
               <span style="opacity: 0.4;">|</span>
-              <span style="opacity: 0.85; font-weight: 500;">Đã bán ${getVirtualSales(name, index, linkUrl)}</span>
+              <span style="opacity: 0.85; font-weight: 500;">Đã bán ${getVirtualSales(name, index, isContact ? 'contact' : linkUrl)}</span>
             </div>
           </div>
           <div class="affiliate-cta ${platformClass}">
             <span>${ctaLabel}</span>
-            <i data-lucide="shopping-cart"></i>
+            <i data-lucide="${isContact ? 'message-circle' : 'shopping-cart'}"></i>
           </div>
         </div>
       `;
@@ -673,22 +785,15 @@ document.addEventListener('DOMContentLoaded', () => {
       // Track click & Smart TikTok Deep-linking for seamless purchase
       card.addEventListener('click', (e) => {
         const currentName = card.querySelector('.affiliate-name')?.textContent || name;
-        trackClick('affiliate', slugify(currentName), currentName, linkUrl);
+        trackClick(isContact ? 'contact_product' : 'affiliate', slugify(currentName), currentName, linkUrl);
 
-        if (isTikTok) {
+        if (!isContact && linkUrl && linkUrl.includes('tiktok.com')) {
           const match = linkUrl.match(/\/product\/(\d+)/);
           if (match && match[1]) {
             const productId = match[1];
-            // TikTok native PDP schema
             const deepLink = `tiktok://ecommerce/product/detail?product_id=${productId}`;
-            
-            // Prevent normal browser navigation to avoid WebView error/popup loop
             e.preventDefault();
-            
-            // Try to open deep link directly
             window.location.href = deepLink;
-            
-            // Fallback to normal URL if deep link fails (after 1.2s)
             setTimeout(() => {
               window.location.href = linkUrl;
             }, 1200);
@@ -696,8 +801,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Link Unfurling Trigger if metadata is missing
-      if (!item.name || !item.image) {
+      // Link Unfurling Trigger if metadata is missing (Skip if contact product or custom name/image provided)
+      if (!isContact && linkUrl && (!item.name || !item.image)) {
         unfurlLink(linkUrl).then(meta => {
           if (meta) {
             const imgEl = card.querySelector('.affiliate-image');
@@ -1120,8 +1225,19 @@ document.addEventListener('DOMContentLoaded', () => {
         actionBtnHtml = `<button class="gift-btn" data-content="${encodeURIComponent(gift.content || '')}">Sao chép</button>`;
       }
 
+      let mediaHtml = '';
+      const isPdfLink = gift.content && (gift.content.toLowerCase().endsWith('.pdf') || gift.content.toLowerCase().includes('.pdf'));
+      
+      if (gift.image) {
+        mediaHtml = `<div class="gift-thumbnail"><img src="${gift.image}" alt="${gift.title}" class="gift-thumb-img" loading="lazy"></div>`;
+      } else if (isPdfLink) {
+        mediaHtml = `<div class="gift-thumbnail"><div class="gift-pdf-fallback"><i data-lucide="file-text"></i><span>PDF</span></div></div>`;
+      } else {
+        mediaHtml = `<div class="gift-icon"><i data-lucide="${gift.icon || 'gift'}"></i></div>`;
+      }
+
       card.innerHTML = `
-        <div class="gift-icon"><i data-lucide="${gift.icon || 'gift'}"></i></div>
+        ${mediaHtml}
         <div class="gift-body">
           <h4 class="gift-title">${gift.title}</h4>
           <p class="gift-desc">${gift.description}</p>
@@ -1286,6 +1402,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 7. Patient Reviews (Testimonials) Component with Zoom Lightbox
+  let currentReviewItems = [];
+  let currentReviewIndex = 0;
+
   function renderPatientReviews(section, container) {
     const slider = document.createElement('div');
     slider.className = 'reviews-container';
@@ -1307,9 +1426,9 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
 
-      // Zoom click handler (open lightbox)
+      // Zoom click handler (open lightbox with index and full items list)
       card.addEventListener('click', () => {
-        openLightbox(image, caption);
+        openLightbox(index, section.items);
       });
 
       slider.appendChild(card);
@@ -1318,8 +1437,11 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(slider);
   }
 
-  // Lightbox utility function
-  function openLightbox(src, caption) {
+  // Lightbox utility function (Premium swipe slider)
+  function openLightbox(index, items) {
+    currentReviewItems = items;
+    currentReviewIndex = index;
+
     let lightbox = document.getElementById('review-lightbox-modal');
     if (!lightbox) {
       lightbox = document.createElement('div');
@@ -1327,29 +1449,108 @@ document.addEventListener('DOMContentLoaded', () => {
       lightbox.className = 'review-lightbox';
       lightbox.innerHTML = `
         <div class="lightbox-content-wrapper">
+          <div class="lightbox-counter" id="lightbox-counter-el"></div>
+          <button class="lightbox-nav-btn lightbox-btn-prev" id="lightbox-prev-el" aria-label="Ảnh trước">
+            <i data-lucide="chevron-left"></i>
+          </button>
           <img src="" alt="" class="lightbox-img" id="lightbox-img-el">
           <div class="lightbox-caption" id="lightbox-caption-el"></div>
+          <button class="lightbox-nav-btn lightbox-btn-next" id="lightbox-next-el" aria-label="Ảnh tiếp theo">
+            <i data-lucide="chevron-right"></i>
+          </button>
         </div>
       `;
       
-      // Close lightbox on click
-      lightbox.addEventListener('click', () => {
-        lightbox.classList.remove('show');
+      // Close lightbox on click outside the image
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrapper')) {
+          lightbox.classList.remove('show');
+        }
       });
 
       document.body.appendChild(lightbox);
+
+      // Bind nav click
+      lightbox.querySelector('#lightbox-prev-el').addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigateLightbox(-1);
+      });
+      lightbox.querySelector('#lightbox-next-el').addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigateLightbox(1);
+      });
+
+      // Swipe logic for Mobile
+      let touchStartX = 0;
+      let touchEndX = 0;
+      
+      lightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      lightbox.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const threshold = 40;
+        if (touchStartX - touchEndX > threshold) {
+          navigateLightbox(1); // Swipe left -> Next
+        } else if (touchEndX - touchStartX > threshold) {
+          navigateLightbox(-1); // Swipe right -> Prev
+        }
+      }, { passive: true });
+
+      // Keyboard support
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('show')) return;
+        if (e.key === 'ArrowLeft') {
+          navigateLightbox(-1);
+        } else if (e.key === 'ArrowRight') {
+          navigateLightbox(1);
+        } else if (e.key === 'Escape') {
+          lightbox.classList.remove('show');
+        }
+      });
     }
 
-    const imgEl = lightbox.querySelector('#lightbox-img-el');
-    const captionEl = lightbox.querySelector('#lightbox-caption-el');
-
-    imgEl.src = src;
-    imgEl.alt = caption;
-    captionEl.textContent = caption;
+    updateLightboxContent();
 
     // Show Lightbox with transition
     lightbox.getBoundingClientRect();
     lightbox.classList.add('show');
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  function navigateLightbox(direction) {
+    if (!currentReviewItems || currentReviewItems.length === 0) return;
+    currentReviewIndex += direction;
+    if (currentReviewIndex < 0) {
+      currentReviewIndex = currentReviewItems.length - 1;
+    } else if (currentReviewIndex >= currentReviewItems.length) {
+      currentReviewIndex = 0;
+    }
+    updateLightboxContent();
+  }
+
+  function updateLightboxContent() {
+    const lightbox = document.getElementById('review-lightbox-modal');
+    if (!lightbox) return;
+
+    const item = currentReviewItems[currentReviewIndex];
+    const imgEl = lightbox.querySelector('#lightbox-img-el');
+    const captionEl = lightbox.querySelector('#lightbox-caption-el');
+    const counterEl = lightbox.querySelector('#lightbox-counter-el');
+
+    imgEl.style.transform = 'scale(0.96)';
+    imgEl.style.opacity = '0.6';
+
+    setTimeout(() => {
+      imgEl.src = item.image;
+      imgEl.alt = item.caption || '';
+      captionEl.textContent = item.caption || `Đánh giá bệnh nhân #${currentReviewIndex + 1}`;
+      counterEl.textContent = `${currentReviewIndex + 1} / ${currentReviewItems.length}`;
+      imgEl.style.transform = 'scale(1)';
+      imgEl.style.opacity = '1';
+    }, 80);
   }
 
   // 9. Social Proof Toast Generator (ngắn gọn, chung chung, không lộ tên)
