@@ -548,7 +548,7 @@ window.CONFIG = {
           "subtitle": "Thiết kế Đồ họa & Video",
           "description": "Hình ảnh, video chuyên nghiệp, hỗ trợ nhận diện thương hiệu.",
           "icon": "video",
-          "image": "https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_640.jpg",
+          "image": "https://i.ibb.co/4wVDkPHz/graphic-design-service-image.png",
           "features": [
             "Thiết kế banner, logo, video quảng cáo.",
             "Chỉnh sửa video theo yêu cầu."
