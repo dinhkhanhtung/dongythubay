@@ -33,15 +33,53 @@
 </head>
 
 <body>
-  <!-- Light/Dark Mode Toggle & Admin trigger -->
-  <div class="top-controls">
-    <button id="theme-toggle" class="control-btn" aria-label="Chuyển chế độ sáng/tối">
-      <i data-lucide="moon"></i>
-    </button>
-    <button id="admin-trigger" class="control-btn" aria-label="Thống kê truy cập" style="display: none;">
-      <i data-lucide="bar-chart-2"></i>
-    </button>
-  </div>
+  <!-- Sticky Top Header -->
+  <header class="sticky-header">
+    <div class="header-inner">
+      <div class="header-logo">
+        <i data-lucide="activity" class="logo-icon"></i>
+        <span>Thu Bẩy YHCT</span>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle" class="header-btn" aria-label="Chuyển chế độ sáng/tối">
+          <i data-lucide="moon"></i>
+        </button>
+        <button id="admin-trigger" class="header-btn" aria-label="Thống kê" style="display: none;">
+          <i data-lucide="bar-chart-2"></i>
+        </button>
+        <button id="menu-toggle" class="header-btn" aria-label="Menu điều hướng">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+    <!-- Hamburger Dropdown Menu -->
+    <nav id="header-nav" class="header-nav">
+      <a href="#" class="nav-link-item" data-target="top">
+        <i data-lucide="home"></i>
+        <span>Trang chủ</span>
+      </a>
+      <a href="#" class="nav-link-item" data-target="services">
+        <i data-lucide="layers"></i>
+        <span>Dịch vụ công nghệ</span>
+      </a>
+      <a href="#" class="nav-link-item" data-target="products">
+        <i data-lucide="shopping-bag"></i>
+        <span>Sản phẩm Đông Y</span>
+      </a>
+      <a href="#" class="nav-link-item" data-target="gifts">
+        <i data-lucide="gift"></i>
+        <span>Quà tặng miễn phí</span>
+      </a>
+      <a href="#" class="nav-link-item" data-target="faq">
+        <i data-lucide="help-circle"></i>
+        <span>Hỏi đáp (FAQ)</span>
+      </a>
+      <a href="#" class="nav-link-item" data-target="booking">
+        <i data-lucide="calendar"></i>
+        <span>Đặt lịch tư vấn</span>
+      </a>
+    </nav>
+  </header>
 
   <!-- App Wrapper -->
   <main class="app-container">

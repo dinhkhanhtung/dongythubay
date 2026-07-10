@@ -1498,6 +1498,76 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
+  // 11. Hamburger Menu Logic for Sticky Header
+  const menuToggle = document.getElementById('menu-toggle');
+  const headerNav = document.getElementById('header-nav');
+  
+  if (menuToggle && headerNav) {
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      headerNav.classList.toggle('show');
+      const icon = menuToggle.querySelector('i') || menuToggle.querySelector('svg');
+      if (icon) {
+        if (headerNav.classList.contains('show')) {
+          menuToggle.innerHTML = '<i data-lucide="x" style="width:20px;height:20px;"></i>';
+        } else {
+          menuToggle.innerHTML = '<i data-lucide="menu" style="width:20px;height:20px;"></i>';
+        }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    });
+
+    // Close menu on click outside
+    document.addEventListener('click', () => {
+      headerNav.classList.remove('show');
+      const icon = menuToggle.querySelector('i') || menuToggle.querySelector('svg');
+      if (icon && icon.getAttribute('data-lucide') === 'x') {
+        menuToggle.innerHTML = '<i data-lucide="menu" style="width:20px;height:20px;"></i>';
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    });
+
+    // Click links inside menu scroll and close
+    headerNav.querySelectorAll('.nav-link-item').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = link.getAttribute('data-target');
+        headerNav.classList.remove('show');
+        const icon = menuToggle.querySelector('i') || menuToggle.querySelector('svg');
+        if (icon) {
+          menuToggle.innerHTML = '<i data-lucide="menu" style="width:20px;height:20px;"></i>';
+          if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        if (target === 'top') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          let selector = '';
+          if (target === 'services') selector = '#section-services-digital';
+          else if (target === 'products') selector = '[id*="section-affiliate"]';
+          else if (target === 'gifts') selector = '#section-free-gifts';
+          else if (target === 'faq') selector = '#section-faq';
+          else if (target === 'booking') selector = '#section-appointment-booking';
+
+          const targetEl = document.querySelector(selector);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+            
+            // Auto open booking form if selected
+            if (target === 'booking') {
+              const formWrapper = targetEl.querySelector('#booking-form-wrapper');
+              const chevron = targetEl.querySelector('#booking-chevron');
+              if (formWrapper && (formWrapper.style.maxHeight === '0px' || formWrapper.style.maxHeight === '')) {
+                formWrapper.style.maxHeight = formWrapper.scrollHeight + 'px';
+                if (chevron) chevron.style.transform = 'rotate(180deg)';
+              }
+            }
+          }
+        }
+      });
+    });
+  }
+
   initBottomBar();
 
 });
