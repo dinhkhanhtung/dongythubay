@@ -647,6 +647,10 @@
       activeImageSelectIndex = index;
       const overlay = document.getElementById('gallery-overlay');
       const grid = document.getElementById('gallery-grid');
+      const searchInput = document.getElementById('gallery-search');
+      
+      // Reset search field
+      searchInput.value = '';
       
       grid.innerHTML = REVIEWS_GALLERY.map(img => {
         const fullPath = 'assets/review/' + img;
@@ -659,6 +663,19 @@
       }).join('');
       
       overlay.classList.add('show');
+
+      // Bind search input to filter gallery items
+      searchInput.oninput = (e) => {
+        const val = e.target.value.toLowerCase().trim();
+        grid.querySelectorAll('.gallery-item').forEach(item => {
+          const filename = item.getAttribute('data-filename').toLowerCase();
+          if (filename.includes(val)) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      };
 
       // Bind click events for gallery items
       grid.querySelectorAll('.gallery-item').forEach(item => {
