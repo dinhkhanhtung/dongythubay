@@ -1150,19 +1150,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const q = el.querySelector('.faq-question');
       const a = el.querySelector('.faq-answer');
-      // Set initial open state
-      if (idx === 0) a.style.maxHeight = a.scrollHeight + 'px';
 
       q.addEventListener('click', () => {
         const isOpen = el.classList.contains('open');
-        // Close all
+        // Close all - CSS handles max-height via .open class
         list.querySelectorAll('.faq-item').forEach(i => {
           i.classList.remove('open');
-          i.querySelector('.faq-answer').style.maxHeight = '0';
         });
         if (!isOpen) {
           el.classList.add('open');
-          a.style.maxHeight = a.scrollHeight + 'px';
         }
       });
 
