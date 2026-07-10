@@ -1058,7 +1058,10 @@
               </div>
               <div class="form-group">
                 <label>Đường dẫn ảnh minh họa (image)</label>
-                <input type="text" class="form-input inp-service-image" value="${item.image || ''}" data-index="${index}">
+                <input type="text" class="form-input inp-service-image" value="${item.image || ''}" data-index="${index}" style="margin-bottom: 8px;">
+                <div class="service-image-preview" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); width: 120px; height: 68px; display: ${item.image ? 'block' : 'none'}; background-color: #0b0f19;">
+                  <img src="${item.image || ''}" style="width: 100%; height: 100%; object-fit: cover;" class="img-service-preview-tag">
+                </div>
               </div>
               <div class="form-group">
                 <label>Các đặc điểm chính (mỗi dòng là 1 đặc điểm, tối đa 3 dòng)</label>
@@ -1194,6 +1197,14 @@
             });
             card.querySelector('.inp-service-image').addEventListener('input', (e) => {
               section.items[index].image = e.target.value;
+              const previewDiv = card.querySelector('.service-image-preview');
+              const previewImg = card.querySelector('.img-service-preview-tag');
+              if (e.target.value) {
+                previewImg.src = e.target.value;
+                previewDiv.style.display = 'block';
+              } else {
+                previewDiv.style.display = 'none';
+              }
             });
             card.querySelector('.inp-service-features').addEventListener('input', (e) => {
               section.items[index].features = e.target.value.split('\n').filter(l => l.trim() !== '');
