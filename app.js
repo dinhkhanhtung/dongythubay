@@ -33,8 +33,80 @@
 
 })();
 
+function showTikTokAndroidPopup() {
+  if (document.getElementById('tiktok-android-popup')) return;
+
+  const cleanUrl = window.location.host + window.location.pathname + window.location.search;
+  const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'tiktok-android-popup';
+  overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(8, 20, 14, 0.97);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 99999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    box-sizing: border-box;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      width: 100%;
+      max-width: 320px;
+      background: #1a2a22;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 26px 24px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      box-sizing: border-box;
+    ">
+      <h3 style="
+        margin: 0 0 10px 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        color: #ffffff;
+        font-size: 19px;
+        font-weight: 700;
+      ">Mở Bằng Google Chrome</h3>
+      
+      <p style="
+        margin: 0 0 22px 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        color: #a3b8ac;
+        font-size: 14.5px;
+        line-height: 1.5;
+      ">
+        Vui lòng chuyển sang trình duyệt Chrome để sử dụng Zalo, Messenger và Bản đồ bình thường.
+      </p>
+      
+      <a href="${intentUrl}" style="
+        display: block;
+        background: #2ecc71;
+        color: #ffffff;
+        text-decoration: none;
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2);
+        font-family: system-ui, -apple-system, sans-serif;
+      ">Mở Chrome ngay</a>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Auto redirect to Chrome on Android Webview using hidden iframe to trigger native warning dialog
   const ua = navigator.userAgent || navigator.vendor || window.opera;
   const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
   const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
@@ -46,16 +118,23 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isInAppBrowser) {
     const isAndroid = /Android/i.test(ua);
     if (isAndroid) {
-      setTimeout(() => {
-        const cleanUrl = window.location.host + window.location.pathname + window.location.search;
-        const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
-        
-        // Trigger intent redirect silently via iframe to invoke native system confirm popup
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = intentUrl;
-        document.body.appendChild(iframe);
-      }, 600);
+      if (isTikTok) {
+        // TikTok Android chặn auto redirect -> Hiện popup nhỏ gọn Zalo-style để click thật
+        setTimeout(() => {
+          showTikTokAndroidPopup();
+        }, 300);
+      } else {
+        // Zalo, Messenger, Facebook, v.v. -> Auto redirect ngầm qua iframe ẩn cực mượt
+        setTimeout(() => {
+          const cleanUrl = window.location.host + window.location.pathname + window.location.search;
+          const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+          
+          const iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          iframe.src = intentUrl;
+          document.body.appendChild(iframe);
+        }, 600);
+      }
     }
   }
 
