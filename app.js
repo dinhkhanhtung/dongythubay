@@ -1,50 +1,59 @@
 // ==========================================================================
-// IN-APP BROWSER CHROME INTENT ROUTING FOR SENSITIVE LINKS (ANDROID ONLY)
+// IN-APP BROWSER WARNING BANNER FOR TIKTOK, FACEBOOK, ZALO
 // ==========================================================================
-function setupChromeIntentLinksForAndroidWebView() {
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
-  const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
-  const isInstagram = /Instagram/i.test(ua);
-  const isMessenger = /Messenger/i.test(ua);
-  const isGenericWebView = /(iPhone|iPod|iPad|Android).*AppleWebKit(?!.*Safari)/i.test(ua) || ua.includes('Version/');
-  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isGenericWebView;
+function showInAppBrowserBanner() {
+  if (document.getElementById('inapp-warning-banner')) return;
 
-  if (isInAppBrowser) {
-    const isAndroid = /Android/i.test(ua);
-    if (isAndroid) {
-      const links = document.querySelectorAll('a');
-      links.forEach(link => {
-        const href = link.getAttribute('href');
-        if (!href) return;
+  const banner = document.createElement('div');
+  banner.id = 'inapp-warning-banner';
+  banner.style.cssText = `
+    background: #1a2a22;
+    border-bottom: 2px solid #2ecc71;
+    padding: 16px 20px;
+    position: relative;
+    z-index: 999999;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    font-family: system-ui, -apple-system, sans-serif;
+  `;
 
-        const isExternalLink = 
-          href.includes('zalo.me') || 
-          href.includes('m.me') || 
-          href.includes('maps.google.com') || 
-          href.includes('google.com/maps') ||
-          href.includes('play.google.com') ||
-          href.startsWith('market://');
+  banner.innerHTML = `
+    <div style="display: flex; align-items: flex-start; gap: 14px; max-width: 600px; margin: 0 auto; padding-right: 24px;">
+      <div style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <svg style="width: 20px; height: 20px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div style="flex-grow: 1;">
+        <h4 style="margin: 0 0 4px 0; color: #ffffff; font-size: 15px; font-weight: 700; line-height: 1.3;">Mở Trình Duyệt Ngoài Để Liên Hệ</h4>
+        <p style="margin: 0; color: #a3b8ac; font-size: 13.5px; line-height: 1.5;">
+          Trình duyệt nhúng không hỗ trợ mở Zalo/Bản đồ trực tiếp. Vui lòng bấm biểu tượng <strong>Ba Dấu Chấm (...)</strong> ở góc trên bên phải màn hình và chọn <strong>"Mở bằng trình duyệt ngoài"</strong> (hoặc "Mở bằng Safari/Chrome").
+        </p>
+      </div>
+      <button id="close-inapp-banner" style="
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: none;
+        border: none;
+        color: #a3b8ac;
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      ">
+        <svg style="width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
+          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  `;
 
-        if (isExternalLink) {
-          let targetUrl = href;
-          if (href.startsWith('market://')) {
-            try {
-              const urlParams = new URLSearchParams(href.split('?')[1]);
-              const id = urlParams.get('id');
-              if (id) {
-                targetUrl = `https://play.google.com/store/apps/details?id=${id}`;
-              }
-            } catch(e) {}
-          }
+  document.body.insertBefore(banner, document.body.firstChild);
 
-          const cleanUrl = targetUrl.replace(/^https?:\/\//i, '');
-          link.href = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
-          link.setAttribute('target', '_self');
-        }
-      });
-    }
-  }
+  document.getElementById('close-inapp-banner').addEventListener('click', () => {
+    banner.style.display = 'none';
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1922,7 +1931,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Chờ UI render ổn định rồi kích hoạt nút cuộn PC
   setTimeout(initScrollNavigation, 500);
 
-  // Thiết lập link intent Chrome trên Android Webview để mở ngoài khi click
-  setupChromeIntentLinksForAndroidWebView();
+  // Hiển thị banner cảnh báo/hướng dẫn mở trình duyệt ngoài nếu đang chạy trong trình duyệt nhúng
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
+  const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
+  const isInstagram = /Instagram/i.test(ua);
+  const isMessenger = /Messenger/i.test(ua);
+  const isGenericWebView = /(iPhone|iPod|iPad|Android).*AppleWebKit(?!.*Safari)/i.test(ua) || ua.includes('Version/');
+  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isGenericWebView;
+
+  if (isInAppBrowser) {
+    showInAppBrowserBanner();
+  }
 });
 
