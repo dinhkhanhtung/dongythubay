@@ -17,8 +17,14 @@ function showInAppBrowserBanner() {
         from { filter: drop-shadow(0 0 2px rgba(46, 204, 113, 0.4)); }
         to { filter: drop-shadow(0 0 8px rgba(46, 204, 113, 0.8)); }
       }
-      body.inapp-active a, body.inapp-active button {
+      body.inapp-active a[href*="zalo.me"],
+      body.inapp-active a[href*="m.me"],
+      body.inapp-active a[href*="maps.google.com"],
+      body.inapp-active a[href*="google.com/maps"],
+      body.inapp-active a[href*="play.google.com"],
+      body.inapp-active a[href^="market://"] {
         pointer-events: none !important;
+        opacity: 0.7;
         cursor: default !important;
       }
     `;
@@ -26,23 +32,7 @@ function showInAppBrowserBanner() {
     document.body.classList.add('inapp-active');
   }
 
-  // 2. Tạo màn kính mờ nhẹ toàn màn hình (pointer-events: none để người dùng vẫn vuốt/cuộn được trang bên dưới)
-  const glass = document.createElement('div');
-  glass.id = 'inapp-glass-overlay';
-  glass.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(8, 20, 14, 0.12);
-    backdrop-filter: blur(1px);
-    -webkit-backdrop-filter: blur(1px);
-    z-index: 9999999;
-    pointer-events: none;
-  `;
-
-  // 3. Tạo Card thông báo nổi ở vị trí cũ (top: 65px)
+  // 2. Tạo Card thông báo nổi ở vị trí cũ (top: 65px)
   const banner = document.createElement('div');
   banner.id = 'inapp-warning-banner';
   banner.style.cssText = `
@@ -78,7 +68,7 @@ function showInAppBrowserBanner() {
     </div>
   `;
 
-  // 4. Tạo Mũi tên chéo động chỉ thẳng góc lên nút 3 chấm ở góc phải màn hình
+  // 3. Tạo Mũi tên chéo động chỉ thẳng góc lên nút 3 chấm ở góc phải màn hình
   const arrow = document.createElement('div');
   arrow.id = 'inapp-arrow-indicator';
   arrow.style.cssText = `
@@ -103,7 +93,6 @@ function showInAppBrowserBanner() {
     <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.9); background: rgba(26,42,34,0.9); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(46, 204, 113, 0.3);">Bấm ở đây</span>
   `;
 
-  document.body.appendChild(glass);
   document.body.appendChild(banner);
   document.body.appendChild(arrow);
 }
