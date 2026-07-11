@@ -44,8 +44,8 @@ window.CONFIG = {
         },
         {
           "platform": "facebook-page",
-          "label": "Facebook Page",
-          "url": "https://www.facebook.com/dinhkhanhtung",
+          "label": "Fanpage",
+          "url": "https://www.facebook.com/kimke.store",
           "icon": "https://i.ibb.co/tTxPVxhX/facebook-page.png"
         },
         {
