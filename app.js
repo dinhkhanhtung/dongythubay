@@ -2022,16 +2022,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (isInAppBrowser) {
     showInAppBrowserBanner();
-
-    // Lắng nghe khi trình duyệt nhúng bị ẩn (người dùng bấm 3 chấm mở trình duyệt ngoài)
-    // Chuyển hướng ngay Webview nhúng sang trang trống để phá vỡ vòng lặp khôi phục Webview cũ của app TikTok
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        setTimeout(() => {
-          window.location.replace('about:blank');
-        }, 800);
-      }
-    });
   }
 });
 
