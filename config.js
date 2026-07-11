@@ -1,7 +1,7 @@
 // File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.
 window.CONFIG = {
-  "updatedAt": 1783758542712,
+  "updatedAt": 1783758613353,
   "profile": {
     "avatar": "assets/avatar_doctor.png",
     "name": "Đông y Thu Bẩy",
@@ -499,7 +499,7 @@ window.CONFIG = {
       "accountNumber": "0982581222",
       "accountName": "DINH KHANH TUNG",
       "qrUrl": "https://img.vietqr.io/image/bidv-0982581222-compact2.jpg?amount=0&addInfo=Donate%20Dong%20y%20Thu%20Bay&accountName=DINH%20KHANH%20TUNG",
-      "note": "Mọi đóng góp, ủng hộ (donate) từ các bạn và đồng niên sẽ được Tùng sử dụng toàn bộ vào chi phí duy trì vận hành máy chủ và phát triển thêm các ứng dụng công nghệ miễn phí phục vụ cộng đồng."
+      "note": "Mọi đóng góp, ủng hộ (donate) từ các bạn sẽ được Tùng sử dụng toàn bộ vào chi phí duy trì vận hành máy chủ và phát triển thêm các ứng dụng công nghệ miễn phí phục vụ cộng đồng."
     },
     {
       "id": "free-gifts",
