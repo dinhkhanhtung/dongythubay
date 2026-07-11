@@ -1,112 +1,7 @@
 // ==========================================================================
-// IN-APP BROWSER DETECT & REDIRECT SYSTEM (TIKTOK/FACEBOOK)
+// IN-APP BROWSER SILENT REDIRECT (ANYWHERE CLICK ON ANDROID)
 // ==========================================================================
 (function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  
-  // 1. Kiểm tra và chuyển hướng ngay nếu được gọi từ trình duyệt ngoài qua tham số query
-  if (urlParams.has('open_zalo')) {
-    window.location.href = 'https://zalo.me/0982581222';
-    return;
-  }
-  if (urlParams.has('open_messenger')) {
-    window.location.href = 'https://m.me/dinhkhanhtung';
-    return;
-  }
-  if (urlParams.has('open_maps')) {
-    window.location.href = 'https://maps.google.com/?q=Ph%C3%B2ng+Ch%E1%BA%A9n+Tr%E1%BB%8B+YHCT+Thu+B%E1%BB%83y+T%E1%BB%95+10+Quan+Tri%E1%BB%83u+Th%C3%A1i+Nguy%C3%AAn';
-    return;
-  }
-  if (urlParams.has('open_play')) {
-    const appId = urlParams.get('open_play') || 'com.financeapp.personal_finance_app';
-    window.location.href = `https://play.google.com/store/apps/details?id=${appId}`;
-    return;
-  }
-  if (urlParams.has('redirect')) {
-    try {
-      window.location.href = decodeURIComponent(urlParams.get('redirect'));
-    } catch(e) {
-      window.location.href = urlParams.get('redirect');
-    }
-    return;
-  }
-
-})();
-
-function showTikTokAndroidPopup() {
-  if (document.getElementById('tiktok-android-popup')) return;
-
-  const cleanUrl = window.location.host + window.location.pathname + window.location.search;
-  const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
-
-  const overlay = document.createElement('div');
-  overlay.id = 'tiktok-android-popup';
-  overlay.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(8, 20, 14, 0.97);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    z-index: 99999999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    box-sizing: border-box;
-  `;
-
-  overlay.innerHTML = `
-    <div style="
-      width: 100%;
-      max-width: 320px;
-      background: #1a2a22;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 26px 24px;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      box-sizing: border-box;
-    ">
-      <h3 style="
-        margin: 0 0 10px 0;
-        font-family: system-ui, -apple-system, sans-serif;
-        color: #ffffff;
-        font-size: 19px;
-        font-weight: 700;
-      ">Mở Bằng Google Chrome</h3>
-      
-      <p style="
-        margin: 0 0 22px 0;
-        font-family: system-ui, -apple-system, sans-serif;
-        color: #a3b8ac;
-        font-size: 14.5px;
-        line-height: 1.5;
-      ">
-        Vui lòng chuyển sang trình duyệt Chrome để sử dụng Zalo, Messenger và Bản đồ bình thường.
-      </p>
-      
-      <a href="${intentUrl}" style="
-        display: block;
-        background: #2ecc71;
-        color: #ffffff;
-        text-decoration: none;
-        padding: 12px;
-        border-radius: 12px;
-        font-size: 15px;
-        font-weight: 700;
-        box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2);
-        font-family: system-ui, -apple-system, sans-serif;
-      ">Mở Chrome ngay</a>
-    </div>
-  `;
-
-  document.body.appendChild(overlay);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
   const ua = navigator.userAgent || navigator.vendor || window.opera;
   const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
   const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
@@ -118,26 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isInAppBrowser) {
     const isAndroid = /Android/i.test(ua);
     if (isAndroid) {
-      if (isTikTok) {
-        // TikTok Android chặn auto redirect -> Hiện popup nhỏ gọn Zalo-style để click thật
-        setTimeout(() => {
-          showTikTokAndroidPopup();
-        }, 300);
-      } else {
-        // Zalo, Messenger, Facebook, v.v. -> Auto redirect ngầm qua iframe ẩn cực mượt
-        setTimeout(() => {
-          const cleanUrl = window.location.host + window.location.pathname + window.location.search;
-          const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
-          
-          const iframe = document.createElement('iframe');
-          iframe.style.display = 'none';
-          iframe.src = intentUrl;
-          document.body.appendChild(iframe);
-        }, 600);
-      }
+      const triggerRedirect = () => {
+        const cleanUrl = window.location.host + window.location.pathname + window.location.search;
+        const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+        window.location.href = intentUrl;
+        
+        window.removeEventListener('click', triggerRedirect);
+        window.removeEventListener('touchstart', triggerRedirect);
+      };
+      
+      window.addEventListener('click', triggerRedirect, { once: true });
+      window.addEventListener('touchstart', triggerRedirect, { once: true });
     }
   }
+})();
 
+document.addEventListener('DOMContentLoaded', () => {
   // Initialize Lucide Icons
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
@@ -788,8 +679,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Deep link cho thiết bị Android: dùng market://details?id=...
       const isAndroid = /Android/i.test(navigator.userAgent);
-      // Chỉ dùng market:// nếu KHÔNG phải trình duyệt nhúng (TikTok/Facebook) để tránh lỗi "Không thể hoàn tất hành động"
-      if (isAndroid && packageName && !isInAppBrowser) {
+      if (isAndroid && packageName) {
         card.href = `market://details?id=${packageName}`;
       } else {
         card.href = storeUrl || '#';
@@ -1263,7 +1153,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
                 Bạn đang được chuyển hướng sang Zalo... Hãy <strong>DÁN (PASTE)</strong> tin nhắn vào ô chat để gửi đi.
               </p>
-              <a href="https://zalo.me/0982581222" id="booking-zalo-redirect-btn" class="booking-submit-btn" style="background-color: #0068ff; color: #ffffff; text-decoration: none; width: 100%; border-radius: var(--radius-sm); font-size: 14.5px; font-weight: 700; margin-top: 0; min-height: 48px;">
+              <a href="https://zalo.me/0982581222" class="booking-submit-btn" style="background-color: #0068ff; color: #ffffff; text-decoration: none; width: 100%; border-radius: var(--radius-sm); font-size: 14.5px; font-weight: 700; margin-top: 0; min-height: 48px;">
                 <i data-lucide="message-square" style="width: 18px; height: 18px;"></i>
                 <span>Mở Zalo và Dán gửi ngay</span>
               </a>
