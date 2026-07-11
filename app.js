@@ -2012,8 +2012,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const isInstagram = /Instagram/i.test(ua);
   const isMessenger = /Messenger/i.test(ua);
   const isZalo = /ZaloApp|ZaloAP/i.test(ua);
-  // Android Webview: có AppleWebKit, chứa "wv" hoặc "Version/" để nhận dạng Webview hệ thống, nhưng loại trừ Samsung/Opera
-  const isAndroidWebView = /Android/i.test(ua) && /AppleWebKit/i.test(ua) && (/; wv\)/.test(ua) || /Version\//.test(ua)) && !/SamsungBrowser/i.test(ua) && !/OPR/i.test(ua);
+  // Android Webview: có AppleWebKit, chứa "wv" hoặc "Version/" để nhận dạng Webview hệ thống, nhưng loại trừ các trình duyệt chính thống (Samsung, Opera, Miui, Oppo, Vivo, Huawei)
+  const isAndroidWebView = /Android/i.test(ua) && /AppleWebKit/i.test(ua) && (/; wv\)/.test(ua) || /Version\//.test(ua)) && !/SamsungBrowser|MiuiBrowser|HeyTapBrowser|OppoBrowser|VivoBrowser|HuaweiBrowser/i.test(ua) && !/OPR/i.test(ua);
   // iOS Webview: có AppleWebKit nhưng KHÔNG có Safari (mọi trình duyệt chuẩn trên iOS đều bắt buộc có 'Safari/' ở cuối UA)
   const isIOSWebView = /(iPhone|iPad|iPod)/i.test(ua) && /AppleWebKit/i.test(ua) && !/Safari\//i.test(ua);
 
