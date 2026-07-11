@@ -23,6 +23,12 @@ function showInAppBrowserBanner() {
       #inapp-warning-banner, #inapp-warning-banner *, #inapp-arrow-indicator, #inapp-arrow-indicator * {
         pointer-events: auto !important;
       }
+      /* Cho phép click vào sản phẩm TikTok Shop ngay trong webview TikTok — TikTok tự xử lý native */
+      body.inapp-active a[href*="tiktok.com/view/product/"],
+      body.inapp-active a[href*="tiktok.com/view/product/"] * {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+      }
     `;
     document.head.appendChild(style);
     document.body.classList.add('inapp-active');
