@@ -21,69 +21,66 @@ function showInAppBrowserBanner() {
     document.head.appendChild(style);
   }
 
-  // 2. Tạo Card thông báo nổi ở đầu trang (dịch xuống 65px để chừa chỗ cho mũi tên)
+  // 2. Tạo màn kính mờ toàn màn hình để ngăn chặn thao tác click/scroll bên dưới
+  const glass = document.createElement('div');
+  glass.id = 'inapp-glass-overlay';
+  glass.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(8, 20, 14, 0.75);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 9999999;
+    pointer-events: auto;
+  `;
+
+  // 3. Tạo Card thông báo nổi ở giữa màn hình (z-index cực cao, không có nút tắt)
   const banner = document.createElement('div');
   banner.id = 'inapp-warning-banner';
   banner.style.cssText = `
     position: fixed;
-    top: 65px;
-    left: 12px;
-    right: 12px;
-    background: rgba(26, 42, 34, 0.96);
-    border: 1px solid rgba(46, 204, 113, 0.3);
-    border-radius: 16px;
-    padding: 14px 16px;
-    z-index: 99999999;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    top: 50%;
+    left: 16px;
+    right: 16px;
+    transform: translateY(-50%);
+    background: rgba(26, 42, 34, 0.98);
+    border: 1px solid rgba(46, 204, 113, 0.35);
+    border-radius: 20px;
+    padding: 24px 20px;
+    z-index: 10000000;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
     font-family: system-ui, -apple-system, sans-serif;
-    max-width: 480px;
+    max-width: 340px;
     margin: 0 auto;
     box-sizing: border-box;
+    text-align: center;
   `;
 
   banner.innerHTML = `
-    <div style="display: flex; align-items: flex-start; gap: 12px; padding-right: 20px; box-sizing: border-box; text-align: left;">
-      <div style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-        <svg style="width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
+    <div style="box-sizing: border-box;">
+      <div style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 12px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+        <svg style="width: 22px; height: 22px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
           <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <div style="flex-grow: 1;">
-        <h4 style="margin: 0 0 3px 0; color: #ffffff; font-size: 14.5px; font-weight: 700; line-height: 1.3; font-family: inherit;">Mở Bằng Trình Duyệt Ngoài</h4>
-        <p style="margin: 0; color: #a3b8ac; font-size: 13.5px; line-height: 1.45; font-family: inherit;">
-          Vui lòng click <strong>3 dấu chấm (...)</strong> ở góc trên bên phải và chọn <strong>"Mở bằng trình duyệt ngoài"</strong>.
-        </p>
-      </div>
-      <button id="close-inapp-banner" style="
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        background: none;
-        border: none;
-        color: #a3b8ac;
-        cursor: pointer;
-        padding: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      ">
-        <svg style="width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
-          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+      <h3 style="margin: 0 0 8px 0; color: #ffffff; font-size: 17px; font-weight: 700; line-height: 1.3; font-family: inherit;">Mở Bằng Trình Duyệt Ngoài</h3>
+      <p style="margin: 0; color: #a3b8ac; font-size: 13.5px; line-height: 1.5; font-family: inherit;">
+        Vui lòng click biểu tượng <strong>3 dấu chấm (...)</strong> ở góc trên bên phải và chọn <strong>"Mở bằng trình duyệt ngoài"</strong> để tiếp tục sử dụng Zalo & Bản đồ.
+      </p>
     </div>
   `;
 
-  // 3. Tạo Mũi tên động chỉ lên góc phải màn hình
+  // 4. Tạo Mũi tên động chỉ lên góc phải màn hình (z-index cao nhất)
   const arrow = document.createElement('div');
   arrow.id = 'inapp-arrow-indicator';
   arrow.style.cssText = `
     position: fixed;
     top: 8px;
     right: 20px;
-    z-index: 999999999;
+    z-index: 10000001;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -101,13 +98,9 @@ function showInAppBrowserBanner() {
     <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.8); background: rgba(26,42,34,0.85); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(46, 204, 113, 0.3);">Click ở đây</span>
   `;
 
+  document.body.appendChild(glass);
   document.body.appendChild(banner);
   document.body.appendChild(arrow);
-
-  document.getElementById('close-inapp-banner').addEventListener('click', () => {
-    banner.style.display = 'none';
-    arrow.style.display = 'none';
-  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
