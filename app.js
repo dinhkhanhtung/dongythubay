@@ -33,14 +33,8 @@
 
 })();
 
-function showInAppBrowserConfirm(targetUrl = null) {
-  // Tránh tạo nhiều popup trùng nhau
-  if (document.querySelector('.inapp-confirm-overlay')) {
-    return;
-  }
-
-  // Nếu không truyền targetUrl và user đã tắt cảnh báo ban đầu, thì bỏ qua
-  if (!targetUrl && sessionStorage.getItem('inapp_confirm_dismissed') === 'true') {
+function showInAppBrowserBlock() {
+  if (document.querySelector('.inapp-block-overlay')) {
     return;
   }
 
@@ -48,92 +42,32 @@ function showInAppBrowserConfirm(targetUrl = null) {
   const isAndroid = /Android/i.test(ua);
 
   const overlay = document.createElement('div');
-  overlay.className = 'inapp-confirm-overlay';
-
-  let title = "Mở Bằng Trình Duyệt Ngoài";
-  let desc = "Vui lòng mở trang web này bằng trình duyệt Chrome hoặc Safari để các tính năng liên kết (Zalo, Messenger, CH Play...) hoạt động tốt nhất.";
-  let okText = "Mở trình duyệt";
-  let cancelText = "Hủy";
-
-  if (targetUrl) {
-    cancelText = "Quay lại";
-    if (targetUrl.includes('zalo.me')) {
-      title = "Mở Ứng Dụng Zalo";
-      desc = "Bạn có muốn mở ứng dụng Zalo bằng trình duyệt ngoài để bắt đầu nhắn tin?";
-      okText = "Mở Zalo";
-    } else if (targetUrl.includes('m.me')) {
-      title = "Mở Ứng Dụng Messenger";
-      desc = "Bạn có muốn mở ứng dụng Messenger bằng trình duyệt ngoài để nhắn tin?";
-      okText = "Mở Messenger";
-    } else if (targetUrl.includes('play.google.com')) {
-      title = "Mở Google Play Store";
-      desc = "Bạn có muốn mở CH Play bằng trình duyệt ngoài để tải ứng dụng?";
-      okText = "Mở CH Play";
-    } else if (targetUrl.includes('maps.google.com') || targetUrl.includes('google.com/maps')) {
-      title = "Mở Bản Đồ Google Maps";
-      desc = "Bạn có muốn mở Google Maps bằng trình duyệt ngoài để xem chỉ đường?";
-      okText = "Mở Bản Đồ";
-    }
-  }
+  overlay.className = 'inapp-block-overlay';
 
   overlay.innerHTML = `
-    <div class="inapp-confirm-card">
-      <h2 class="inapp-confirm-title">${title}</h2>
-      <p class="inapp-confirm-desc">${desc}</p>
+    <div class="inapp-block-card">
+      <h2 class="inapp-block-title">Mở Bằng Trình Duyệt Ngoài</h2>
+      <p class="inapp-block-desc">
+        Vui lòng mở trang web này bằng trình duyệt Chrome hoặc Safari của điện thoại để sử dụng các tính năng liên hệ (Zalo, Messenger, Bản đồ, CH Play) hoạt động bình thường.
+      </p>
       
-      <div class="inapp-confirm-buttons">
-        <button class="inapp-btn-cancel">${cancelText}</button>
-        <button class="inapp-btn-ok">${okText}</button>
-      </div>
+      <button class="inapp-btn-open">Mở bằng Trình Duyệt Ngoài</button>
       
       <div class="ios-instruction-hint" style="display: none;">
-        <strong>Hướng dẫn cho iPhone:</strong> Trình duyệt nhúng iOS không cho phép tự động chuyển hướng. Vui lòng bấm biểu tượng <strong>Ba Dấu Chấm (...)</strong> ở góc trên bên phải và chọn <strong>"Mở bằng trình duyệt ngoài"</strong> (hoặc <strong>"Mở bằng Safari"</strong>).
+        <strong>Hướng dẫn cho iPhone:</strong> Trình duyệt nhúng iOS không cho phép tự động chuyển hướng. Vui lòng bấm biểu tượng <strong>Ba Dấu Chấm (...)</strong> ở góc trên bên phải màn hình và chọn <strong>"Mở bằng trình duyệt ngoài"</strong> (hoặc <strong>"Mở bằng Safari"</strong>).
       </div>
     </div>
   `;
 
   document.body.appendChild(overlay);
 
-  // Xử lý nút Hủy / Quay lại
-  overlay.querySelector('.inapp-btn-cancel').addEventListener('click', () => {
-    overlay.remove();
-    if (!targetUrl) {
-      sessionStorage.setItem('inapp_confirm_dismissed', 'true');
-    }
-  });
-
-  // Xử lý nút OK (Xác nhận)
-  overlay.querySelector('.inapp-btn-ok').addEventListener('click', () => {
+  overlay.querySelector('.inapp-btn-open').addEventListener('click', () => {
     if (isAndroid) {
-      // Chuyển hướng thông qua domain của mình kèm tham số query để Chrome ngoài xử lý tiếp
-      let cleanUrl = window.location.host + window.location.pathname;
-      if (targetUrl) {
-        if (targetUrl.includes('zalo.me')) {
-          cleanUrl += '?open_zalo=true';
-        } else if (targetUrl.includes('m.me')) {
-          cleanUrl += '?open_messenger=true';
-        } else if (targetUrl.includes('maps.google.com') || targetUrl.includes('google.com/maps')) {
-          cleanUrl += '?open_maps=true';
-        } else if (targetUrl.includes('play.google.com')) {
-          let appId = 'com.financeapp.personal_finance_app';
-          try {
-            const urlObj = new URL(targetUrl);
-            const id = urlObj.searchParams.get('id');
-            if (id) appId = id;
-          } catch(e) {}
-          cleanUrl += `?open_play=${appId}`;
-        } else {
-          cleanUrl += `?redirect=${encodeURIComponent(targetUrl)}`;
-        }
-      }
-      
+      // Android -> Ép mở Chrome ngoài
+      const cleanUrl = window.location.host + window.location.pathname + window.location.search;
       window.location.href = `intent://${cleanUrl}#Intent;scheme=https;end`;
-      
-      setTimeout(() => {
-        overlay.remove();
-      }, 500);
     } else {
-      // Trên iOS: Hiển thị gợi ý nút 3 chấm ngay dưới popup
+      // iOS -> Show hint & mũi tên chỉ 3 chấm
       const hint = overlay.querySelector('.ios-instruction-hint');
       if (hint) {
         hint.style.display = 'block';
@@ -141,73 +75,22 @@ function showInAppBrowserConfirm(targetUrl = null) {
           hint.style.opacity = '1';
         }, 10);
       }
-      // Vô hiệu hóa nút OK
-      const okBtn = overlay.querySelector('.inapp-btn-ok');
-      okBtn.style.opacity = '0.5';
-      okBtn.disabled = true;
-    }
-  });
-}
-
-function optimizeLinksForInAppBrowser() {
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
-  const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
-  const isInstagram = /Instagram/i.test(ua);
-  const isMessenger = /Messenger/i.test(ua);
-  const isGenericWebView = /(iPhone|iPod|iPad|Android).*AppleWebKit(?!.*Safari)/i.test(ua) || ua.includes('Version/');
-  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isGenericWebView;
-
-  if (!isInAppBrowser) return;
-
-  const links = document.querySelectorAll('a');
-  links.forEach(link => {
-    const href = link.getAttribute('href');
-    if (!href) return;
-
-    // 1. Chuyển đổi các link market:// thành link HTTPS
-    if (href.startsWith('market://')) {
-      try {
-        const urlParams = new URLSearchParams(href.split('?')[1]);
-        const id = urlParams.get('id');
-        if (id) {
-          link.href = `https://play.google.com/store/apps/details?id=${id}`;
-        }
-      } catch (e) {
-        console.warn('Error parsing market URL in optimization:', e);
-      }
-    }
-
-    // 2. Phân loại liên kết nhạy cảm
-    const isRequiredExternalLink = 
-      href.includes('zalo.me') || 
-      href.includes('m.me') || 
-      href.includes('maps.google.com') || 
-      href.includes('google.com/maps') ||
-      href.includes('play.google.com');
-
-    const isTikTokShopLink = href.includes('tiktok.com/view/product');
-
-    if (isTikTokShopLink) {
-      if (link.getAttribute('target') === '_blank') {
-        link.setAttribute('target', '_self');
-      }
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.location.href = this.href;
-      });
-    }
-
-    if (isRequiredExternalLink) {
-      if (link.getAttribute('target') === '_blank') {
-        link.setAttribute('target', '_self');
-      }
       
-      // Chặn chuyển link trực tiếp và hiển thị popup confirm
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        showInAppBrowserConfirm(this.href);
-      });
+      if (!overlay.querySelector('.inapp-arrow-indicator')) {
+        const arrow = document.createElement('div');
+        arrow.className = 'inapp-arrow-indicator';
+        arrow.innerHTML = `
+          <svg class="inapp-arrow-icon" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M12 5v14M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Nhấn nút 3 chấm ở đây</span>
+        `;
+        overlay.appendChild(arrow);
+      }
+
+      const openBtn = overlay.querySelector('.inapp-btn-open');
+      openBtn.style.opacity = '0.5';
+      openBtn.disabled = true;
     }
   });
 }
@@ -224,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (isInAppBrowser) {
     setTimeout(() => {
-      showInAppBrowserConfirm();
+      showInAppBrowserBlock();
     }, 400);
   }
 
@@ -670,9 +553,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
     }
-    
-    // Tối ưu hóa các liên kết cho trình duyệt nhúng (in-app browser)
-    optimizeLinksForInAppBrowser();
   } else {
     sectionsContainer.innerHTML = `
       <div class="text-block-card">
