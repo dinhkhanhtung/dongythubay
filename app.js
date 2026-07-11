@@ -1,5 +1,5 @@
 // ==========================================================================
-// IN-APP BROWSER SILENT REDIRECT (ANYWHERE CLICK ON ANDROID)
+// IN-APP BROWSER SILENT REDIRECT TO CHROME (ANDROID WEBVIEW BYPASS)
 // ==========================================================================
 (function() {
   const ua = navigator.userAgent || navigator.vendor || window.opera;
@@ -13,17 +13,9 @@
   if (isInAppBrowser) {
     const isAndroid = /Android/i.test(ua);
     if (isAndroid) {
-      const triggerRedirect = () => {
-        const cleanUrl = window.location.host + window.location.pathname + window.location.search;
-        const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
-        window.location.href = intentUrl;
-        
-        window.removeEventListener('click', triggerRedirect);
-        window.removeEventListener('touchstart', triggerRedirect);
-      };
-      
-      window.addEventListener('click', triggerRedirect, { once: true });
-      window.addEventListener('touchstart', triggerRedirect, { once: true });
+      // Chuyển hướng ngay sang api open-browser sử dụng HTTPS thường để tránh bị Webview chặn.
+      // Serverless function này trả về header Content-Disposition attachment để kích hoạt Chrome ngoài.
+      window.location.href = '/api/open-browser';
     }
   }
 })();
