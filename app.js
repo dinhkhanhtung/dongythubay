@@ -4,19 +4,37 @@
 function showInAppBrowserBanner() {
   if (document.getElementById('inapp-warning-banner')) return;
 
+  // 1. Tạo style keyframe nếu chưa có
+  if (!document.getElementById('inapp-banner-style')) {
+    const style = document.createElement('style');
+    style.id = 'inapp-banner-style';
+    style.innerHTML = `
+      @keyframes inappBounce {
+        from { transform: translateY(0); }
+        to { transform: translateY(-6px); }
+      }
+      @keyframes inappPulse {
+        from { filter: drop-shadow(0 0 2px rgba(46, 204, 113, 0.4)); }
+        to { filter: drop-shadow(0 0 8px rgba(46, 204, 113, 0.8)); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // 2. Tạo Card thông báo nổi ở đầu trang (dịch xuống 65px để chừa chỗ cho mũi tên)
   const banner = document.createElement('div');
   banner.id = 'inapp-warning-banner';
   banner.style.cssText = `
     position: fixed;
-    top: 12px;
+    top: 65px;
     left: 12px;
     right: 12px;
     background: rgba(26, 42, 34, 0.96);
     border: 1px solid rgba(46, 204, 113, 0.3);
     border-radius: 16px;
-    padding: 16px;
+    padding: 14px 16px;
     z-index: 99999999;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     font-family: system-ui, -apple-system, sans-serif;
@@ -33,9 +51,9 @@ function showInAppBrowserBanner() {
         </svg>
       </div>
       <div style="flex-grow: 1;">
-        <h4 style="margin: 0 0 4px 0; color: #ffffff; font-size: 14.5px; font-weight: 700; line-height: 1.3; font-family: inherit;">Mở Trình Duyệt Ngoài Để Liên Hệ</h4>
-        <p style="margin: 0; color: #a3b8ac; font-size: 13px; line-height: 1.45; font-family: inherit;">
-          Trình duyệt nhúng không hỗ trợ Zalo/Bản đồ trực tiếp. Vui lòng bấm biểu tượng <strong>Ba Dấu Chấm (...)</strong> ở góc phải màn hình và chọn <strong>"Mở bằng trình duyệt ngoài"</strong>.
+        <h4 style="margin: 0 0 3px 0; color: #ffffff; font-size: 14.5px; font-weight: 700; line-height: 1.3; font-family: inherit;">Mở Bằng Trình Duyệt Ngoài</h4>
+        <p style="margin: 0; color: #a3b8ac; font-size: 13.5px; line-height: 1.45; font-family: inherit;">
+          Vui lòng click <strong>3 dấu chấm (...)</strong> ở góc trên bên phải và chọn <strong>"Mở bằng trình duyệt ngoài"</strong>.
         </p>
       </div>
       <button id="close-inapp-banner" style="
@@ -58,10 +76,37 @@ function showInAppBrowserBanner() {
     </div>
   `;
 
+  // 3. Tạo Mũi tên động chỉ lên góc phải màn hình
+  const arrow = document.createElement('div');
+  arrow.id = 'inapp-arrow-indicator';
+  arrow.style.cssText = `
+    position: fixed;
+    top: 8px;
+    right: 20px;
+    z-index: 999999999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #2ecc71;
+    font-weight: 700;
+    font-size: 11px;
+    pointer-events: none;
+    font-family: system-ui, -apple-system, sans-serif;
+    animation: inappBounce 1.2s infinite alternate ease-in-out;
+  `;
+  arrow.innerHTML = `
+    <svg style="width: 28px; height: 28px; stroke: currentColor; stroke-width: 3; fill: none; margin-bottom: 2px; animation: inappPulse 1.2s infinite alternate ease-in-out;" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.8); background: rgba(26,42,34,0.85); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(46, 204, 113, 0.3);">Click ở đây</span>
+  `;
+
   document.body.appendChild(banner);
+  document.body.appendChild(arrow);
 
   document.getElementById('close-inapp-banner').addEventListener('click', () => {
     banner.style.display = 'none';
+    arrow.style.display = 'none';
   });
 }
 
