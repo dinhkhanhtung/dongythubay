@@ -1,6 +1,12 @@
-// ==========================================================================
-// IN-APP BROWSER WARNING BANNER FOR TIKTOK, FACEBOOK, ZALO
-// ==========================================================================
+// Xử lý chuyển hướng trực tiếp nếu có tham số ?redirect= khi mở bằng trình duyệt ngoài
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const redirectUrl = urlParams.get('redirect');
+  if (redirectUrl) {
+    window.location.replace(redirectUrl);
+  }
+})();
+
 // Biến toàn cục lưu trữ ID của bộ hẹn giờ tự động ẩn
 window.inAppBannerTimeoutId = null;
 
@@ -17,6 +23,9 @@ function hideInAppBrowserBanner() {
     clearTimeout(window.inAppBannerTimeoutId);
     window.inAppBannerTimeoutId = null;
   }
+
+  // Khôi phục URL sạch không chứa query parameter khi ẩn banner
+  window.history.replaceState(null, '', window.location.pathname);
 }
 
 function showInAppBrowserBanner() {
@@ -2064,20 +2073,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (a) {
         const href = a.getAttribute('href') || '';
         if (href.includes('tiktok.com/view/product/')) {
-          // NẾU ĐANG Ở TRONG TRÌNH DUYỆT NHÚNG CỦA TIKTOK:
-          // Chuyển hướng sang custom scheme tiktok:// để app tự mở màn hình sản phẩm native
-          if (isTikTok) {
-            const matches = href.match(/\/view\/product\/(\d+)/);
-            if (matches && matches[1]) {
-              const productId = matches[1];
-              window.location.href = `tiktok://view/product/${productId}`;
-              e.preventDefault();
-              e.stopPropagation();
-              return;
-            }
-          }
-          // Nếu ở app khác (Zalo, Facebook...), tiếp tục đi xuống dưới để chặn và hiển thị popup yêu cầu mở Chrome/Safari
+          // Cho phép tải bình thường dưới dạng HTTPS gốc, giúp TikTok webview tự mở trang chi tiết sản phẩm
+          return;
         }
+
+        // Lưu địa chỉ liên kết cần mở vào query parameter của URL hiện tại
+        // Để khi bấm "Mở bằng trình duyệt ngoài", Chrome/Safari sẽ tự động chuyển tiếp thẳng đến Zalo, Maps,... đó
+        const newSearch = `?redirect=${encodeURIComponent(href)}`;
+        window.history.replaceState(null, '', newSearch);
       }
 
       // Nếu đã hiển thị banner/kính mờ rồi thì bỏ qua
