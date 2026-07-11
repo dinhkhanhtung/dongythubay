@@ -1997,32 +1997,5 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isInAppBrowser) {
     showInAppBrowserBanner();
   }
-
-  // Cấu hình deep link TikTok để mở thẳng ứng dụng mua hàng native trên điện thoại
-  setupTikTokDeepLinksForMobile();
 });
-
-function setupTikTokDeepLinksForMobile() {
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isMobile = /Android|iPhone|iPod|iPad/i.test(ua);
-  
-  if (isMobile) {
-    const links = document.querySelectorAll('a');
-    links.forEach(link => {
-      const href = link.getAttribute('href');
-      if (!href) return;
-
-      const isTikTok = href.includes('tiktok.com');
-      if (isTikTok) {
-        link.addEventListener('click', (e) => {
-          if (href.startsWith('tiktok://')) return;
-          
-          e.preventDefault();
-          const deepLink = href.replace(/^https?:\/\//i, 'tiktok://');
-          window.location.href = deepLink;
-        });
-      }
-    });
-  }
-}
 
