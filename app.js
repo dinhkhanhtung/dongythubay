@@ -2,17 +2,48 @@
 // IN-APP BROWSER DETECT & REDIRECT SYSTEM (TIKTOK/FACEBOOK)
 // ==========================================================================
 (function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // 1. Kiểm tra và chuyển hướng ngay nếu được gọi từ trình duyệt ngoài qua tham số query
+  if (urlParams.has('open_zalo')) {
+    window.location.href = 'https://zalo.me/0982581222';
+    return;
+  }
+  if (urlParams.has('open_messenger')) {
+    window.location.href = 'https://m.me/dinhkhanhtung';
+    return;
+  }
+  if (urlParams.has('open_maps')) {
+    window.location.href = 'https://maps.google.com/?q=Ph%C3%B2ng+Ch%E1%BA%A9n+Tr%E1%BB%8B+YHCT+Thu+B%E1%BB%83y+T%E1%BB%95+10+Quan+Tri%E1%BB%83u+Th%C3%A1i+Nguy%C3%AAn';
+    return;
+  }
+  if (urlParams.has('open_play')) {
+    const appId = urlParams.get('open_play') || 'com.financeapp.personal_finance_app';
+    window.location.href = `https://play.google.com/store/apps/details?id=${appId}`;
+    return;
+  }
+  if (urlParams.has('redirect')) {
+    try {
+      window.location.href = decodeURIComponent(urlParams.get('redirect'));
+    } catch(e) {
+      window.location.href = urlParams.get('redirect');
+    }
+    return;
+  }
+
+  // 2. Phát hiện trình duyệt nhúng và tự động redirect trang chủ nếu là Android
   const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isTikTok = /TikTok|musical_ly/i.test(ua);
+  const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
   const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
   const isInstagram = /Instagram/i.test(ua);
   const isMessenger = /Messenger/i.test(ua);
-  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger;
+  const isGenericWebView = /(iPhone|iPod|iPad|Android).*AppleWebKit(?!.*Safari)/i.test(ua) || ua.includes('Version/');
+  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isGenericWebView;
 
   if (isInAppBrowser) {
     const isAndroid = /Android/i.test(ua);
     if (isAndroid && !window.location.hash.includes('no-redirect')) {
-      // Ép Android mở bằng trình duyệt mặc định của hệ thống
+      // Ép Android mở trang web này bằng trình duyệt mặc định của hệ thống
       const urlWithoutProtocol = window.location.host + window.location.pathname + window.location.search;
       window.location.href = `intent://${urlWithoutProtocol}#Intent;scheme=https;end`;
     }
@@ -91,9 +122,28 @@ function showInAppBrowserConfirm(targetUrl = null) {
   // Xử lý nút OK (Xác nhận)
   overlay.querySelector('.inapp-btn-ok').addEventListener('click', () => {
     if (isAndroid) {
-      // Chuyển hướng tự động bằng intent trên Android
-      let redirectUrl = targetUrl || window.location.href;
-      const cleanUrl = redirectUrl.replace(/^https?:\/\//, '');
+      // Chuyển hướng thông qua domain của mình kèm tham số query để Chrome ngoài xử lý tiếp
+      let cleanUrl = window.location.host + window.location.pathname;
+      if (targetUrl) {
+        if (targetUrl.includes('zalo.me')) {
+          cleanUrl += '?open_zalo=true';
+        } else if (targetUrl.includes('m.me')) {
+          cleanUrl += '?open_messenger=true';
+        } else if (targetUrl.includes('maps.google.com') || targetUrl.includes('google.com/maps')) {
+          cleanUrl += '?open_maps=true';
+        } else if (targetUrl.includes('play.google.com')) {
+          let appId = 'com.financeapp.personal_finance_app';
+          try {
+            const urlObj = new URL(targetUrl);
+            const id = urlObj.searchParams.get('id');
+            if (id) appId = id;
+          } catch(e) {}
+          cleanUrl += `?open_play=${appId}`;
+        } else {
+          cleanUrl += `?redirect=${encodeURIComponent(targetUrl)}`;
+        }
+      }
+      
       window.location.href = `intent://${cleanUrl}#Intent;scheme=https;end`;
       
       setTimeout(() => {
@@ -1321,7 +1371,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
                 Bạn đang được chuyển hướng sang Zalo... Hãy <strong>DÁN (PASTE)</strong> tin nhắn vào ô chat để gửi đi.
               </p>
-              <a href="https://zalo.me/0982581222" class="booking-submit-btn" style="background-color: #0068ff; color: #ffffff; text-decoration: none; width: 100%; border-radius: var(--radius-sm); font-size: 14.5px; font-weight: 700; margin-top: 0; min-height: 48px;">
+              <a href="https://zalo.me/0982581222" id="booking-zalo-redirect-btn" class="booking-submit-btn" style="background-color: #0068ff; color: #ffffff; text-decoration: none; width: 100%; border-radius: var(--radius-sm); font-size: 14.5px; font-weight: 700; margin-top: 0; min-height: 48px;">
                 <i data-lucide="message-square" style="width: 18px; height: 18px;"></i>
                 <span>Mở Zalo và Dán gửi ngay</span>
               </a>
