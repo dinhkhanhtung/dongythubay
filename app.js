@@ -2020,7 +2020,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isZalo || isAndroidWebView || isIOSWebView;
 
   if (isInAppBrowser) {
-    showInAppBrowserBanner();
+    // Không hiển thị banner ngay lập tức. Lắng nghe mọi tương tác click trên trang.
+    document.addEventListener('click', (e) => {
+      // Tìm xem click có nằm trong link sản phẩm TikTok Shop hay không
+      const a = e.target.closest('a');
+      if (a) {
+        const href = a.getAttribute('href') || '';
+        if (href.includes('tiktok.com/view/product/')) {
+          // Cho phép mở bình thường, không chặn, không hiện popup
+          return;
+        }
+      }
+
+      // Nếu đã hiển thị banner/kính mờ rồi thì bỏ qua
+      if (document.getElementById('inapp-warning-banner')) return;
+
+      // Chặn mọi tương tác khác và kích hoạt kính mờ + popup hướng dẫn mở trình duyệt ngoài
+      e.preventDefault();
+      e.stopPropagation();
+      showInAppBrowserBanner();
+    }, true); // Sử dụng capture phase để chặn trước khi các sự kiện khác được kích hoạt
   }
 });
 
