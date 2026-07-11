@@ -2012,8 +2012,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
   const isInstagram = /Instagram/i.test(ua);
   const isMessenger = /Messenger/i.test(ua);
-  const isGenericWebView = /(iPhone|iPod|iPad|Android).*AppleWebKit(?!.*Safari)/i.test(ua) || ua.includes('Version/');
-  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isGenericWebView;
+  const isZalo = /ZaloApp/i.test(ua);
+  // Android Webview: có AppleWebKit nhưng KHÔNG có Chrome hoặc Firefox
+  const isAndroidWebView = /Android/i.test(ua) && /AppleWebKit/i.test(ua) && !/Chrome\//i.test(ua) && !/Firefox\//i.test(ua);
+  // iOS Webview: có AppleWebKit nhưng KHÔNG có Safari (iOS Safari luôn có 'Safari/' trong UA)
+  const isIOSWebView = /(iPhone|iPad|iPod)/i.test(ua) && /AppleWebKit/i.test(ua) && !/Safari\//i.test(ua) && !/CriOS|FxiOS|EdgiOS/i.test(ua);
+
+  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isZalo || isAndroidWebView || isIOSWebView;
 
   if (isInAppBrowser) {
     showInAppBrowserBanner();
