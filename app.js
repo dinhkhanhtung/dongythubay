@@ -1708,7 +1708,6 @@ document.addEventListener('DOMContentLoaded', () => {
       { text: 'Vừa có người dùng thử ứng dụng', icon: 'external-link', color: '#60a5fa' },
       { text: 'Có người xem sản phẩm ngay lúc này', icon: 'eye', color: '#60a5fa' },
       { text: 'Vừa có đăng ký tư vấn bệnh lý', icon: 'activity', color: '#22c55e' },
-      { text: 'Vừa có người tham gia nhóm Tân Dậu', icon: 'users', color: '#60a5fa' },
     ];
 
     const timeStrs = ['vài giây trước', '1 phút trước', '2 phút trước', '3 phút trước', 'vừa xong'];
