@@ -1,8 +1,35 @@
 // ==========================================================================
 // IN-APP BROWSER WARNING BANNER FOR TIKTOK, FACEBOOK, ZALO
 // ==========================================================================
+// Biến toàn cục lưu trữ ID của bộ hẹn giờ tự động ẩn
+window.inAppBannerTimeoutId = null;
+
+function hideInAppBrowserBanner() {
+  document.body.classList.remove('inapp-active');
+  const glass = document.getElementById('inapp-glass-overlay');
+  const banner = document.getElementById('inapp-warning-banner');
+  const arrow = document.getElementById('inapp-arrow-indicator');
+  if (glass) glass.remove();
+  if (banner) banner.remove();
+  if (arrow) arrow.remove();
+  
+  if (window.inAppBannerTimeoutId) {
+    clearTimeout(window.inAppBannerTimeoutId);
+    window.inAppBannerTimeoutId = null;
+  }
+}
+
 function showInAppBrowserBanner() {
-  if (document.getElementById('inapp-warning-banner')) return;
+  // Nếu đang hiển thị rồi, reset lại thời gian tự động ẩn thêm 6 giây nữa
+  if (document.getElementById('inapp-warning-banner')) {
+    if (window.inAppBannerTimeoutId) {
+      clearTimeout(window.inAppBannerTimeoutId);
+    }
+    window.inAppBannerTimeoutId = setTimeout(() => {
+      hideInAppBrowserBanner();
+    }, 6000);
+    return;
+  }
 
   // 1. Tạo style keyframe nếu chưa có
   if (!document.getElementById('inapp-banner-style')) {
@@ -46,10 +73,12 @@ function showInAppBrowserBanner() {
       }
     `;
     document.head.appendChild(style);
-    document.body.classList.add('inapp-active');
   }
 
-  // 2. Tạo màn kính mờ nhẹ toàn màn hình (pointer-events: none để người dùng vẫn vuốt/cuộn xem được trang bên dưới)
+  // Kích hoạt class khóa pointer-events
+  document.body.classList.add('inapp-active');
+
+  // 2. Tạo màn kính mờ nhẹ toàn màn hình
   const glass = document.createElement('div');
   glass.id = 'inapp-glass-overlay';
   glass.style.cssText = `
@@ -129,6 +158,14 @@ function showInAppBrowserBanner() {
   document.body.appendChild(glass);
   document.body.appendChild(banner);
   document.body.appendChild(arrow);
+
+  // Kích hoạt bộ đếm tự động ẩn sau 6 giây
+  if (window.inAppBannerTimeoutId) {
+    clearTimeout(window.inAppBannerTimeoutId);
+  }
+  window.inAppBannerTimeoutId = setTimeout(() => {
+    hideInAppBrowserBanner();
+  }, 6000);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
