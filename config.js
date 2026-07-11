@@ -1,7 +1,7 @@
 // File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.
 window.CONFIG = {
-  "updatedAt": 1783735474881,
+  "updatedAt": 1783736429774,
   "profile": {
     "avatar": "assets/avatar_doctor.png",
     "name": "Đông y Thu Bẩy",
@@ -201,7 +201,7 @@ window.CONFIG = {
       "id": "affiliates-tech",
       "type": "affiliate-list",
       "title": "Sản phẩm Công nghệ tiện ích",
-      "enabled": false,
+      "enabled": true,
       "order": 9,
       "items": []
     },
@@ -209,7 +209,7 @@ window.CONFIG = {
       "id": "affiliates-other",
       "type": "affiliate-list",
       "title": "Sản phẩm Khuyên dùng khác",
-      "enabled": false,
+      "enabled": true,
       "order": 10,
       "items": []
     },
