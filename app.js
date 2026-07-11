@@ -31,23 +31,6 @@
     return;
   }
 
-  // 2. Phát hiện trình duyệt nhúng và tự động redirect trang chủ nếu là Android
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
-  const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
-  const isInstagram = /Instagram/i.test(ua);
-  const isMessenger = /Messenger/i.test(ua);
-  const isGenericWebView = /(iPhone|iPod|iPad|Android).*AppleWebKit(?!.*Safari)/i.test(ua) || ua.includes('Version/');
-  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isGenericWebView;
-
-  if (isInAppBrowser) {
-    const isAndroid = /Android/i.test(ua);
-    if (isAndroid && !window.location.hash.includes('no-redirect')) {
-      // Ép Android mở trang web này bằng trình duyệt mặc định của hệ thống
-      const urlWithoutProtocol = window.location.host + window.location.pathname + window.location.search;
-      window.location.href = `intent://${urlWithoutProtocol}#Intent;scheme=https;end`;
-    }
-  }
 })();
 
 function showInAppBrowserConfirm(targetUrl = null) {
@@ -168,11 +151,12 @@ function showInAppBrowserConfirm(targetUrl = null) {
 
 function optimizeLinksForInAppBrowser() {
   const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isTikTok = /TikTok|musical_ly/i.test(ua);
+  const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
   const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
   const isInstagram = /Instagram/i.test(ua);
   const isMessenger = /Messenger/i.test(ua);
-  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger;
+  const isGenericWebView = /(iPhone|iPod|iPad|Android).*AppleWebKit(?!.*Safari)/i.test(ua) || ua.includes('Version/');
+  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isGenericWebView;
 
   if (!isInAppBrowser) return;
 
@@ -231,11 +215,12 @@ function optimizeLinksForInAppBrowser() {
 document.addEventListener('DOMContentLoaded', () => {
   // Check and show In-App Browser Warning overlay (iOS / Android fallback)
   const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isTikTok = /TikTok|musical_ly/i.test(ua);
+  const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
   const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
   const isInstagram = /Instagram/i.test(ua);
   const isMessenger = /Messenger/i.test(ua);
-  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger;
+  const isGenericWebView = /(iPhone|iPod|iPad|Android).*AppleWebKit(?!.*Safari)/i.test(ua) || ua.includes('Version/');
+  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isGenericWebView;
 
   if (isInAppBrowser) {
     setTimeout(() => {
