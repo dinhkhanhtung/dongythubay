@@ -180,7 +180,7 @@ window.CONFIG = {
       "id": "affiliates-health",
       "type": "affiliate-list",
       "title": "Sản phẩm Sức khỏe & Đông y",
-      "enabled": false,
+      "enabled": true,
       "order": 3,
       "items": [
         {

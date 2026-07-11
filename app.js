@@ -2007,5 +2007,51 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Cấu hình Android Intent URI và iOS Deep Link để mở app TikTok thẳng sản phẩm
+  setupTikTokIntentLinks();
 });
+
+function setupTikTokIntentLinks() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isAndroid = /Android/i.test(ua);
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+  
+  if (isAndroid || isIOS) {
+    const links = document.querySelectorAll('a');
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+
+      const isTikTokProduct = href.includes('tiktok.com/view/product/');
+      if (isTikTokProduct) {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          const matches = href.match(/\/view\/product\/(\d+)/);
+          if (matches && matches[1]) {
+            const productId = matches[1];
+            
+            if (isAndroid) {
+              // Cấu trúc Intent URI của Android ép buộc gọi app native và nhảy vào sản phẩm, fallback về link web nếu không có app
+              const intentUri = `intent://view/product/${productId}#Intent;scheme=tiktok;package=com.zhiliaoapp.musically;S.browser_fallback_url=${encodeURIComponent(href)};end`;
+              window.location.href = intentUri;
+            } else if (isIOS) {
+              // iOS Custom URL Scheme để mở app native
+              const iosUri = `tiktok://view/product/${productId}`;
+              window.location.href = iosUri;
+              
+              // Fallback về link web sau 1.5 giây nếu app chưa cài đặt
+              setTimeout(() => {
+                window.location.href = href;
+              }, 1500);
+            }
+          } else {
+            window.location.href = href;
+          }
+        });
+      }
+    });
+  }
+}
 
