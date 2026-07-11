@@ -17,13 +17,28 @@ function showInAppBrowserBanner() {
         from { filter: drop-shadow(0 0 2px rgba(46, 204, 113, 0.4)); }
         to { filter: drop-shadow(0 0 8px rgba(46, 204, 113, 0.8)); }
       }
+      /*
+       * ============================================================
+       * THIẾT KẾ WHITELIST — In-App Browser Lock
+       * ============================================================
+       * Mặc định: TOÀN BỘ tương tác bị khóa trong TikTok/Facebook/Zalo webview.
+       * Khách phải bấm 3 chấm → "Mở bằng trình duyệt ngoài" để dùng.
+       *
+       * CHỈ NHỮNG MỤC NÀO ĐƯỢC LIỆT KÊ BÊN DƯỚI mới cho phép click trong webview:
+       *  ✅ tiktok.com/view/product/ — Sản phẩm TikTok Shop (TikTok tự xử lý native)
+       *
+       * Mọi section mới thêm vào config.js (apps, links, social...) đều
+       * TỰ ĐỘNG BỊ KHÓA mà không cần chỉnh sửa thêm code ở đây.
+       * Nếu muốn mở thêm whitelist, chỉ cần thêm dòng CSS tương tự bên dưới.
+       * ============================================================
+       */
       body.inapp-active * {
         pointer-events: none !important;
       }
       #inapp-warning-banner, #inapp-warning-banner *, #inapp-arrow-indicator, #inapp-arrow-indicator * {
         pointer-events: auto !important;
       }
-      /* Cho phép click vào sản phẩm TikTok Shop ngay trong webview TikTok — TikTok tự xử lý native */
+      /* WHITELIST #1: Sản phẩm TikTok Shop — TikTok webview tự mở native product screen */
       body.inapp-active a[href*="tiktok.com/view/product/"],
       body.inapp-active a[href*="tiktok.com/view/product/"] * {
         pointer-events: auto !important;
