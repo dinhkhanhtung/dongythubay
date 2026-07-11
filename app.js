@@ -37,9 +37,9 @@ function showInAppBrowserBanner() {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(8, 20, 14, 0.65);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(8, 20, 14, 0.25);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
     z-index: 9999999;
     pointer-events: none;
   `;
