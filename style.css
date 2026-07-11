@@ -2557,27 +2557,24 @@ body {
 }
 
 /* ==========================================================================
-   IN-APP BROWSER WARNING OVERLAY (TIKTOK/FACEBOOK DETECT)
+   IN-APP BROWSER CUSTOM CONFIRM POPUP (TIKTOK/FACEBOOK DETECT)
    ========================================================================== */
-.inapp-warning-overlay {
+.inapp-confirm-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(8, 20, 14, 0.97); /* Tông xanh thảo mộc tối rất premium */
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(8, 20, 14, 0.94); /* Tông xanh thảo mộc tối rất premium */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   z-index: 999999;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 40px 24px 30px 24px;
-  color: #ffffff;
-  overflow-y: auto;
+  justify-content: center;
+  padding: 24px;
   box-sizing: border-box;
-  animation: inappFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: inappFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes inappFadeIn {
@@ -2585,131 +2582,51 @@ body {
   to { opacity: 1; }
 }
 
-.inapp-warning-card {
+.inapp-confirm-card {
   width: 100%;
-  max-width: 420px;
-  background: rgba(255, 255, 255, 0.04);
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 28px;
-  padding: 28px 24px;
+  border-radius: 24px;
+  padding: 28px 24px 24px 24px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
   text-align: center;
-  margin-top: 50px;
-  transform: translateY(24px);
-  animation: inappSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  transform: scale(0.92) translateY(10px);
+  animation: inappScaleUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   box-sizing: border-box;
 }
 
-@keyframes inappSlideUp {
-  from { transform: translateY(24px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+@keyframes inappScaleUp {
+  to { transform: scale(1) translateY(0); }
 }
 
-.inapp-warning-title {
+.inapp-confirm-title {
   font-family: var(--font-primary);
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 700;
   margin-bottom: 12px;
   color: #ffffff;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
   line-height: 1.3;
 }
 
-.inapp-warning-desc {
+.inapp-confirm-desc {
   font-family: var(--font-primary);
-  font-size: 15px;
+  font-size: 14.5px;
   line-height: 1.5;
   color: #c3d2c8; /* Xanh muted nhạt */
   margin-bottom: 24px;
 }
 
-.inapp-steps {
+.inapp-confirm-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  text-align: left;
-  margin-bottom: 28px;
-}
-
-.inapp-step {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 18px;
-  padding: 14px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.inapp-step-num {
-  background: var(--color-primary);
-  color: #ffffff;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.inapp-step-content {
-  font-size: 14.5px;
-  line-height: 1.45;
-  color: #ecf5ef;
-}
-
-.inapp-step-content strong {
-  color: #2ecc71; /* Accent xanh lá tươi sáng */
-  font-weight: 600;
-}
-
-.inapp-arrow-indicator {
-  position: absolute;
-  top: 15px;
-  right: 25px;
-  animation: inappBounce 1.2s infinite alternate ease-in-out;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #2ecc71;
-  font-size: 13px;
-  font-weight: 600;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.inapp-arrow-icon {
-  width: 32px;
-  height: 32px;
-  margin-bottom: 4px;
-  stroke: currentColor;
-  stroke-width: 2.5;
-  fill: none;
-  animation: inappPulse 1.2s infinite alternate ease-in-out;
-}
-
-@keyframes inappBounce {
-  from { transform: translateY(0); }
-  to { transform: translateY(-8px); }
-}
-
-@keyframes inappPulse {
-  from { filter: drop-shadow(0 0 2px rgba(46, 204, 113, 0.4)); }
-  to { filter: drop-shadow(0 0 10px rgba(46, 204, 113, 0.8)); }
-}
-
-.inapp-actions {
-  display: flex;
-  flex-direction: column;
   gap: 12px;
   width: 100%;
+  justify-content: center;
 }
 
-.inapp-btn-continue {
+.inapp-btn-cancel {
+  flex: 1;
   background: rgba(255, 255, 255, 0.08);
   color: #c3d2c8;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -2721,10 +2638,45 @@ body {
   transition: var(--transition-cubic);
 }
 
-.inapp-btn-continue:hover {
+.inapp-btn-cancel:hover {
   background: rgba(255, 255, 255, 0.14);
   color: #ffffff;
   border-color: rgba(255, 255, 255, 0.2);
+}
+
+.inapp-btn-ok {
+  flex: 1;
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  padding: 13px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-cubic);
+  box-shadow: 0 4px 14px rgba(var(--color-primary-rgb), 0.25);
+}
+
+.inapp-btn-ok:hover {
+  background: var(--color-accent);
+  box-shadow: 0 6px 18px rgba(var(--color-primary-rgb), 0.35);
+}
+
+.ios-instruction-hint {
+  margin-top: 18px;
+  font-size: 13px;
+  color: #2ecc71;
+  line-height: 1.45;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 14px;
+  text-align: left;
+  animation: inappFadeIn 0.4s ease 0.2s forwards;
+  opacity: 0;
+}
+
+.ios-instruction-hint strong {
+  color: #ffffff;
 }
 
 
