@@ -43,6 +43,12 @@ window.CONFIG = {
           "icon": "https://img.icons8.com/color/144/facebook-new.png"
         },
         {
+          "platform": "facebook-page",
+          "label": "Facebook Page",
+          "url": "https://www.facebook.com/dinhkhanhtung",
+          "icon": "https://i.ibb.co/tTxPVxhX/facebook-page.png"
+        },
+        {
           "platform": "google-review",
           "label": "Đánh Giá Google 5 Sao",
           "url": "https://g.page/r/CUXNMH8bivYcEAI/review",
