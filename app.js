@@ -2,38 +2,8 @@
 // IN-APP BROWSER WARNING BANNER FOR TIKTOK, FACEBOOK, ZALO
 // ==========================================================================
 
-// Biến toàn cục lưu trữ ID của bộ hẹn giờ tự động ẩn
-window.inAppBannerTimeoutId = null;
-
-function hideInAppBrowserBanner() {
-  document.body.classList.remove('inapp-active');
-  const glass = document.getElementById('inapp-glass-overlay');
-  const banner = document.getElementById('inapp-warning-banner');
-  const arrow = document.getElementById('inapp-arrow-indicator');
-  if (glass) glass.remove();
-  if (banner) banner.remove();
-  if (arrow) arrow.remove();
-  
-  if (window.inAppBannerTimeoutId) {
-    clearTimeout(window.inAppBannerTimeoutId);
-    window.inAppBannerTimeoutId = null;
-  }
-
-  // Khôi phục URL sạch không chứa query parameter khi ẩn banner
-  window.history.replaceState(null, '', window.location.pathname);
-}
-
 function showInAppBrowserBanner() {
-  // Nếu đang hiển thị rồi, reset lại thời gian tự động ẩn thêm 6 giây nữa
-  if (document.getElementById('inapp-warning-banner')) {
-    if (window.inAppBannerTimeoutId) {
-      clearTimeout(window.inAppBannerTimeoutId);
-    }
-    window.inAppBannerTimeoutId = setTimeout(() => {
-      hideInAppBrowserBanner();
-    }, 6000);
-    return;
-  }
+  if (document.getElementById('inapp-warning-banner')) return;
 
   // 1. Tạo style keyframe nếu chưa có
   if (!document.getElementById('inapp-banner-style')) {
@@ -162,14 +132,6 @@ function showInAppBrowserBanner() {
   document.body.appendChild(glass);
   document.body.appendChild(banner);
   document.body.appendChild(arrow);
-
-  // Kích hoạt bộ đếm tự động ẩn sau 6 giây
-  if (window.inAppBannerTimeoutId) {
-    clearTimeout(window.inAppBannerTimeoutId);
-  }
-  window.inAppBannerTimeoutId = setTimeout(() => {
-    hideInAppBrowserBanner();
-  }, 6000);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2048,37 +2010,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isZalo || isAndroidWebView || isIOSWebView;
 
   if (isInAppBrowser) {
-    // Không hiển thị banner ngay lập tức. Lắng nghe mọi tương tác click trên trang.
-    document.addEventListener('click', (e) => {
-      // Tìm xem click có nằm trong thẻ liên kết a nào không
-      const a = e.target.closest('a');
-      if (a) {
-        const href = a.getAttribute('href') || '';
-        
-        // 1. Nếu là link sản phẩm TikTok Shop: Cho phép tải bình thường dưới dạng HTTPS gốc trong webview
-        if (href.includes('tiktok.com/view/product/')) {
-          return;
-        }
-
-        // 2. Nếu là các liên kết ngoài khác (Zalo, Maps, App Store, điện thoại...)
-        // Chuyển hướng ngay sang trang trung gian go.html để khi bấm "Mở bằng trình duyệt ngoài" Chrome/Safari sẽ tự động chuyển tiếp thẳng đến đích
-        if (href && (href.startsWith('http') || href.startsWith('tel:') || href.startsWith('mailto:'))) {
-          e.preventDefault();
-          e.stopPropagation();
-          window.location.href = `go.html?url=${encodeURIComponent(href)}`;
-          return;
-        }
-      }
-
-      // 3. Nếu là các tương tác khác trên trang (như click ảnh review, tab, faq, click vùng trống...)
-      // Nếu đã hiển thị banner rồi thì bỏ qua
-      if (document.getElementById('inapp-warning-banner')) return;
-
-      // Chặn và kích hoạt kính mờ + popup hướng dẫn mở trình duyệt ngoài tại chỗ (tự ẩn sau 6 giây)
-      e.preventDefault();
-      e.stopPropagation();
-      showInAppBrowserBanner();
-    }, true); // Sử dụng capture phase để chặn trước khi các sự kiện khác được kích hoạt
+    showInAppBrowserBanner();
   }
 });
 
