@@ -2007,22 +2007,5 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-
-  // Cấu hình chuyển hướng link TikTok Shop qua redirect.html trung gian
-  setupTikTokProductRedirects();
 });
-
-function setupTikTokProductRedirects() {
-  const links = document.querySelectorAll('a');
-  links.forEach(link => {
-    const href = link.getAttribute('href');
-    if (!href) return;
-
-    // Chỉ chuyển đổi liên kết sản phẩm TikTok Shop (tránh link profile)
-    const isTikTokProduct = href.includes('tiktok.com/view/product/');
-    if (isTikTokProduct && !href.includes('redirect.html')) {
-      link.href = `redirect.html?url=${encodeURIComponent(href)}`;
-    }
-  });
-}
 
