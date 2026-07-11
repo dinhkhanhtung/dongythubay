@@ -1997,5 +1997,47 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isInAppBrowser) {
     showInAppBrowserBanner();
   }
+
+  // Cấu hình deep link sản phẩm TikTok để nhảy thẳng vào app gốc trên điện thoại
+  setupTikTokProductDeepLinks();
 });
+
+function setupTikTokProductDeepLinks() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isMobile = /Android|iPhone|iPod|iPad/i.test(ua);
+  
+  if (isMobile) {
+    const links = document.querySelectorAll('a');
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+
+      const isTikTokProduct = href.includes('tiktok.com/view/product/');
+      if (isTikTokProduct) {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          const matches = href.match(/\/view\/product\/(\d+)/);
+          if (matches && matches[1]) {
+            const productId = matches[1];
+            const urlParts = href.split('?');
+            const query = urlParts[1] ? '?' + urlParts[1] : '';
+            
+            // Ép mở ứng dụng TikTok native bằng deep link nội bộ không chứa tên miền
+            const deepLink = `tiktok://view/product/${productId}${query}`;
+            
+            window.location.href = deepLink;
+            
+            // Dự phòng: Nếu sau 1.8 giây không mở được app, mở link HTTPS web
+            setTimeout(() => {
+              window.location.href = href;
+            }, 1800);
+          } else {
+            window.location.href = href;
+          }
+        });
+      }
+    });
+  }
+}
 
