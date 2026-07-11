@@ -2006,17 +2006,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Chờ UI render ổn định rồi kích hoạt nút cuộn PC
   setTimeout(initScrollNavigation, 500);
 
-  // Hiển thị banner cảnh báo/hướng dẫn mở trình duyệt ngoài nếu đang chạy trong trình duyệt nhúng
   const ua = navigator.userAgent || navigator.vendor || window.opera;
   const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
   const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
   const isInstagram = /Instagram/i.test(ua);
   const isMessenger = /Messenger/i.test(ua);
-  const isZalo = /ZaloApp/i.test(ua);
-  // Android Webview: có AppleWebKit nhưng KHÔNG có Chrome hoặc Firefox
-  const isAndroidWebView = /Android/i.test(ua) && /AppleWebKit/i.test(ua) && !/Chrome\//i.test(ua) && !/Firefox\//i.test(ua);
-  // iOS Webview: có AppleWebKit nhưng KHÔNG có Safari (iOS Safari luôn có 'Safari/' trong UA)
-  const isIOSWebView = /(iPhone|iPad|iPod)/i.test(ua) && /AppleWebKit/i.test(ua) && !/Safari\//i.test(ua) && !/CriOS|FxiOS|EdgiOS/i.test(ua);
+  const isZalo = /ZaloApp|ZaloAP/i.test(ua);
+  // Android Webview: có AppleWebKit, chứa "wv" hoặc "Version/" để nhận dạng Webview hệ thống, nhưng loại trừ Samsung/Opera
+  const isAndroidWebView = /Android/i.test(ua) && /AppleWebKit/i.test(ua) && (/; wv\)/.test(ua) || /Version\//.test(ua)) && !/SamsungBrowser/i.test(ua) && !/OPR/i.test(ua);
+  // iOS Webview: có AppleWebKit nhưng KHÔNG có Safari (mọi trình duyệt chuẩn trên iOS đều bắt buộc có 'Safari/' ở cuối UA)
+  const isIOSWebView = /(iPhone|iPad|iPod)/i.test(ua) && /AppleWebKit/i.test(ua) && !/Safari\//i.test(ua);
 
   const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isZalo || isAndroidWebView || isIOSWebView;
 
