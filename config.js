@@ -1,7 +1,7 @@
 // File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.
 window.CONFIG = {
-  "updatedAt": 1783736429774,
+  "updatedAt": 1783740439746,
   "profile": {
     "avatar": "assets/avatar_doctor.png",
     "name": "Đông y Thu Bẩy",
@@ -31,12 +31,6 @@ window.CONFIG = {
           "icon": "https://i.ibb.co/Wjz9N4P/AVv-Xs-Eg3-Dr-Zo-Aw-Hqb-R-Du-Iy32r-VDU8jh-XVN5-BI1-EFLFgt6-TLycc0-Ww9n1xen-D4-7r-MP4-jgdv-Hbyu-2-Gu-TN2h-O.png"
         },
         {
-          "platform": "messenger",
-          "label": "Facebook Messenger",
-          "url": "https://m.me/dinhkhanhtung",
-          "icon": "https://i.ibb.co/B523cQD3/3c39891bc36c.png"
-        },
-        {
           "platform": "maps",
           "label": "Bản Đồ Phòng Khám",
           "url": "https://maps.google.com/?q=Phòng+Chẩn+Trị+YHCT+Thu+Bẩy+Tổ+10+Quan+Triều+Thái+Nguyên",
@@ -46,18 +40,6 @@ window.CONFIG = {
           "platform": "facebook",
           "label": "Facebook Cá Nhân",
           "url": "https://www.facebook.com/dinhkhanhtung",
-          "icon": "https://img.icons8.com/color/144/facebook-new.png"
-        },
-        {
-          "platform": "tiktok",
-          "label": "Kênh TikTok",
-          "url": "https://www.tiktok.com/@dongy_thubay",
-          "icon": "https://img.icons8.com/color/144/tiktok.png"
-        },
-        {
-          "platform": "facebook-group",
-          "label": "Kết Nối Tân Dậu Toàn Cầu",
-          "url": "https://web.facebook.com/groups/ketnoitandautoancau",
           "icon": "https://img.icons8.com/color/144/facebook-new.png"
         },
         {
@@ -201,7 +183,7 @@ window.CONFIG = {
       "id": "affiliates-tech",
       "type": "affiliate-list",
       "title": "Sản phẩm Công nghệ tiện ích",
-      "enabled": true,
+      "enabled": false,
       "order": 9,
       "items": []
     },
@@ -209,7 +191,7 @@ window.CONFIG = {
       "id": "affiliates-other",
       "type": "affiliate-list",
       "title": "Sản phẩm Khuyên dùng khác",
-      "enabled": true,
+      "enabled": false,
       "order": 10,
       "items": []
     },
