@@ -293,8 +293,89 @@ body {
 
 [data-theme="dark"] .app-container::after {
   background-image:
-    linear-gradient(rgba(34, 197, 94, 0.13) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 197, 94, 0.13) 1px, transparent 1px);
+    linear-gradient(rgba(236, 253, 245, 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236, 253, 245, 0.28) 1px, transparent 1px);
+}
+
+.app-boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10000002;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(34, 197, 94, 0.2), transparent 34%),
+    var(--bg-app-gradient);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+}
+
+.app-boot-screen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.boot-orb {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.boot-orb::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 2px solid rgba(var(--color-primary-rgb), 0.18);
+  border-top-color: var(--color-primary);
+  animation: boot-spin 1.05s linear infinite;
+}
+
+.boot-orb img {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--bg-app);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+}
+
+.boot-orb span {
+  position: absolute;
+  right: 4px;
+  bottom: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  border: 3px solid var(--bg-app);
+}
+
+.boot-text {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+@keyframes boot-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes loading-skeleton {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Profile Header - Premium Viewport-locked */
@@ -325,6 +406,23 @@ body {
   box-shadow: var(--card-shadow);
   z-index: 2;
   position: relative;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.avatar-img.is-loaded {
+  opacity: 1;
+}
+
+.avatar-container::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--border-color) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: loading-skeleton 1.2s infinite;
+  z-index: 1;
 }
 
 .avatar-ring {
@@ -561,12 +659,25 @@ body {
   background-color: rgba(0,0,0,0.02);
 }
 
+.project-image-wrapper::before,
+.service-image-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(var(--color-primary-rgb),0.12) 50%, rgba(255,255,255,0.1) 75%);
+  background-size: 200% 100%;
+  animation: loading-skeleton 1.35s infinite;
+  z-index: 0;
+}
+
 .project-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
   transition: var(--transition-cubic);
   background-color: rgba(0, 0, 0, 0.03);
+  position: relative;
+  z-index: 1;
 }
 
 [data-theme="dark"] .project-image {
@@ -2079,6 +2190,8 @@ body {
   height: 100%;
   object-fit: cover; /* Cắt ảnh đẹp */
   transition: var(--transition-cubic);
+  position: relative;
+  z-index: 1;
 }
 
 .service-card:hover .service-image {

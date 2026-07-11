@@ -135,6 +135,17 @@ function showInAppBrowserBanner() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  const bootScreen = document.getElementById('app-boot-screen');
+  const bootStartedAt = Date.now();
+  const hideBootScreen = () => {
+    if (!bootScreen) return;
+    const elapsed = Date.now() - bootStartedAt;
+    const delay = Math.max(0, 1250 - elapsed);
+    setTimeout(() => bootScreen.classList.add('is-hidden'), delay);
+  };
+  window.addEventListener('load', hideBootScreen, { once: true });
+  setTimeout(hideBootScreen, 2200);
+
   // Initialize Lucide Icons
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
@@ -217,6 +228,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const cacheBuster = config.updatedAt ? `?v=${config.updatedAt}` : `?v=${Date.now()}`;
       avatarImg.src = profile.avatar + (profile.avatar.includes('?') ? '&' : '?') + cacheBuster;
     }
+    avatarImg.addEventListener('load', () => avatarImg.classList.add('is-loaded'), { once: true });
+    avatarImg.addEventListener('error', () => avatarImg.classList.add('is-loaded'), { once: true });
+    if (avatarImg.complete) avatarImg.classList.add('is-loaded');
     if (profile.name) nameEl.textContent = profile.name;
     
     if (profile.subtitle) {
@@ -511,8 +525,8 @@ document.addEventListener('DOMContentLoaded', () => {
       .sort((a, b) => (a.order || 99) - (b.order || 99));
 
     activeSections.forEach(section => {
-      // Auto-hide affiliate-list sections with no items
-      if (section.type === 'affiliate-list' && (!section.items || section.items.length === 0)) {
+      // Auto-hide affiliate sections that have no safe-to-open items.
+      if (section.type === 'affiliate-list' && (!section.items || section.items.filter(item => !(item.affiliateUrl || '').includes('tiktok.com')).length === 0)) {
         return;
       }
 
@@ -701,7 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       card.innerHTML = `
         <div class="project-image-wrapper">
-          <img src="${image}" alt="${title}" class="project-image" loading="lazy">
+          <img src="${image}" alt="${title}" class="project-image" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" ${index < 2 ? 'fetchpriority="high"' : ''}>
           <span class="project-tag">${tag}</span>
           ${isHotApp ? '<span class="project-hot-badge">🔥 Hot</span>' : ''}
         </div>
@@ -853,8 +867,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderAffiliateList(section, container) {
     const list = document.createElement('div');
     list.className = 'affiliate-container';
+    const visibleItems = (section.items || []).filter(item => !(item.affiliateUrl || '').includes('tiktok.com'));
 
-    section.items.forEach((item, index) => {
+    visibleItems.forEach((item, index) => {
       const card = document.createElement('a');
       card.className = 'affiliate-card';
       card.id = `affiliate-card-${section.id}-${index}`;
@@ -1222,59 +1237,39 @@ document.addEventListener('DOMContentLoaded', () => {
       // Copy to Clipboard immediately on user interaction to avoid browser block
       copyTextToClipboard(textToCopy);
 
-      try {
-        const response = await fetch('/api/booking', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone, disease, message })
-        });
+      trackClick('booking', slugify(disease), `Đăng ký khám: ${disease}`, '#');
 
-        const resData = await response.json();
+      card.querySelector('#booking-form-wrapper').innerHTML = `
+        <div class="booking-success-message">
+          <div class="booking-success-icon">
+            <i data-lucide="check" style="width: 28px; height: 28px;"></i>
+          </div>
+          <h3 class="booking-success-title">Đã Soạn Tin Nhắn!</h3>
+          <p class="booking-success-desc" style="margin-bottom: 8px;">
+            Nội dung đăng ký đã được <strong>tự động sao chép</strong>.
+          </p>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
+            Zalo sắp được mở. Hãy <strong>DÁN (PASTE)</strong> tin nhắn vào ô chat để gửi đi.
+          </p>
+          <a href="https://zalo.me/0982581222" class="booking-submit-btn" style="background-color: #0068ff; color: #ffffff; text-decoration: none; width: 100%; border-radius: var(--radius-sm); font-size: 14.5px; font-weight: 700; margin-top: 0; min-height: 48px;">
+            <i data-lucide="message-square" style="width: 18px; height: 18px;"></i>
+            <span>Mở Zalo và Dán gửi ngay</span>
+          </a>
+        </div>
+      `;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
 
-        if (response.ok && resData.success) {
-          // Track booking click
-          trackClick('booking', slugify(disease), `Đăng ký khám: ${disease}`, '#');
+      fetch('/api/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, disease, message })
+      }).catch(err => {
+        console.warn('[Booking] API bận hoặc lỗi mạng, khách vẫn tiếp tục qua Zalo:', err);
+      });
 
-          // Render Success Screen
-          card.querySelector('#booking-form-wrapper').innerHTML = `
-            <div class="booking-success-message">
-              <div class="booking-success-icon">
-                <i data-lucide="check" style="width: 28px; height: 28px;"></i>
-              </div>
-              <h3 class="booking-success-title">Đăng Ký Thành Công!</h3>
-              <p class="booking-success-desc" style="margin-bottom: 8px;">
-                Đã gửi thông tin đến Telegram của Tùng.<br>
-                Đồng thời, nội dung đã được <strong>tự động sao chép vào bộ nhớ đệm</strong> của bạn.
-              </p>
-              <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
-                Bạn đang được chuyển hướng sang Zalo... Hãy <strong>DÁN (PASTE)</strong> tin nhắn vào ô chat để gửi đi.
-              </p>
-              <a href="https://zalo.me/0982581222" class="booking-submit-btn" style="background-color: #0068ff; color: #ffffff; text-decoration: none; width: 100%; border-radius: var(--radius-sm); font-size: 14.5px; font-weight: 700; margin-top: 0; min-height: 48px;">
-                <i data-lucide="message-square" style="width: 18px; height: 18px;"></i>
-                <span>Mở Zalo và Dán gửi ngay</span>
-              </a>
-            </div>
-          `;
-          if (typeof lucide !== 'undefined') lucide.createIcons();
-
-          // Auto redirect to Zalo after 2 seconds
-          setTimeout(() => {
-            window.location.href = 'https://zalo.me/0982581222';
-          }, 2000);
-
-        } else {
-          alert(resData.error || 'Có lỗi xảy ra khi gửi lịch hẹn. Vui lòng thử lại!');
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = `<i data-lucide="send" style="width: 16px; height: 16px;"></i><span>Gửi Đăng Ký Ngay</span>`;
-          if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Lỗi kết nối mạng. Vui lòng kiểm tra lại đường truyền của bạn!');
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = `<i data-lucide="send" style="width: 16px; height: 16px;"></i><span>Gửi Đăng Ký Ngay</span>`;
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-      }
+      setTimeout(() => {
+        window.location.href = 'https://zalo.me/0982581222';
+      }, 900);
     });
 
     container.appendChild(card);
@@ -1446,7 +1441,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       card.innerHTML = `
         <div class="own-product-media">
-          <img src="${image}" alt="${name}" class="own-product-image" loading="lazy">
+          <img src="${image}" alt="${name}" class="own-product-image" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" ${index < 2 ? 'fetchpriority="high"' : ''}>
           <span class="own-product-badge">Đông y gia truyền</span>
         </div>
         <div class="own-product-content">
@@ -1503,7 +1498,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       card.innerHTML = `
         <div class="service-image-wrapper">
-          <img src="${image}" alt="${title}" class="service-image" loading="lazy">
+          <img src="${image}" alt="${title}" class="service-image" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" ${index < 2 ? 'fetchpriority="high"' : ''}>
           <span class="service-tag">${subtitle}</span>
           ${isHotService ? '<span class="project-hot-badge">🔥 Hot</span>' : ''}
         </div>
