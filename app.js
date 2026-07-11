@@ -2027,8 +2027,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (a) {
         const href = a.getAttribute('href') || '';
         if (href.includes('tiktok.com/view/product/')) {
-          // Cho phép mở bình thường, không chặn, không hiện popup
-          return;
+          // NẾU ĐANG Ở TRONG TRÌNH DUYỆT NHÚNG CỦA TIKTOK:
+          // Chuyển hướng sang custom scheme tiktok:// để app tự mở màn hình sản phẩm native
+          if (isTikTok) {
+            const matches = href.match(/\/view\/product\/(\d+)/);
+            if (matches && matches[1]) {
+              const productId = matches[1];
+              window.location.href = `tiktok://view/product/${productId}`;
+              e.preventDefault();
+              e.stopPropagation();
+              return;
+            }
+          }
+          // Nếu ở app khác (Zalo, Facebook...), tiếp tục đi xuống dưới để chặn và hiển thị popup yêu cầu mở Chrome/Safari
         }
       }
 
