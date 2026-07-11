@@ -33,79 +33,8 @@
 
 })();
 
-function showInAppBrowserBlock() {
-  if (document.querySelector('.inapp-block-overlay')) {
-    return;
-  }
-
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isAndroid = /Android/i.test(ua);
-
-  const overlay = document.createElement('div');
-  overlay.className = 'inapp-block-overlay';
-
-  // Android -> Dùng thẻ a thật với intent Chrome package để vượt qua bộ lọc của Webview
-  // iOS -> Dùng button để trigger hướng dẫn
-  let buttonHtml = '';
-  if (isAndroid) {
-    const cleanUrl = window.location.host + window.location.pathname + window.location.search;
-    const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
-    buttonHtml = `<a href="${intentUrl}" class="inapp-btn-open" style="text-decoration: none; display: block; text-align: center; line-height: 1.4;">Mở bằng Google Chrome</a>`;
-  } else {
-    buttonHtml = `<button class="inapp-btn-open">Mở bằng Trình Duyệt Ngoài</button>`;
-  }
-
-  overlay.innerHTML = `
-    <div class="inapp-block-card">
-      <h2 class="inapp-block-title">Mở Bằng Trình Duyệt Ngoài</h2>
-      <p class="inapp-block-desc">
-        Vui lòng mở trang web này bằng trình duyệt Chrome hoặc Safari của điện thoại để sử dụng các tính năng liên hệ (Zalo, Messenger, Bản đồ, CH Play) hoạt động bình thường.
-      </p>
-      
-      ${buttonHtml}
-      
-      <div class="ios-instruction-hint" style="display: none;">
-        <strong>Hướng dẫn cho iPhone:</strong> Trình duyệt nhúng iOS không cho phép tự động chuyển hướng. Vui lòng bấm biểu tượng <strong>Ba Dấu Chấm (...)</strong> ở góc trên bên phải màn hình và chọn <strong>"Mở bằng trình duyệt ngoài"</strong> (hoặc <strong>"Mở bằng Safari"</strong>).
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(overlay);
-
-  // Chỉ gán click handler cho iOS (Android đã chạy qua href thẻ a gốc của hệ thống)
-  if (!isAndroid) {
-    const openBtn = overlay.querySelector('.inapp-btn-open');
-    if (openBtn) {
-      openBtn.addEventListener('click', () => {
-        const hint = overlay.querySelector('.ios-instruction-hint');
-        if (hint) {
-          hint.style.display = 'block';
-          setTimeout(() => {
-            hint.style.opacity = '1';
-          }, 10);
-        }
-        
-        if (!overlay.querySelector('.inapp-arrow-indicator')) {
-          const arrow = document.createElement('div');
-          arrow.className = 'inapp-arrow-indicator';
-          arrow.innerHTML = `
-            <svg class="inapp-arrow-icon" viewBox="0 0 24 24" stroke="currentColor">
-              <path d="M12 5v14M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Nhấn nút 3 chấm ở đây</span>
-          `;
-          overlay.appendChild(arrow);
-        }
-
-        openBtn.style.opacity = '0.5';
-        openBtn.disabled = true;
-      });
-    }
-  }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-  // Check and show In-App Browser Warning overlay (iOS / Android fallback)
+  // Auto redirect to Chrome on Android Webview using hidden iframe to trigger native warning dialog
   const ua = navigator.userAgent || navigator.vendor || window.opera;
   const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
   const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
@@ -115,9 +44,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isGenericWebView;
 
   if (isInAppBrowser) {
-    setTimeout(() => {
-      showInAppBrowserBlock();
-    }, 400);
+    const isAndroid = /Android/i.test(ua);
+    if (isAndroid) {
+      setTimeout(() => {
+        const cleanUrl = window.location.host + window.location.pathname + window.location.search;
+        const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+        
+        // Trigger intent redirect silently via iframe to invoke native system confirm popup
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = intentUrl;
+        document.body.appendChild(iframe);
+      }, 600);
+    }
   }
 
   // Initialize Lucide Icons
