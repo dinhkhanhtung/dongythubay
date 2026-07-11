@@ -1,7 +1,7 @@
 // File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.
 window.CONFIG = {
-  "updatedAt": 1783740439746,
+  "updatedAt": 1783758542712,
   "profile": {
     "avatar": "assets/avatar_doctor.png",
     "name": "Đông y Thu Bẩy",
@@ -82,7 +82,18 @@ window.CONFIG = {
       "title": "Sản Phẩm Thảo Dược Của Tôi",
       "enabled": true,
       "order": 2.8,
-      "items": []
+      "items": [
+        {
+          "name": "Bài thuốc mới",
+          "image": "",
+          "description": "Mô tả sản phẩm thảo dược...",
+          "tags": [
+            "100% thảo dược"
+          ],
+          "contactUrl": "https://zalo.me/0982581222",
+          "contactLabel": "Liên hệ báo giá"
+        }
+      ]
     },
     {
       "id": "my-apps",
@@ -229,6 +240,74 @@ window.CONFIG = {
       "order": 3.5,
       "items": [
         {
+          "image": "assets/review/Screenshot_20180824-092449.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180817-205746.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180724-130913.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180724-080910.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180723-233256.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180723-233250.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180723-214454.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180719-142210.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180719-142203.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180624-194755.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180608-005856.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180516-204929.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180515-162708.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180512-074232.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180429-081448.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180428-175809.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/Screenshot_20180428-170806.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
           "image": "assets/review/Screenshot_20180420-115519.jpg",
           "caption": "Nhận xét bệnh nhân mới"
         },
@@ -365,6 +444,10 @@ window.CONFIG = {
           "caption": "Nhận xét bệnh nhân mới"
         },
         {
+          "image": "assets/review/120657978_3669041579795780_2831823502133140860_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
           "image": "assets/review/120639634_3669040479795890_7120132453014020250_n.jpg",
           "caption": "Nhận xét bệnh nhân mới"
         },
@@ -374,6 +457,10 @@ window.CONFIG = {
         },
         {
           "image": "assets/review/120570444_3669041519795786_2480623520808149528_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
+        },
+        {
+          "image": "assets/review/120561590_3669040613129210_5846319400958690505_n.jpg",
           "caption": "Nhận xét bệnh nhân mới"
         },
         {
@@ -389,28 +476,12 @@ window.CONFIG = {
           "caption": "Nhận xét bệnh nhân mới"
         },
         {
-          "image": "assets/review/120396173_3669040766462528_7282720382376266470_n.jpg",
-          "caption": "Phản hồi điều trị sỏi mật hiệu quả sau 1 liệu trình thuốc nam"
+          "image": "assets/review/120424120_3669283353104936_6603051118602376791_n.jpg",
+          "caption": "Nhận xét bệnh nhân mới"
         },
         {
           "image": "assets/review/120422179_3669283266438278_2448357116553594135_n.jpg",
-          "caption": "Bệnh nhân trào ngược dạ dày hết hẳn ợ chua và đau rát thượng vị"
-        },
-        {
-          "image": "assets/review/120424120_3669283353104936_6603051118602376791_n.jpg",
-          "caption": "Bệnh nhân dạ dày ăn ngon ngủ tốt, không còn triệu chứng khó chịu"
-        },
-        {
-          "image": "assets/review/Screenshot_20190619-105243.jpg",
-          "caption": "Review chữa yếu sinh lý, tăng cường sinh lực nam giới thành công"
-        },
-        {
-          "image": "assets/review/120561590_3669040613129210_5846319400958690505_n.jpg",
-          "caption": "Bệnh nhân sỏi thận 7mm tiêu sỏi hoàn toàn sau thời gian ngắn"
-        },
-        {
-          "image": "assets/review/120657978_3669041579795780_2831823502133140860_n.jpg",
-          "caption": "Cảm ơn phòng khám giúp chữa trị trĩ nội co teo rụng tự nhiên"
+          "caption": "Nhận xét bệnh nhân mới"
         },
         {
           "image": "assets/review/120396173_3669040766462528_7282720382376266470_n.jpg",
