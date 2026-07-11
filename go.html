@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đang chuyển hướng...</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #08140e;
+      color: #ffffff;
+      font-family: system-ui, -apple-system, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    #inapp-glass-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(8, 20, 14, 0.45);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 9999;
+    }
+    #inapp-warning-banner {
+      position: fixed;
+      top: 75px;
+      left: 16px;
+      right: 16px;
+      background: rgba(26, 42, 34, 0.98);
+      border: 1px solid rgba(46, 204, 113, 0.35);
+      border-radius: 16px;
+      padding: 18px 20px;
+      z-index: 10000;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      max-width: 480px;
+      margin: 0 auto;
+      box-sizing: border-box;
+      text-align: left;
+    }
+    #inapp-arrow-indicator {
+      position: fixed;
+      top: 8px;
+      right: 24px;
+      z-index: 10001;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #2ecc71;
+      font-weight: 700;
+      font-size: 11px;
+      pointer-events: none;
+      animation: inappBounceDiagonal 1.2s infinite alternate ease-in-out;
+    }
+    @keyframes inappBounceDiagonal {
+      from { transform: translate(0, 0); }
+      to { transform: translate(6px, -6px); }
+    }
+    @keyframes inappPulse {
+      from { filter: drop-shadow(0 0 2px rgba(46, 204, 113, 0.4)); }
+      to { filter: drop-shadow(0 0 8px rgba(46, 204, 113, 0.8)); }
+    }
+    .loading-spinner {
+      border: 3px solid rgba(46, 204, 113, 0.1);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border-left-color: #2ecc71;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading State (sẽ ẩn nếu ở trong inapp browser) -->
+  <div id="loader" style="display: flex; flex-direction: column; align-items: center; gap: 16px; z-index: 1;">
+    <div class="loading-spinner"></div>
+    <p style="color: #a3b8ac; font-size: 14px; margin: 0;">Đang mở liên kết...</p>
+  </div>
+
+  <script>
+    // 1. Nhận diện In-App Browser
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
+    const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
+    const isInstagram = /Instagram/i.test(ua);
+    const isMessenger = /Messenger/i.test(ua);
+    const isZalo = /ZaloApp|ZaloAP/i.test(ua);
+    const isAndroidWebView = /Android/i.test(ua) && /AppleWebKit/i.test(ua) && (/; wv\)/.test(ua) || /Version\//.test(ua)) && !/SamsungBrowser|MiuiBrowser|HeyTapBrowser|OppoBrowser|VivoBrowser|HuaweiBrowser/i.test(ua) && !/OPR/i.test(ua);
+    const isIOSWebView = /(iPhone|iPad|iPod)/i.test(ua) && /AppleWebKit/i.test(ua) && !/Safari\//i.test(ua);
+
+    const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isZalo || isAndroidWebView || isIOSWebView;
+
+    // 2. Lấy URL đích cần redirect
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetUrl = urlParams.get('url');
+
+    if (!targetUrl) {
+      // Nếu không có link đích, về trang chủ
+      window.location.replace('/');
+    } else if (isInAppBrowser) {
+      // NẾU Ở TRONG TRÌNH DUYỆT NHÚNG:
+      // Ẩn spinner loading
+      document.getElementById('loader').style.display = 'none';
+
+      // Tạo giao diện cảnh báo mở trình duyệt ngoài
+      const glass = document.createElement('div');
+      glass.id = 'inapp-glass-overlay';
+      
+      const banner = document.createElement('div');
+      banner.id = 'inapp-warning-banner';
+      banner.innerHTML = `
+        <div style="display: flex; align-items: flex-start; gap: 12px; font-family: system-ui, -apple-system, sans-serif;">
+          <div style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg style="width: 20px; height: 20px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; color: #ffffff; font-size: 15px; font-weight: 700; line-height: 1.3;">Mở Bằng Trình Duyệt Ngoài</h4>
+            <p style="margin: 0; color: #a3b8ac; font-size: 13.5px; line-height: 1.45;">
+              Vui lòng click biểu tượng <strong>3 dấu chấm (...)</strong> hoặc <strong>Chia sẻ</strong> ở góc trên bên phải và chọn <strong>"Mở bằng trình duyệt ngoài"</strong> để tiếp tục truy cập liên kết.
+            </p>
+          </div>
+        </div>
+      `;
+
+      const arrow = document.createElement('div');
+      arrow.id = 'inapp-arrow-indicator';
+      arrow.innerHTML = `
+        <svg style="width: 32px; height: 32px; stroke: currentColor; stroke-width: 3; fill: none; margin-bottom: 2px; animation: inappPulse 1.2s infinite alternate ease-in-out;" viewBox="0 0 24 24">
+          <path d="M7 17L17 7M17 7H9M17 7V15" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.9); background: rgba(26,42,34,0.9); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(46, 204, 113, 0.3);">Bấm ở đây</span>
+      `;
+
+      document.body.appendChild(glass);
+      document.body.appendChild(banner);
+      document.body.appendChild(arrow);
+    } else {
+      // NẾU Ở TRÌNH DUYỆT NGOÀI: Tự động redirect tới URL đích
+      window.location.replace(targetUrl);
+    }
+  </script>
+</body>
+</html>

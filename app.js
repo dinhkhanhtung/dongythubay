@@ -1,11 +1,6 @@
-// Xử lý chuyển hướng trực tiếp nếu có tham số ?redirect= khi mở bằng trình duyệt ngoài
-(function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const redirectUrl = urlParams.get('redirect');
-  if (redirectUrl) {
-    window.location.replace(redirectUrl);
-  }
-})();
+// ==========================================================================
+// IN-APP BROWSER WARNING BANNER FOR TIKTOK, FACEBOOK, ZALO
+// ==========================================================================
 
 // Biến toàn cục lưu trữ ID của bộ hẹn giờ tự động ẩn
 window.inAppBannerTimeoutId = null;
@@ -977,19 +972,6 @@ document.addEventListener('DOMContentLoaded', () => {
       card.addEventListener('click', (e) => {
         const currentName = card.querySelector('.affiliate-name')?.textContent || name;
         trackClick(isContact ? 'contact_product' : 'affiliate', slugify(currentName), currentName, linkUrl);
-
-        if (!isContact && linkUrl && linkUrl.includes('tiktok.com')) {
-          const match = linkUrl.match(/\/product\/(\d+)/);
-          if (match && match[1]) {
-            const productId = match[1];
-            const deepLink = `tiktok://ecommerce/product/detail?product_id=${productId}`;
-            e.preventDefault();
-            window.location.href = deepLink;
-            setTimeout(() => {
-              window.location.href = linkUrl;
-            }, 1200);
-          }
-        }
       });
 
       // Link Unfurling Trigger if metadata is missing (Skip if contact product or custom name/image provided)
@@ -2068,25 +2050,31 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isInAppBrowser) {
     // Không hiển thị banner ngay lập tức. Lắng nghe mọi tương tác click trên trang.
     document.addEventListener('click', (e) => {
-      // Tìm xem click có nằm trong link sản phẩm TikTok Shop hay không
+      // Tìm xem click có nằm trong thẻ liên kết a nào không
       const a = e.target.closest('a');
       if (a) {
         const href = a.getAttribute('href') || '';
+        
+        // 1. Nếu là link sản phẩm TikTok Shop: Cho phép tải bình thường dưới dạng HTTPS gốc trong webview
         if (href.includes('tiktok.com/view/product/')) {
-          // Cho phép tải bình thường dưới dạng HTTPS gốc, giúp TikTok webview tự mở trang chi tiết sản phẩm
           return;
         }
 
-        // Lưu địa chỉ liên kết cần mở vào query parameter của URL hiện tại
-        // Để khi bấm "Mở bằng trình duyệt ngoài", Chrome/Safari sẽ tự động chuyển tiếp thẳng đến Zalo, Maps,... đó
-        const newSearch = `?redirect=${encodeURIComponent(href)}`;
-        window.history.replaceState(null, '', newSearch);
+        // 2. Nếu là các liên kết ngoài khác (Zalo, Maps, App Store, điện thoại...)
+        // Chuyển hướng ngay sang trang trung gian go.html để khi bấm "Mở bằng trình duyệt ngoài" Chrome/Safari sẽ tự động chuyển tiếp thẳng đến đích
+        if (href && (href.startsWith('http') || href.startsWith('tel:') || href.startsWith('mailto:'))) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.location.href = `go.html?url=${encodeURIComponent(href)}`;
+          return;
+        }
       }
 
-      // Nếu đã hiển thị banner/kính mờ rồi thì bỏ qua
+      // 3. Nếu là các tương tác khác trên trang (như click ảnh review, tab, faq, click vùng trống...)
+      // Nếu đã hiển thị banner rồi thì bỏ qua
       if (document.getElementById('inapp-warning-banner')) return;
 
-      // Chặn mọi tương tác khác và kích hoạt kính mờ + popup hướng dẫn mở trình duyệt ngoài
+      // Chặn và kích hoạt kính mờ + popup hướng dẫn mở trình duyệt ngoài tại chỗ (tự ẩn sau 6 giây)
       e.preventDefault();
       e.stopPropagation();
       showInAppBrowserBanner();
