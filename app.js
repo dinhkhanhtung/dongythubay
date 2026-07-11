@@ -9,19 +9,24 @@ function showInAppBrowserBanner() {
     const style = document.createElement('style');
     style.id = 'inapp-banner-style';
     style.innerHTML = `
-      @keyframes inappBounce {
-        from { transform: translateY(0); }
-        to { transform: translateY(-6px); }
+      @keyframes inappBounceDiagonal {
+        from { transform: translate(0, 0); }
+        to { transform: translate(6px, -6px); }
       }
       @keyframes inappPulse {
         from { filter: drop-shadow(0 0 2px rgba(46, 204, 113, 0.4)); }
         to { filter: drop-shadow(0 0 8px rgba(46, 204, 113, 0.8)); }
       }
+      body.inapp-active a, body.inapp-active button {
+        pointer-events: none !important;
+        cursor: default !important;
+      }
     `;
     document.head.appendChild(style);
+    document.body.classList.add('inapp-active');
   }
 
-  // 2. Tạo màn kính mờ toàn màn hình để ngăn chặn thao tác click/scroll bên dưới
+  // 2. Tạo màn kính mờ nhẹ toàn màn hình (pointer-events: none để người dùng vẫn vuốt/cuộn được trang bên dưới)
   const glass = document.createElement('div');
   glass.id = 'inapp-glass-overlay';
   glass.style.cssText = `
@@ -30,56 +35,56 @@ function showInAppBrowserBanner() {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(8, 20, 14, 0.75);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background: rgba(8, 20, 14, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: 9999999;
-    pointer-events: auto;
+    pointer-events: none;
   `;
 
-  // 3. Tạo Card thông báo nổi ở giữa màn hình (z-index cực cao, không có nút tắt)
+  // 3. Tạo Card thông báo nổi ở vị trí cũ (top: 65px)
   const banner = document.createElement('div');
   banner.id = 'inapp-warning-banner';
   banner.style.cssText = `
     position: fixed;
-    top: 50%;
-    left: 16px;
-    right: 16px;
-    transform: translateY(-50%);
+    top: 65px;
+    left: 12px;
+    right: 12px;
     background: rgba(26, 42, 34, 0.98);
     border: 1px solid rgba(46, 204, 113, 0.35);
-    border-radius: 20px;
-    padding: 24px 20px;
+    border-radius: 16px;
+    padding: 14px 16px;
     z-index: 10000000;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     font-family: system-ui, -apple-system, sans-serif;
-    max-width: 340px;
+    max-width: 480px;
     margin: 0 auto;
     box-sizing: border-box;
-    text-align: center;
   `;
 
   banner.innerHTML = `
-    <div style="box-sizing: border-box;">
-      <div style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 12px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-        <svg style="width: 22px; height: 22px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
+    <div style="display: flex; align-items: flex-start; gap: 12px; padding-right: 20px; box-sizing: border-box; text-align: left;">
+      <div style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <svg style="width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
           <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <h3 style="margin: 0 0 8px 0; color: #ffffff; font-size: 17px; font-weight: 700; line-height: 1.3; font-family: inherit;">Mở Bằng Trình Duyệt Ngoài</h3>
-      <p style="margin: 0; color: #a3b8ac; font-size: 13.5px; line-height: 1.5; font-family: inherit;">
-        Vui lòng click biểu tượng <strong>3 dấu chấm (...)</strong> ở góc trên bên phải và chọn <strong>"Mở bằng trình duyệt ngoài"</strong> để tiếp tục sử dụng Zalo & Bản đồ.
-      </p>
+      <div style="flex-grow: 1;">
+        <h4 style="margin: 0 0 3px 0; color: #ffffff; font-size: 14.5px; font-weight: 700; line-height: 1.3; font-family: inherit;">Mở Bằng Trình Duyệt Ngoài</h4>
+        <p style="margin: 0; color: #a3b8ac; font-size: 13.5px; line-height: 1.45; font-family: inherit;">
+          Vui lòng click <strong>3 dấu chấm (...)</strong> ở góc trên bên phải và chọn <strong>"Mở bằng trình duyệt ngoài"</strong>.
+        </p>
+      </div>
     </div>
   `;
 
-  // 4. Tạo Mũi tên động chỉ lên góc phải màn hình (z-index cao nhất)
+  // 4. Tạo Mũi tên chéo động chỉ thẳng góc lên nút 3 chấm ở góc phải màn hình
   const arrow = document.createElement('div');
   arrow.id = 'inapp-arrow-indicator';
   arrow.style.cssText = `
     position: fixed;
     top: 8px;
-    right: 20px;
+    right: 24px;
     z-index: 10000001;
     display: flex;
     flex-direction: column;
@@ -89,13 +94,13 @@ function showInAppBrowserBanner() {
     font-size: 11px;
     pointer-events: none;
     font-family: system-ui, -apple-system, sans-serif;
-    animation: inappBounce 1.2s infinite alternate ease-in-out;
+    animation: inappBounceDiagonal 1.2s infinite alternate ease-in-out;
   `;
   arrow.innerHTML = `
-    <svg style="width: 28px; height: 28px; stroke: currentColor; stroke-width: 3; fill: none; margin-bottom: 2px; animation: inappPulse 1.2s infinite alternate ease-in-out;" viewBox="0 0 24 24">
-      <path d="M12 5v14M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+    <svg style="width: 32px; height: 32px; stroke: currentColor; stroke-width: 3; fill: none; margin-bottom: 2px; animation: inappPulse 1.2s infinite alternate ease-in-out;" viewBox="0 0 24 24">
+      <path d="M7 17L17 7M17 7H9M17 7V15" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.8); background: rgba(26,42,34,0.85); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(46, 204, 113, 0.3);">Click ở đây</span>
+    <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.9); background: rgba(26,42,34,0.9); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(46, 204, 113, 0.3);">Bấm ở đây</span>
   `;
 
   document.body.appendChild(glass);
