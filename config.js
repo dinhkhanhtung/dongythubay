@@ -31,6 +31,12 @@ window.CONFIG = {
           "icon": "https://i.ibb.co/Wjz9N4P/AVv-Xs-Eg3-Dr-Zo-Aw-Hqb-R-Du-Iy32r-VDU8jh-XVN5-BI1-EFLFgt6-TLycc0-Ww9n1xen-D4-7r-MP4-jgdv-Hbyu-2-Gu-TN2h-O.png"
         },
         {
+          "platform": "phone",
+          "label": "Gọi Điện Trực Tiếp",
+          "url": "tel:0982581222",
+          "icon": "https://img.icons8.com/color/144/phone.png"
+        },
+        {
           "platform": "maps",
           "label": "Bản Đồ Phòng Khám",
           "url": "https://maps.google.com/?q=Phòng+Chẩn+Trị+YHCT+Thu+Bẩy+Tổ+10+Quan+Triều+Thái+Nguyên",
@@ -47,6 +53,12 @@ window.CONFIG = {
           "label": "Fanpage",
           "url": "https://www.facebook.com/kimke.store",
           "icon": "https://i.ibb.co/tTxPVxhX/facebook-page.png"
+        },
+        {
+          "platform": "messenger",
+          "label": "Messenger",
+          "url": "https://m.me/dinhkhanhtung",
+          "icon": "https://i.ibb.co/B523cQD3/3c39891bc36c.png"
         },
         {
           "platform": "google-review",
