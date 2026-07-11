@@ -1,7 +1,7 @@
 // ==========================================================================
-// IN-APP BROWSER SILENT REDIRECT TO CHROME (ANDROID WEBVIEW BYPASS)
+// IN-APP BROWSER CHROME INTENT ROUTING FOR SENSITIVE LINKS (ANDROID ONLY)
 // ==========================================================================
-(function() {
+function setupChromeIntentLinksForAndroidWebView() {
   const ua = navigator.userAgent || navigator.vendor || window.opera;
   const isTikTok = /TikTok|musical_ly|com.zhiliaoapp.musically/i.test(ua);
   const isFacebook = /FBAN|FBAV|FB_IAB|FB_MESSENGER/i.test(ua);
@@ -13,12 +13,39 @@
   if (isInAppBrowser) {
     const isAndroid = /Android/i.test(ua);
     if (isAndroid) {
-      // Chuyển hướng ngay sang api open-browser sử dụng HTTPS thường để tránh bị Webview chặn.
-      // Serverless function này trả về header Content-Disposition attachment để kích hoạt Chrome ngoài.
-      window.location.href = '/api/open-browser';
+      const links = document.querySelectorAll('a');
+      links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        const isExternalLink = 
+          href.includes('zalo.me') || 
+          href.includes('m.me') || 
+          href.includes('maps.google.com') || 
+          href.includes('google.com/maps') ||
+          href.includes('play.google.com') ||
+          href.startsWith('market://');
+
+        if (isExternalLink) {
+          let targetUrl = href;
+          if (href.startsWith('market://')) {
+            try {
+              const urlParams = new URLSearchParams(href.split('?')[1]);
+              const id = urlParams.get('id');
+              if (id) {
+                targetUrl = `https://play.google.com/store/apps/details?id=${id}`;
+              }
+            } catch(e) {}
+          }
+
+          const cleanUrl = targetUrl.replace(/^https?:\/\//i, '');
+          link.href = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+          link.setAttribute('target', '_self');
+        }
+      });
     }
   }
-})();
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize Lucide Icons
@@ -1895,5 +1922,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Chờ UI render ổn định rồi kích hoạt nút cuộn PC
   setTimeout(initScrollNavigation, 500);
 
+  // Thiết lập link intent Chrome trên Android Webview để mở ngoài khi click
+  setupChromeIntentLinksForAndroidWebView();
 });
 
