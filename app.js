@@ -7,32 +7,41 @@ function showInAppBrowserBanner() {
   const banner = document.createElement('div');
   banner.id = 'inapp-warning-banner';
   banner.style.cssText = `
-    background: #1a2a22;
-    border-bottom: 2px solid #2ecc71;
-    padding: 16px 20px;
-    position: relative;
-    z-index: 999999;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    background: rgba(26, 42, 34, 0.96);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    border-radius: 16px;
+    padding: 16px;
+    z-index: 99999999;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     font-family: system-ui, -apple-system, sans-serif;
+    max-width: 480px;
+    margin: 0 auto;
+    box-sizing: border-box;
   `;
 
   banner.innerHTML = `
-    <div style="display: flex; align-items: flex-start; gap: 14px; max-width: 600px; margin: 0 auto; padding-right: 24px;">
-      <div style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-        <svg style="width: 20px; height: 20px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
+    <div style="display: flex; align-items: flex-start; gap: 12px; padding-right: 20px; box-sizing: border-box; text-align: left;">
+      <div style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <svg style="width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
           <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
       <div style="flex-grow: 1;">
-        <h4 style="margin: 0 0 4px 0; color: #ffffff; font-size: 15px; font-weight: 700; line-height: 1.3;">Mở Trình Duyệt Ngoài Để Liên Hệ</h4>
-        <p style="margin: 0; color: #a3b8ac; font-size: 13.5px; line-height: 1.5;">
-          Trình duyệt nhúng không hỗ trợ mở Zalo/Bản đồ trực tiếp. Vui lòng bấm biểu tượng <strong>Ba Dấu Chấm (...)</strong> ở góc trên bên phải màn hình và chọn <strong>"Mở bằng trình duyệt ngoài"</strong> (hoặc "Mở bằng Safari/Chrome").
+        <h4 style="margin: 0 0 4px 0; color: #ffffff; font-size: 14.5px; font-weight: 700; line-height: 1.3; font-family: inherit;">Mở Trình Duyệt Ngoài Để Liên Hệ</h4>
+        <p style="margin: 0; color: #a3b8ac; font-size: 13px; line-height: 1.45; font-family: inherit;">
+          Trình duyệt nhúng không hỗ trợ Zalo/Bản đồ trực tiếp. Vui lòng bấm biểu tượng <strong>Ba Dấu Chấm (...)</strong> ở góc phải màn hình và chọn <strong>"Mở bằng trình duyệt ngoài"</strong>.
         </p>
       </div>
       <button id="close-inapp-banner" style="
         position: absolute;
-        top: 14px;
-        right: 14px;
+        top: 12px;
+        right: 12px;
         background: none;
         border: none;
         color: #a3b8ac;
@@ -42,14 +51,14 @@ function showInAppBrowserBanner() {
         align-items: center;
         justify-content: center;
       ">
-        <svg style="width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
+        <svg style="width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.5; fill: none;" viewBox="0 0 24 24">
           <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
     </div>
   `;
 
-  document.body.insertBefore(banner, document.body.firstChild);
+  document.body.appendChild(banner);
 
   document.getElementById('close-inapp-banner').addEventListener('click', () => {
     banner.style.display = 'none';
