@@ -19,8 +19,13 @@
   }
 })();
 
-function showInAppBrowserWarning() {
-  if (sessionStorage.getItem('inapp_warning_dismissed') === 'true') {
+function showInAppBrowserWarning(force = false) {
+  // Tránh tạo nhiều overlay trùng nhau
+  if (document.querySelector('.inapp-warning-overlay')) {
+    return;
+  }
+
+  if (!force && sessionStorage.getItem('inapp_warning_dismissed') === 'true') {
     return;
   }
 
@@ -38,7 +43,7 @@ function showInAppBrowserWarning() {
     <div class="inapp-warning-card">
       <h2 class="inapp-warning-title">Mở Bằng Trình Duyệt Ngoài</h2>
       <p class="inapp-warning-desc">
-        Bạn đang mở từ trình duyệt nội bộ của ứng dụng. Để các liên kết <strong>Zalo, Messenger, Bản đồ, CH Play</strong> hoạt động chính xác, vui lòng chuyển sang trình duyệt chính thức.
+        Để sử dụng tính năng này (<strong>Zalo, Messenger, Bản đồ, CH Play</strong>), vui lòng mở trang web này bằng trình duyệt chính thức (Safari hoặc Chrome).
       </p>
       
       <div class="inapp-steps">
@@ -53,7 +58,7 @@ function showInAppBrowserWarning() {
       </div>
       
       <div class="inapp-actions">
-        <button class="inapp-btn-continue">Tôi tự mở / Xem tiếp trang web</button>
+        <button class="inapp-btn-continue">Quay lại xem trang</button>
       </div>
     </div>
   `;
@@ -97,28 +102,35 @@ function optimizeLinksForInAppBrowser() {
       }
     }
 
-    // 2. Chuyển đổi target sang _self đối với các link nhạy cảm trong Webview tích hợp
-    // Đặc biệt là Zalo, Messenger, Google Maps, CH Play, TikTok Shop
-    const isSensitiveLink = 
+    // 2. Phân loại các loại link để xử lý
+    const isRequiredExternalLink = 
       href.includes('zalo.me') || 
       href.includes('m.me') || 
       href.includes('maps.google.com') || 
       href.includes('google.com/maps') ||
-      href.includes('play.google.com') ||
-      href.includes('tiktok.com/view/product');
+      href.includes('play.google.com');
 
-    if (isSensitiveLink) {
+    const isTikTokShopLink = href.includes('tiktok.com/view/product');
+
+    if (isTikTokShopLink) {
+      if (link.getAttribute('target') === '_blank') {
+        link.setAttribute('target', '_self');
+      }
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = this.href;
+      });
+    }
+
+    if (isRequiredExternalLink) {
       if (link.getAttribute('target') === '_blank') {
         link.setAttribute('target', '_self');
       }
       
-      // 3. Đăng ký click handler đặc biệt để ép buộc mở trực tiếp
+      // Chặn click chuyển link và bắt buộc hiện overlay hướng dẫn
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        const targetUrl = this.href;
-        
-        // Redirect trực tiếp
-        window.location.href = targetUrl;
+        showInAppBrowserWarning(true); // Force hiển thị overlay hướng dẫn mở ngoài
       });
     }
   });
