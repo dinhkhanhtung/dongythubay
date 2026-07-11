@@ -1,5 +1,12 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/quanly",
+      "destination": "/admin",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

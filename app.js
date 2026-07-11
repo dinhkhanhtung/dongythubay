@@ -545,6 +545,9 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'affiliate-list':
           renderAffiliateList(section, sectionEl);
           break;
+        case 'own-products':
+          renderOwnProducts(section, sectionEl);
+          break;
         case 'bank-transfer':
           renderBankTransfer(section, sectionEl);
           break;
@@ -1335,14 +1338,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 6c. Gift Section Component
   function renderGiftSection(section, container) {
-    const defaultItems = [
-      { id: 'g1', icon: 'bot', title: 'Prompt AI: Phân tích triệu chứng', description: 'Dán vào ChatGPT để được phân tích sơ bộ theo đông y.', type: 'copy', content: 'Bạn là chuyên gia y học cổ truyền Việt Nam. Tôi có các triệu chứng sau: [liệt kê triệu chứng]. Hãy phân tích theo quan điểm đông y, gợi ý nguyên nhân và thảo dược phổ biến có thể hỗ trợ. Lưu ý đây chỉ là tham khảo, tôi sẽ đến gặp bác sĩ để được tư vấn chính thức.' },
-      { id: 'g2', icon: 'salad', title: 'Prompt AI: Thực đơn theo bệnh lý', description: 'Nhận gợi ý thực đơn hàng ngày phù hợp với thể trạng.', type: 'copy', content: 'Bạn là chuyên gia dinh dưỡng y học cổ truyền. Tôi bị [tên bệnh], [tuổi] tuổi. Hãy gợi ý thực đơn 3 ngày: thực phẩm nên ăn, nên kiêng và cách chế biến đơn giản. Ưu tiên nguyên liệu dễ mua tại Việt Nam.' },
-      { id: 'g3', icon: 'leaf', title: '🌿 Trà Gừng Mật Ong (Hỗ trợ dạ dày)', description: 'Bài thuốc dân gian giảm ợ chua, đau bụng hiệu quả.', type: 'copy', content: '🌿 TRÀ GỪNG MẬT ONG – Hỗ trợ dạ dày\n\nNguyên liệu:\n- 2-3 lát gừng tươi\n- 1 thìa mật ong nguyên chất\n- 300ml nước sôi\n\nCách làm:\n1. Hãm gừng trong nước sôi 5-7 phút\n2. Để nguội bớt (~60°C) rồi thêm mật ong\n\nDùng: 1-2 lần/ngày, sau ăn 30 phút.\n⚠️ Không uống khi đói. Phụ nữ có thai hỏi bác sĩ trước.' },
-      { id: 'g4', icon: 'sparkles', title: '🌿 Ngâm Chân Thảo Dược', description: 'Giảm mệt mỏi, đau nhức xương khớp, ngủ ngon hơn.', type: 'copy', content: '🌿 NGÂM CHÂN THẢO DƯỢC\n\nCông thức:\n- Muối hạt: 2 thìa canh\n- Gừng tươi: 50g giã nát\n- Ngải cứu khô: 1 nắm\n- Nước ấm 40-42°C vừa ngập cổ chân\n\nCách dùng:\n✓ Ngâm 20-30 phút trước khi ngủ\n✓ Thực hiện 3-4 lần/tuần\n✓ Kết hợp massage nhẹ lòng bàn chân\n\n⚠️ Không ngâm khi có vết thương hở.' },
-      { id: 'g5', icon: 'moon', title: 'Prompt AI: Cải thiện giấc ngủ', description: 'Prompt giúp AI tư vấn cách ngủ ngon theo đông y.', type: 'copy', content: 'Tôi đang gặp vấn đề giấc ngủ: [mô tả: khó ngủ/hay thức giấc]. Tôi [tuổi] tuổi. Theo y học cổ truyền, nguyên nhân có thể là gì? Hãy gợi ý: 1) Thảo duyệt giúp ngủ ngon, 2) Thói quen cần thay đổi, 3) Bài tập thư giãn trước ngủ. Giải thích đơn giản, dễ hiểu.' }
-    ];
-    const items = (section.items && section.items.length > 0) ? section.items : defaultItems;
+    const items = section.items || [];
+
+    if (items.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'section-empty-state';
+      empty.textContent = 'Chưa có quà tặng nào';
+      container.appendChild(empty);
+      return;
+    }
 
     const grid = document.createElement('div');
     grid.className = 'gift-grid';
@@ -1412,6 +1416,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
     container.appendChild(grid);
+  }
+
+  // 6d. Own Products Component
+  function renderOwnProducts(section, container) {
+    const items = section.items || [];
+
+    if (items.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'section-empty-state';
+      empty.textContent = 'Chưa có sản phẩm nào';
+      container.appendChild(empty);
+      return;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'own-products-grid';
+
+    items.forEach((item, index) => {
+      const card = document.createElement('article');
+      card.className = 'own-product-card';
+
+      const name = item.name || 'Sản phẩm thảo dược';
+      const image = item.image || 'assets/product_tea.png';
+      const description = item.description || 'Liên hệ để được tư vấn bài thuốc phù hợp với thể trạng.';
+      const tags = Array.isArray(item.tags) ? item.tags : [];
+      const contactUrl = item.contactUrl || 'https://zalo.me/0982581222';
+      const contactLabel = item.contactLabel || 'Liên hệ báo giá';
+
+      card.innerHTML = `
+        <div class="own-product-media">
+          <img src="${image}" alt="${name}" class="own-product-image" loading="lazy">
+          <span class="own-product-badge">Đông y gia truyền</span>
+        </div>
+        <div class="own-product-content">
+          <div class="own-product-meta">
+            <span class="own-product-price">Liên hệ</span>
+            <span class="own-product-rating"><i data-lucide="star"></i> 4.9</span>
+          </div>
+          <h3 class="own-product-name">${name}</h3>
+          <p class="own-product-desc">${description}</p>
+          ${tags.length > 0 ? `<div class="own-product-tags">${tags.map(tag => `<span>${tag}</span>`).join('')}</div>` : ''}
+          <a href="${contactUrl}" class="own-product-cta" target="_blank" rel="noopener noreferrer">
+            <span>${contactLabel}</span>
+            <i data-lucide="message-circle"></i>
+          </a>
+        </div>
+      `;
+
+      card.querySelector('.own-product-cta').addEventListener('click', () => {
+        trackClick('own_product', slugify(name), name, contactUrl);
+      });
+
+      grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
   // 6e. Service List Component

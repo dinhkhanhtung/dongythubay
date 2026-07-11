@@ -59,6 +59,14 @@ window.CONFIG = {
       "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của Đinh Khánh Tùng. Tại đây, mình mong muốn chia sẻ những giá trị thiết thực nhất cho cuộc sống – từ các bài thuốc Nam gia truyền đặc trị và thảo dược tự nhiên chăm sóc sức khỏe của phòng chẩn trị YHCT Thu Bẩy, cho đến các ứng dụng công nghệ tiện ích do chính mình phát triển giúp công việc và đời sống hàng ngày thêm thuận tiện. Rất vui được kết nối cùng bà con và các đồng niên!"
     },
     {
+      "id": "own-products",
+      "type": "own-products",
+      "title": "Sản Phẩm Thảo Dược Của Tôi",
+      "enabled": true,
+      "order": 2.8,
+      "items": []
+    },
+    {
       "id": "my-apps",
       "type": "project-grid",
       "title": "Ứng Dụng Độc Quyền Của Tôi",
@@ -410,7 +418,48 @@ window.CONFIG = {
       "title": "🎁 Quà Tặng Miễn Phí",
       "enabled": true,
       "order": 6,
-      "items": []
+      "items": [
+        {
+          "id": "g1",
+          "icon": "bot",
+          "title": "Prompt AI: Phân tích triệu chứng",
+          "description": "Dán vào ChatGPT để được phân tích sơ bộ theo đông y.",
+          "type": "copy",
+          "content": "Bạn là chuyên gia y học cổ truyền Việt Nam. Tôi có các triệu chứng sau: [liệt kê triệu chứng]. Hãy phân tích theo quan điểm đông y, gợi ý nguyên nhân và thảo dược phổ biến có thể hỗ trợ. Lưu ý đây chỉ là tham khảo, tôi sẽ đến gặp bác sĩ để được tư vấn chính thức."
+        },
+        {
+          "id": "g2",
+          "icon": "salad",
+          "title": "Prompt AI: Thực đơn theo bệnh lý",
+          "description": "Nhận gợi ý thực đơn hàng ngày phù hợp với thể trạng.",
+          "type": "copy",
+          "content": "Bạn là chuyên gia dinh dưỡng y học cổ truyền. Tôi bị [tên bệnh], [tuổi] tuổi. Hãy gợi ý thực đơn 3 ngày: thực phẩm nên ăn, nên kiêng và cách chế biến đơn giản. Ưu tiên nguyên liệu dễ mua tại Việt Nam."
+        },
+        {
+          "id": "g3",
+          "icon": "leaf",
+          "title": "🌿 Trà Gừng Mật Ong (Hỗ trợ dạ dày)",
+          "description": "Bài thuốc dân gian giảm ợ chua, đau bụng hiệu quả.",
+          "type": "copy",
+          "content": "🌿 TRÀ GỪNG MẬT ONG – Hỗ trợ dạ dày\n\nNguyên liệu:\n- 2-3 lát gừng tươi\n- 1 thìa mật ong nguyên chất\n- 300ml nước sôi\n\nCách làm:\n1. Hãm gừng trong nước sôi 5-7 phút\n2. Để nguội bớt (~60°C) rồi thêm mật ong\n\nDùng: 1-2 lần/ngày, sau ăn 30 phút.\n⚠️ Không uống khi đói. Phụ nữ có thai hỏi bác sĩ trước."
+        },
+        {
+          "id": "g4",
+          "icon": "sparkles",
+          "title": "🌿 Ngâm Chân Thảo Dược",
+          "description": "Giảm mệt mỏi, đau nhức xương khớp, ngủ ngon hơn.",
+          "type": "copy",
+          "content": "🌿 NGÂM CHÂN THẢO DƯỢC\n\nCông thức:\n- Muối hạt: 2 thìa canh\n- Gừng tươi: 50g giã nát\n- Ngải cứu khô: 1 nắm\n- Nước ấm 40-42°C vừa ngập cổ chân\n\nCách dùng:\n✓ Ngâm 20-30 phút trước khi ngủ\n✓ Thực hiện 3-4 lần/tuần\n✓ Kết hợp massage nhẹ lòng bàn chân\n\n⚠️ Không ngâm khi có vết thương hở."
+        },
+        {
+          "id": "g5",
+          "icon": "moon",
+          "title": "Prompt AI: Cải thiện giấc ngủ",
+          "description": "Prompt giúp AI tư vấn cách ngủ ngon theo đông y.",
+          "type": "copy",
+          "content": "Tôi đang gặp vấn đề giấc ngủ: [mô tả: khó ngủ/hay thức giấc]. Tôi [tuổi] tuổi. Theo y học cổ truyền, nguyên nhân có thể là gì? Hãy gợi ý: 1) Thảo dược giúp ngủ ngon, 2) Thói quen cần thay đổi, 3) Bài tập thư giãn trước ngủ. Giải thích đơn giản, dễ hiểu."
+        }
+      ]
     },
     {
       "id": "faq",
