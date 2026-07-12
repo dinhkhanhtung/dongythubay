@@ -1336,17 +1336,17 @@
       } else if (currentTab === 'my-apps') {
         renderItemsTab(container, 'my-apps', 'Ứng dụng / Web App', 'Chỉ cần điền URL, hệ thống sẽ tự động lấy ảnh và mô tả từ liên kết.');
       } else if (currentTab === 'android-apps') {
-        renderItemsTab(container, 'android-apps', 'Ứng dụng Android (Google Play)', 'Thêm ứng dụng Android trên cửa hàng Google Play, hỗ trợ hiển thị rating, lượt tải và nút deep link.');
+        renderItemsTab(container, 'android-apps', 'Ứng dụng Android (Google Play)', 'Thêm ứng dụng Android trên cửa hàng Google Play.');
       } else if (currentTab === 'services') {
-        renderItemsTab(container, 'services-digital', 'Dịch Vụ Số & Công Nghệ', 'Các dịch vụ bạn cung cấp (Facebook Ads, Web Dev, AI Agent...). Nút bấm Báo Giá sẽ tự cuộn tới form liên hệ và điền dịch vụ.');
+        renderItemsTab(container, 'services-digital', 'Dịch Vụ Số & Công Nghệ', 'Các dịch vụ bạn cung cấp. Nút Báo giá sẽ tự cuộn tới form đặt lịch khám.');
       } else if (currentTab === 'affiliates') {
         renderAffiliatesTab(container);
       } else if (currentTab === 'reviews') {
-        renderItemsTab(container, 'patient-reviews', 'Ý Kiến Bệnh Nhân (Review)', 'Hiển thị các ảnh chụp màn hình feedback/nhận xét của người bệnh (khuyên dùng tỉ lệ ảnh dọc của tin nhắn điện thoại).');
+        renderItemsTab(container, 'patient-reviews', 'Ý Kiến Bệnh Nhân (Review)', 'Hiển thị ảnh phản hồi từ người bệnh (nên dùng ảnh dọc tin nhắn).');
       } else if (currentTab === 'free-gifts') {
-        renderItemsTab(container, 'free-gifts', '🎁 Quà Tặng Miễn Phí', 'Các tài liệu, Prompt AI hoặc bài thuốc miễn phí bạn muốn chia sẻ. Hệ thống tự động hiển thị nút Tải về nếu nội dung bắt đầu bằng http:// hoặc https://, ngược lại hiện nút Sao chép.');
+        renderItemsTab(container, 'free-gifts', '🎁 Quà Tặng Miễn Phí', 'Nhập link để hiện nút Tải về, nhập chữ thường để hiện nút Sao chép.');
       } else if (currentTab === 'faq') {
-        renderItemsTab(container, 'faq', 'Câu Hỏi Thường Gặp (FAQ)', 'Các câu hỏi thường gặp giúp khách hàng hiểu rõ hơn về dịch vụ và cách thức làm việc.');
+        renderItemsTab(container, 'faq', 'Câu Hỏi Thường Gặp (FAQ)', 'Các câu hỏi thường gặp giúp khách hàng nhanh chóng giải đáp thắc mắc.');
       } else if (currentTab === 'payment') {
         renderPaymentTab(container);
       } else if (currentTab === 'stats') {
@@ -2154,6 +2154,8 @@
           const card = document.createElement('div');
           card.className = 'editor-card';
 
+          const isContact = item.isContact === true;
+
           card.innerHTML = `
             <div class="editor-card-header">
               <span class="editor-card-title">Sản phẩm #${index + 1}</span>
@@ -2163,30 +2165,63 @@
                 <button class="icon-btn btn-item-delete" data-index="${index}"><i data-lucide="trash-2"></i></button>
               </div>
             </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label style="display: flex; align-items: center; gap: 6px; font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 13px;">
+                <input type="checkbox" class="chk-is-contact" data-index="${index}" ${isContact ? 'checked' : ''}>
+                Sản phẩm tự sản xuất (Nhập thủ công, tư vấn Zalo)
+              </label>
+            </div>
+            
+            ${isContact ? `
+              <div class="field-grid">
+                <div class="form-group">
+                  <label>Tên sản phẩm - *Bắt buộc</label>
+                  <input type="text" class="form-input inp-affiliate-name" value="${item.name || ''}" placeholder="Tên sản phẩm..." data-index="${index}">
+                </div>
+                <div class="form-group">
+                  <label>Ảnh sản phẩm</label>
+                  <div class="image-upload-group">
+                    <input type="text" class="form-input inp-affiliate-image" value="${item.image || ''}" placeholder="Link ảnh..." data-index="${index}">
+                    <button class="btn btn-upload-image" data-target-class="inp-affiliate-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
+                  </div>
+                </div>
+              </div>
+            ` : ''}
+
             <div class="form-group">
-              <label>Đường dẫn mua hàng (affiliateUrl) - *Bắt buộc</label>
-              <input type="text" class="form-input inp-affiliate-url" value="${item.affiliateUrl || ''}" data-index="${index}">
+              <label>${isContact ? 'Link liên hệ Zalo' : 'Đường dẫn mua hàng (affiliateUrl) - *Bắt buộc'}</label>
+              <input type="text" class="form-input inp-affiliate-url" value="${item.affiliateUrl || ''}" data-index="${index}" placeholder="${isContact ? 'https://zalo.me/0982581222' : 'https://'}">
             </div>
             <div class="field-grid">
               <div class="form-group">
                 <label>Giá bán (priceNote)</label>
-                <input type="text" class="form-input inp-price" value="${item.priceNote || ''}" data-index="${index}">
+                <input type="text" class="form-input inp-price" value="${item.priceNote || ''}" data-index="${index}" placeholder="Ví dụ: 150.000đ hoặc Liên hệ">
               </div>
               <div class="form-group">
                 <label>Nhãn nút bấm (ctaLabel)</label>
-                <input type="text" class="form-input inp-cta-label" value="${item.ctaLabel || ''}" data-index="${index}">
+                <input type="text" class="form-input inp-cta-label" value="${item.ctaLabel || ''}" data-index="${index}" placeholder="Ví dụ: Liên hệ báo giá / Tư vấn Zalo">
               </div>
             </div>
             <div class="form-group">
-              <label>Ưu đãi / Chiết khấu (discountNote)</label>
-              <input type="text" class="form-input inp-discount" value="${item.discountNote || ''}" data-index="${index}">
+              <label>${isContact ? 'Mô tả ngắn sản phẩm' : 'Ưu đãi / Chiết khấu (discountNote)'}</label>
+              <input type="text" class="form-input inp-discount" value="${item.discountNote || ''}" data-index="${index}" placeholder="Ví dụ: Trà thảo mộc thơm ngon, thanh mát...">
             </div>
             <p style="font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 4px;">
-              Các trường Tên, Mô tả, Hình ảnh được tự động cào từ đường dẫn sau khi lưu.
+              ${isContact ? 'Sản phẩm riêng được lưu trữ thủ công và không bị cào tự động.' : 'Tên, Mô tả, Ảnh được cào tự động sau khi lưu.'}
             </p>
           `;
 
           // Binds inputs
+          card.querySelector('.chk-is-contact').addEventListener('change', (e) => {
+            sec.items[index].isContact = e.target.checked;
+            if (e.target.checked) {
+              if (!sec.items[index].affiliateUrl) sec.items[index].affiliateUrl = 'https://zalo.me/0982581222';
+              if (!sec.items[index].ctaLabel) sec.items[index].ctaLabel = 'Liên hệ báo giá';
+              if (!sec.items[index].priceNote) sec.items[index].priceNote = 'Liên hệ';
+            }
+            renderProductsList();
+          });
+
           card.querySelector('.inp-affiliate-url').addEventListener('input', (e) => {
             sec.items[index].affiliateUrl = e.target.value;
           });
@@ -2199,6 +2234,15 @@
           card.querySelector('.inp-discount').addEventListener('input', (e) => {
             sec.items[index].discountNote = e.target.value;
           });
+
+          if (isContact) {
+            card.querySelector('.inp-affiliate-name').addEventListener('input', (e) => {
+              sec.items[index].name = e.target.value;
+            });
+            card.querySelector('.inp-affiliate-image').addEventListener('input', (e) => {
+              sec.items[index].image = e.target.value;
+            });
+          }
 
           // Up/Down/Delete
           card.querySelector('.btn-item-delete').addEventListener('click', async () => {
