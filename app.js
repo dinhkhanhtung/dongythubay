@@ -574,8 +574,8 @@ const initApp = () => {
       .sort((a, b) => (a.order || 99) - (b.order || 99));
 
     activeSections.forEach(section => {
-      // Auto-hide affiliate sections that have no safe-to-open items.
-      if (section.type === 'affiliate-list' && (!section.items || section.items.filter(item => !(item.affiliateUrl || '').includes('tiktok.com')).length === 0)) {
+      // Auto-hide affiliate or own-products sections that have no items.
+      if ((section.type === 'affiliate-list' || section.type === 'own-products') && (!section.items || section.items.length === 0)) {
         return;
       }
 
@@ -928,7 +928,7 @@ const initApp = () => {
   function renderAffiliateList(section, container) {
     const list = document.createElement('div');
     list.className = 'affiliate-container';
-    const visibleItems = (section.items || []).filter(item => !(item.affiliateUrl || '').includes('tiktok.com'));
+    const visibleItems = section.items || [];
 
     visibleItems.forEach((item, index) => {
       const card = document.createElement('a');
@@ -992,7 +992,7 @@ const initApp = () => {
         <div class="affiliate-info">
           <div class="affiliate-text">
             <h3 class="affiliate-name">${name}</h3>
-            <div class="affiliate-price">${price}</div>
+            ${price && price !== 'Liên hệ' ? `<div class="affiliate-price">${price}</div>` : ''}
             <div class="affiliate-discount">${discount}</div>
             <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 6px;">
               <span style="color: #eab308; display: flex; align-items: center; gap: 2px; font-weight: 700;">
