@@ -124,13 +124,22 @@
   }
   </script>
 
-  <!-- Configuration (loaded before application logic - bypassed cache) -->
+  <!-- Sequential Application & Configuration Loader -->
   <script>
     (function() {
-      const script = document.createElement('script');
-      script.src = 'config.js?v=' + Date.now();
-      script.async = false;
-      document.head.appendChild(script);
+      const configScript = document.createElement('script');
+      configScript.src = 'config.js?v=' + Date.now();
+      configScript.async = false;
+      configScript.onload = function() {
+        const appScript = document.createElement('script');
+        appScript.src = 'app.js?v=2.25.0';
+        appScript.async = false;
+        document.body.appendChild(appScript);
+      };
+      configScript.onerror = function() {
+        console.error('Không thể tải file cấu hình config.js');
+      };
+      document.head.appendChild(configScript);
     })();
   </script>
 </head>
@@ -267,8 +276,6 @@
     </div>
   </div>
 
-  <!-- Application Logic -->
-  <script src="app.js?v=2.25.0"></script>
 </body>
 
 </html>

@@ -134,7 +134,7 @@ function showInAppBrowserBanner() {
   document.body.appendChild(arrow);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+const initApp = () => {
   const bootScreen = document.getElementById('app-boot-screen');
   const bootStartedAt = Date.now();
   const hideBootScreen = () => {
@@ -2093,5 +2093,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isInAppBrowser) {
     showInAppBrowserBanner();
   }
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
