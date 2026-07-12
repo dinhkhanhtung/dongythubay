@@ -405,6 +405,63 @@
       color: white;
     }
 
+    /* Toast Notification System Styles */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 380px;
+      width: calc(100% - 48px);
+      pointer-events: none;
+    }
+    .toast-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: #1f2937;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 14px 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+      color: #f3f4f6;
+      font-size: 14px;
+      font-weight: 500;
+      pointer-events: auto;
+      transform: translateY(-20px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast-item.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .toast-item.hide {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    .toast-icon {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .toast-success .toast-icon {
+      color: #22c55e;
+    }
+    .toast-error .toast-icon {
+      color: #ef4444;
+    }
+    .toast-warning .toast-icon {
+      color: #f59e0b;
+    }
+    .toast-info .toast-icon {
+      color: #3b82f6;
+    }
+
     /* Bố cục upload ảnh mới tránh bị dúm ró */
     .image-upload-group {
       display: flex;
@@ -713,6 +770,56 @@
 
   <!-- Logic scripts -->
   <script>
+    // Toast Notification System
+    function showToast(message, type = 'success') {
+      let container = document.querySelector('.toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+      }
+      const item = document.createElement('div');
+      item.className = `toast-item toast-${type}`;
+      let iconHtml = '';
+      if (type === 'success') {
+        iconHtml = '<i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>';
+      } else if (type === 'error') {
+        iconHtml = '<i data-lucide="alert-triangle" style="width: 18px; height: 18px;"></i>';
+      } else if (type === 'warning') {
+        iconHtml = '<i data-lucide="alert-circle" style="width: 18px; height: 18px;"></i>';
+      } else {
+        iconHtml = '<i data-lucide="info" style="width: 18px; height: 18px;"></i>';
+      }
+      item.innerHTML = `
+        <div class="toast-icon">${iconHtml}</div>
+        <div class="toast-content" style="flex-grow: 1; line-height: 1.4;">${message}</div>
+      `;
+      container.appendChild(item);
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+      setTimeout(() => item.classList.add('show'), 10);
+      setTimeout(() => {
+        item.classList.remove('show');
+        item.classList.add('hide');
+        setTimeout(() => item.remove(), 300);
+      }, 3500);
+    }
+
+    // Override default alert to toast
+    window.alert = function(msg) {
+      let type = 'info';
+      const cleanMsg = msg.toLowerCase();
+      if (cleanMsg.includes('thành công') || cleanMsg.includes('hoàn tất') || cleanMsg.includes('đã lưu') || cleanMsg.includes('chính xác') || cleanMsg.includes('đăng nhập thành công')) {
+        type = 'success';
+      } else if (cleanMsg.includes('lỗi') || cleanMsg.includes('không chính xác') || cleanMsg.includes('thất bại') || cleanMsg.includes('không thể') || cleanMsg.includes('đã xảy ra') || cleanMsg.includes('sai')) {
+        type = 'error';
+      } else if (cleanMsg.includes('yêu cầu') || cleanMsg.includes('vui lòng') || cleanMsg.includes('cảnh báo')) {
+        type = 'warning';
+      }
+      showToast(msg, type);
+    };
+
     // List of static images in assets/review folder
     const REVIEWS_GALLERY = [
       "120396173_3669040766462528_7282720382376266470_n.jpg",
