@@ -1422,7 +1422,7 @@ const initApp = () => {
       if (isLink) {
         actionBtnHtml = `<a class="gift-btn" href="${gift.content}" target="_blank" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">Tải về</a>`;
       } else {
-        actionBtnHtml = `<button class="gift-btn" data-content="${encodeURIComponent(gift.content || '')}">Sao chép</button>`;
+        actionBtnHtml = `<button class="gift-btn" data-content="${encodeURIComponent(gift.content || '')}" title="Sao chép" style="padding: 0; width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--color-accent-border);"><i data-lucide="copy" style="width: 14px; height: 14px;"></i></button>`;
       }
 
       let mediaHtml = '';
@@ -1451,9 +1451,18 @@ const initApp = () => {
           const text = decodeURIComponent(btn.dataset.content);
           navigator.clipboard.writeText(text)
             .then(() => {
-              btn.textContent = '✓ Đã copy!';
+              btn.innerHTML = '<i data-lucide="check" style="width: 14px; height: 14px;"></i>';
               btn.style.backgroundColor = 'var(--color-primary)';
-              setTimeout(() => { btn.textContent = 'Sao chép'; btn.style.backgroundColor = ''; }, 2500);
+              btn.style.color = '#ffffff';
+              btn.style.borderColor = 'var(--color-primary)';
+              if (typeof lucide !== 'undefined') lucide.createIcons();
+              setTimeout(() => { 
+                btn.innerHTML = '<i data-lucide="copy" style="width: 14px; height: 14px;"></i>'; 
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+                btn.style.borderColor = '';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+              }, 2000);
             })
             .catch(() => {
               const ta = document.createElement('textarea');
@@ -1461,7 +1470,18 @@ const initApp = () => {
               document.body.appendChild(ta); ta.select();
               document.execCommand('copy');
               document.body.removeChild(ta);
-              btn.textContent = '✓ Đã copy!'; setTimeout(() => { btn.textContent = 'Sao chép'; }, 2500);
+              btn.innerHTML = '<i data-lucide="check" style="width: 14px; height: 14px;"></i>';
+              btn.style.backgroundColor = 'var(--color-primary)';
+              btn.style.color = '#ffffff';
+              btn.style.borderColor = 'var(--color-primary)';
+              if (typeof lucide !== 'undefined') lucide.createIcons();
+              setTimeout(() => { 
+                btn.innerHTML = '<i data-lucide="copy" style="width: 14px; height: 14px;"></i>'; 
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+                btn.style.borderColor = '';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+              }, 2000);
             });
           trackClick('gift', gift.id, gift.title, '#');
         });
