@@ -566,7 +566,16 @@
       }
       .panel-body {
         flex-direction: column;
-        padding-bottom: calc(76px + env(safe-area-inset-bottom, 8px)) !important;
+        padding-bottom: 0 !important;
+      }
+      .panel-content {
+        padding: 16px 16px calc(110px + env(safe-area-inset-bottom, 20px)) 16px !important;
+        gap: 24px !important;
+      }
+      .editor-card {
+        margin-bottom: 20px !important;
+        padding: 20px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
       }
       .panel-sidebar {
         position: fixed !important;
