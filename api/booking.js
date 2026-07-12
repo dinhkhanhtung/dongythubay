@@ -1,8 +1,6 @@
 // API Route: Xử lý đăng ký tư vấn và gửi thông báo Telegram
 // Vận hành Serverless Node.js trên Vercel
 
-const fetch = require('node-fetch');
-
 module.exports = async (req, res) => {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Credentials', true);
