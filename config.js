@@ -143,7 +143,7 @@ window.CONFIG = {
         {
           "title": "Auto Post X",
           "description": "Hệ thống lên lịch và đăng bài viết tự động lên hàng loạt Fanpage và Group Facebook tiện lợi.",
-          "image": "https://i.ibb.co/Kpp01Rq9/autopostx-og.png",
+          "image": "https://i.ibb.co/mFYb1KFj/8ded5c669b38.png",
           "previewUrl": "https://autopostx.vercel.app/",
           "tag": "Facebook Auto"
         }
