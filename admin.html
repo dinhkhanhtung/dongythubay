@@ -2796,6 +2796,11 @@ window.CONFIG = ${JSON.stringify(localConfig, null, 2)};
       
       e.preventDefault();
       
+      // Ngăn click nếu nút đang disabled hoặc đang xử lý tải/nén ảnh
+      if (btn.disabled || btn.innerHTML.includes('Đang') || btn.innerHTML.includes('Xong')) {
+        return;
+      }
+      
       let targetInput = null;
       const targetId = btn.getAttribute('data-target-id');
       const targetClass = btn.getAttribute('data-target-class');
