@@ -74,7 +74,7 @@ window.CONFIG = {
       "title": "Lời Ngỏ Từ Đinh Khánh Tùng",
       "enabled": true,
       "order": 2,
-      "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của Đinh Khánh Tùng. Tại đây, mình mong muốn chia sẻ những giá trị thiết thực nhất cho cuộc sống – từ các bài thuốc Nam gia truyền đặc trị và thảo dược tự nhiên chăm sóc sức khỏe của phòng chẩn trị YHCT Thu Bẩy, cho đến các ứng dụng công nghệ tiện ích do chính mình phát triển giúp công việc và đời sống hàng ngày thêm thuận tiện. Rất vui được kết nối cùng bà con và các đồng niên!"
+      "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của Đinh Khánh Tùng. Tại đây, Tùng mong muốn chia sẻ những giá trị thiết thực nhất cho cuộc sống – từ các phương pháp hỗ trợ sức khỏe, bài thuốc Nam gia truyền và thảo dược tự nhiên từ Phòng chẩn trị YHCT Thu Bẩy, cho đến các ứng dụng công nghệ tiện ích do chính Tùng phát triển nhằm giúp công việc và đời sống hàng ngày thêm phần thuận tiện. Rất vui và vinh hạnh được kết nối cùng mọi người!"
     },
     {
       "id": "own-products",
@@ -572,7 +572,7 @@ window.CONFIG = {
       "id": "promo-countdown",
       "type": "countdown",
       "title": "Ưu Đãi Tháng 7 – Tư Vấn Miễn Phí",
-      "subtitle": "🎉 Món quà tri ân: Tặng tài khoản sử dụng ứng dụng hoàn toàn miễn phí dành riêng cho cô chú, anh chị đã gửi hình ảnh phản hồi về phòng khám. Ưu đãi khép lại sau:",
+      "subtitle": "🎉 Món quà tri ân: Tặng tài khoản sử dụng ứng dụng bất kỳ hoàn toàn miễn phí dành riêng cho cô chú, anh chị đã gửi hình ảnh phản hồi về phòng khám. Ưu đãi khép lại sau:",
       "endDate": "2026-07-31T23:59:59",
       "ctaLabel": "Đăng ký ngay",
       "ctaUrl": "#section-appointment-booking",
