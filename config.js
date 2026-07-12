@@ -1,7 +1,7 @@
 // File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.
 window.CONFIG = {
-  "updatedAt": 1783830268891,
+  "updatedAt": 1783830363961,
   "profile": {
     "avatar": "assets/avatar_doctor.png",
     "name": "Đông y Thu Bẩy",
@@ -82,18 +82,7 @@ window.CONFIG = {
       "title": "Sản Phẩm Thảo Dược Của Tôi",
       "enabled": true,
       "order": 2.8,
-      "items": [
-        {
-          "name": "Trà Cổ Dược – Trà Thảo Dược Túi Lọc Thiên Nhiên | Thanh Mát, Dễ Uống",
-          "image": "https://i.ibb.co/SwvSB6DB/de037b53-65bd-4470-873f-360cd1d065ba.jpg",
-          "description": "Trà Cổ Dược được kết hợp từ các thảo dược thiên nhiên, đóng gói dạng túi lọc tiện lợi, giúp pha nhanh và dễ sử dụng hằng ngày. Hương vị thanh mát, nhẹ nhàng, phù hợp để thưởng thức sau bữa ăn, khi làm việc hoặc thư giãn.\n\nSản phẩm không phải là thuốc và không có tác dụng thay thế thuốc chữa bệnh.",
-          "tags": [
-            "100% thảo dược"
-          ],
-          "contactUrl": "https://zalo.me/0982581222",
-          "contactLabel": "Liên hệ báo giá"
-        }
-      ]
+      "items": []
     },
     {
       "id": "my-apps",
