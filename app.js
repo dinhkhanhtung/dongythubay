@@ -136,15 +136,16 @@ function showInAppBrowserBanner() {
 
 const initApp = () => {
   const bootScreen = document.getElementById('app-boot-screen');
-  const bootStartedAt = Date.now();
+  
   const hideBootScreen = () => {
-    if (!bootScreen) return;
-    const elapsed = Date.now() - bootStartedAt;
-    const delay = Math.max(0, 1250 - elapsed);
-    setTimeout(() => bootScreen.classList.add('is-hidden'), delay);
+    if (!bootScreen || bootScreen.classList.contains('is-hidden')) return;
+    bootScreen.classList.add('is-hidden');
+    bootScreen.addEventListener('transitionend', () => {
+      bootScreen.style.display = 'none';
+    }, { once: true });
   };
-  window.addEventListener('load', hideBootScreen, { once: true });
-  setTimeout(hideBootScreen, 2200);
+
+  const maxBootTimeout = setTimeout(hideBootScreen, 1500);
 
   // Initialize Lucide Icons
   if (typeof lucide !== 'undefined') {
@@ -225,12 +226,21 @@ const initApp = () => {
     const bioEl = document.getElementById('profile-bio');
 
     if (profile.avatar) {
-      const cacheBuster = config.updatedAt ? `?v=${config.updatedAt}` : `?v=${Date.now()}`;
-      avatarImg.src = profile.avatar + (profile.avatar.includes('?') ? '&' : '?') + cacheBuster;
+      avatarImg.src = profile.avatar;
     }
-    avatarImg.addEventListener('load', () => avatarImg.classList.add('is-loaded'), { once: true });
-    avatarImg.addEventListener('error', () => avatarImg.classList.add('is-loaded'), { once: true });
-    if (avatarImg.complete) avatarImg.classList.add('is-loaded');
+
+    const onAvatarLoaded = () => {
+      avatarImg.classList.add('is-loaded');
+      hideBootScreen();
+      clearTimeout(maxBootTimeout);
+    };
+
+    if (avatarImg.complete && avatarImg.naturalWidth > 0) {
+      onAvatarLoaded();
+    } else {
+      avatarImg.addEventListener('load', onAvatarLoaded, { once: true });
+      avatarImg.addEventListener('error', onAvatarLoaded, { once: true });
+    }
     if (profile.name) nameEl.textContent = profile.name;
     
     if (profile.subtitle) {

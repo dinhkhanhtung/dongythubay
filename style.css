@@ -310,13 +310,11 @@ body {
     radial-gradient(circle at 50% 38%, rgba(34, 197, 94, 0.2), transparent 34%),
     var(--bg-app-gradient);
   opacity: 1;
-  visibility: visible;
-  transition: opacity 0.45s ease, visibility 0.45s ease;
+  transition: opacity 0.4s ease;
 }
 
 .app-boot-screen.is-hidden {
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
 }
 
