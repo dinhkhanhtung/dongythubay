@@ -643,7 +643,27 @@
         margin: 0 0 2px 0 !important;
       }
       .nav-item-view-site {
-        display: none !important;
+        display: flex !important;
+        position: static !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 6px 8px !important;
+        gap: 4px !important;
+        font-size: 10.5px !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+        border-radius: 12px !important;
+        color: var(--color-primary) !important;
+        background: rgba(34, 197, 94, 0.08) !important;
+        border: 1px dashed rgba(34, 197, 94, 0.3) !important;
+        min-width: 84px !important;
+        text-align: center !important;
+      }
+      .nav-item-view-site i, .nav-item-view-site svg {
+        width: 20px !important;
+        height: 20px !important;
+        margin: 0 0 2px 0 !important;
       }
 
       /* Responsive Table Container: Cuộn ngang chống xô lệch chữ trên Mobile */
@@ -914,11 +934,6 @@
     <div class="panel-header">
       <h2><i data-lucide="settings"></i> Admin</h2>
       <div class="header-actions">
-        <a href="/" target="_blank" class="btn btn-secondary" style="width: auto; padding: 0 16px; display: flex; align-items: center; gap: 6px; text-decoration: none; color: #ffffff;">
-          <i data-lucide="external-link" style="width: 16px; height: 16px;"></i>
-          <span class="btn-text-desktop">Xem trang</span>
-          <span class="btn-text-mobile" style="display: none;">Xem</span>
-        </a>
         <button id="btn-save" class="btn" style="width: auto; padding: 0 16px; display: flex; align-items: center; gap: 6px;">
           <i data-lucide="cloud-lightning"></i>
           <span class="btn-text-desktop">Lưu & Deploy</span>
@@ -948,10 +963,10 @@
           <div class="nav-item" data-tab="faq"><i data-lucide="help-circle"></i> Câu hỏi thường gặp</div>
           <div class="nav-item" data-tab="payment"><i data-lucide="wallet"></i> Thông tin Donate</div>
           <div class="nav-item" data-tab="stats"><i data-lucide="bar-chart-2"></i> Thống kê truy cập</div>
+          <a href="/" target="_blank" class="nav-item-view-site" style="text-decoration: none; color: var(--color-primary);">
+            <i data-lucide="external-link"></i> <span class="nav-text">Xem trang chính</span>
+          </a>
         </div>
-        <a href="/" target="_blank" class="nav-item-view-site" style="text-decoration: none; color: var(--color-primary);">
-          <i data-lucide="external-link"></i> <span class="nav-text">Xem trang chính</span>
-        </a>
       </div>
 
       <!-- Main Editor Container -->
