@@ -462,6 +462,85 @@
       color: #3b82f6;
     }
 
+    /* Custom Confirm Modal System Styles */
+    .confirm-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .confirm-modal-overlay.show {
+      opacity: 1;
+    }
+    .confirm-modal-card {
+      background-color: #1f2937;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 400px;
+      width: calc(100% - 32px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .confirm-modal-overlay.show .confirm-modal-card {
+      transform: scale(1) translateY(0);
+    }
+    .confirm-modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .confirm-modal-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .confirm-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .confirm-btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+    }
+    .confirm-btn-cancel {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .confirm-btn-cancel:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    .confirm-btn-ok {
+      background-color: #ef4444; /* màu đỏ cho xóa */
+      color: white;
+    }
+    .confirm-btn-ok:hover {
+      background-color: #dc2626;
+    }
+
     /* Bố cục upload ảnh mới tránh bị dúm ró */
     .image-upload-group {
       display: flex;
@@ -818,6 +897,61 @@
         type = 'warning';
       }
       showToast(msg, type);
+    };
+
+    // Custom Confirm Modal System
+    function showConfirm(message, title = 'Xác nhận xóa') {
+      return new Promise((resolve) => {
+        const overlay = document.createElement('div');
+        overlay.className = 'confirm-modal-overlay';
+        
+        let okBtnStyle = 'background-color: #ef4444;'; // Đỏ mặc định cho xóa
+        if (message.toLowerCase().includes('lưu') || message.toLowerCase().includes('cập nhật')) {
+          okBtnStyle = 'background-color: var(--color-primary);'; // Xanh cho lưu
+        }
+
+        overlay.innerHTML = `
+          <div class="confirm-modal-card">
+            <div class="confirm-modal-title">
+              <i data-lucide="help-circle" style="width: 20px; height: 20px; color: #ef4444;"></i>
+              <span>${title}</span>
+            </div>
+            <div class="confirm-modal-body">${message}</div>
+            <div class="confirm-modal-actions">
+              <button class="confirm-btn confirm-btn-cancel">Hủy bỏ</button>
+              <button class="confirm-btn confirm-btn-ok" style="${okBtnStyle}">Đồng ý</button>
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+        
+        setTimeout(() => overlay.classList.add('show'), 10);
+        
+        const cleanUp = (result) => {
+          overlay.classList.remove('show');
+          setTimeout(() => {
+            overlay.remove();
+            resolve(result);
+          }, 250);
+        };
+        
+        overlay.querySelector('.confirm-btn-cancel').addEventListener('click', () => cleanUp(false));
+        overlay.querySelector('.confirm-btn-ok').addEventListener('click', () => cleanUp(true));
+        
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) cleanUp(false);
+        });
+      });
+    }
+
+    // Override default confirm
+    window.confirm = function(msg) {
+      console.warn("Dùng await showConfirm(msg) thay vì confirm(msg) để có giao diện đẹp.");
+      return true;
     };
 
     // List of static images in assets/review folder
@@ -1226,8 +1360,8 @@
             section.items[index].icon = e.target.value;
           });
 
-          card.querySelector('.btn-delete').addEventListener('click', () => {
-            if (confirm('Bạn muốn xóa liên kết mạng xã hội này?')) {
+          card.querySelector('.btn-delete').addEventListener('click', async () => {
+            if (await showConfirm('Bạn muốn xóa liên kết mạng xã hội này?')) {
               section.items.splice(index, 1);
               renderSocialItems();
             }
@@ -1699,8 +1833,8 @@
             });
           }
  
-          card.querySelector('.btn-delete').addEventListener('click', () => {
-            if (confirm('Bạn có chắc muốn xóa item này?')) {
+          card.querySelector('.btn-delete').addEventListener('click', async () => {
+            if (await showConfirm('Bạn có chắc muốn xóa item này?')) {
               section.items.splice(index, 1);
               renderItemsList();
             }
@@ -1902,8 +2036,8 @@
             }
           });
 
-          row.querySelector('.btn-sec-delete').addEventListener('click', () => {
-            if (confirm(`Bạn có chắc muốn xóa danh mục "${sec.title || sec.id}" và tất cả sản phẩm bên trong không?`)) {
+          row.querySelector('.btn-sec-delete').addEventListener('click', async () => {
+            if (await showConfirm(`Bạn có chắc muốn xóa danh mục "${sec.title || sec.id}" và tất cả sản phẩm bên trong không?`)) {
               const currIdx = localConfig.sections.findIndex(s => s.id === sec.id);
               localConfig.sections.splice(currIdx, 1);
               if (activeAffiliateSectionId === sec.id) {
@@ -1986,8 +2120,8 @@
           });
 
           // Up/Down/Delete
-          card.querySelector('.btn-item-delete').addEventListener('click', () => {
-            if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+          card.querySelector('.btn-item-delete').addEventListener('click', async () => {
+            if (await showConfirm('Bạn có chắc muốn xóa sản phẩm này?')) {
               sec.items.splice(index, 1);
               renderProductsList();
               renderSectionsList();
