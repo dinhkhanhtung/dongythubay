@@ -1,7 +1,7 @@
 // File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.
 window.CONFIG = {
-  "updatedAt": 1783844288693,
+  "updatedAt": 1783844390814,
   "profile": {
     "avatar": "assets/avatar_doctor.png",
     "name": "Đông y Thu Bẩy",
@@ -199,12 +199,6 @@ window.CONFIG = {
       "enabled": true,
       "order": 3,
       "items": [
-        {
-          "affiliateUrl": "https://",
-          "priceNote": "",
-          "discountNote": "",
-          "ctaLabel": "Mua trên TikTok"
-        },
         {
           "priceNote": "120.000đ",
           "discountNote": "Hộp 30 túi lọc - Mua combo 3 hộp free ship",
