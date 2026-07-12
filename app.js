@@ -2057,12 +2057,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const isInstagram = /Instagram/i.test(ua);
   const isMessenger = /Messenger/i.test(ua);
   const isZalo = /ZaloApp|ZaloAP/i.test(ua);
-  // Android Webview: có AppleWebKit, chứa "wv" hoặc "Version/" để nhận dạng Webview hệ thống, nhưng loại trừ các trình duyệt chính thống (Samsung, Opera, Miui, Oppo, Vivo, Huawei)
-  const isAndroidWebView = /Android/i.test(ua) && /AppleWebKit/i.test(ua) && (/; wv\)/.test(ua) || /Version\//.test(ua)) && !/SamsungBrowser|MiuiBrowser|HeyTapBrowser|OppoBrowser|VivoBrowser|HuaweiBrowser/i.test(ua) && !/OPR/i.test(ua);
-  // iOS Webview: có AppleWebKit nhưng KHÔNG có Safari (mọi trình duyệt chuẩn trên iOS đều bắt buộc có 'Safari/' ở cuối UA)
-  const isIOSWebView = /(iPhone|iPad|iPod)/i.test(ua) && /AppleWebKit/i.test(ua) && !/Safari\//i.test(ua);
 
-  const isInAppBrowser = isTikTok || isFacebook || isInstagram || isMessenger || isZalo || isAndroidWebView || isIOSWebView;
+  // Các trình duyệt độc lập phổ biến (sử dụng webview hoặc engine riêng nhưng là trình duyệt độc lập đầy đủ)
+  const isDuckDuckGo = /DuckDuckGo|DuckDuck/i.test(ua);
+  const isFirefox = /Firefox|FxiOS|Focus/i.test(ua);
+  const isEdge = /Edg|EdgA|EdgiOS/i.test(ua);
+  const isOpera = /OPR|Opera|OPT/i.test(ua);
+
+  // Android Webview: có AppleWebKit, chứa "wv" hoặc "Version/" để nhận dạng Webview hệ thống, nhưng loại trừ các trình duyệt chính thống
+  const isAndroidWebView = /Android/i.test(ua) && 
+                           /AppleWebKit/i.test(ua) && 
+                           (/; wv\)/.test(ua) || /Version\//.test(ua)) && 
+                           !/SamsungBrowser|MiuiBrowser|HeyTapBrowser|OppoBrowser|VivoBrowser|HuaweiBrowser/i.test(ua) && 
+                           !/OPR/i.test(ua) && 
+                           !/DuckDuckGo|DuckDuck/i.test(ua) && 
+                           !/Firefox|FxiOS|Focus/i.test(ua) &&
+                           !/Edg|EdgA|EdgiOS/i.test(ua);
+
+  // iOS Webview: có AppleWebKit nhưng KHÔNG có Safari (mọi trình duyệt chuẩn trên iOS đều bắt buộc có 'Safari/' ở cuối UA)
+  const isIOSWebView = /(iPhone|iPad|iPod)/i.test(ua) && 
+                       /AppleWebKit/i.test(ua) && 
+                       !/Safari\//.test(ua) && 
+                       !/FxiOS/i.test(ua) && 
+                       !/CriOS/i.test(ua) && 
+                       !/EdgiOS/i.test(ua) && 
+                       !/DuckDuckGo/i.test(ua);
+
+  // Chỉ khóa tương tác đối với In-App Browser thực sự, không khóa trình duyệt độc lập
+  const isInAppBrowser = (isTikTok || isFacebook || isInstagram || isMessenger || isZalo || isAndroidWebView || isIOSWebView) && 
+                         !isDuckDuckGo && 
+                         !isFirefox && 
+                         !isEdge && 
+                         !isOpera;
 
   if (isInAppBrowser) {
     showInAppBrowserBanner();

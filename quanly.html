@@ -352,6 +352,20 @@
       gap: 16px;
     }
 
+    /* Bố cục upload ảnh mới tránh bị dúm ró */
+    .image-upload-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      width: 100%;
+    }
+    .image-upload-group .form-input {
+      flex-grow: 1;
+    }
+    .image-upload-group button {
+      white-space: nowrap;
+    }
+
     @media (max-width: 768px) {
       .field-grid {
         grid-template-columns: 1fr;
@@ -375,6 +389,54 @@
       .nav-item {
         padding: 8px 12px;
         white-space: nowrap;
+      }
+      .nav-item-view-site {
+        margin-top: 0 !important;
+        border: none !important;
+      }
+    }
+
+    @media (max-width: 576px) {
+      /* Ẩn chữ trên các tab điều hướng di động, chỉ giữ lại icon */
+      .panel-sidebar .nav-item {
+        font-size: 0 !important;
+        padding: 10px 14px !important;
+        gap: 0 !important;
+        justify-content: center;
+      }
+      .panel-sidebar .nav-item i, 
+      .panel-sidebar .nav-item svg {
+        margin: 0 !important;
+        width: 18px !important;
+        height: 18px !important;
+      }
+      
+      /* Ẩn chữ phụ của các nút thêm, chỉ giữ lại biểu tượng + */
+      .btn-text {
+        display: none !important;
+      }
+      .btn-add, #add-social, #add-aff-sec, #add-aff-item {
+        padding: 0 12px !important;
+      }
+      
+      /* Ẩn bớt chữ Lưu & Deploy Web thành Lưu */
+      .btn-text-desktop {
+        display: none !important;
+      }
+      .btn-text-mobile {
+        display: inline !important;
+      }
+
+      /* Chuyển ô nhập ảnh và nút thành hàng dọc trên di động */
+      .image-upload-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+      }
+      .image-upload-group button {
+        height: 38px !important;
+        width: 100% !important;
+        justify-content: center;
       }
     }
 
@@ -511,9 +573,10 @@
     <div class="panel-header">
       <h2><i data-lucide="settings"></i> Quản Trị Dữ Liệu Linktree</h2>
       <div class="header-actions">
-        <button id="btn-save" class="btn" style="width: auto; padding: 0 20px;">
+        <button id="btn-save" class="btn" style="width: auto; padding: 0 16px; display: flex; align-items: center; gap: 6px;">
           <i data-lucide="cloud-lightning"></i>
-          <span>Lưu & Deploy Web</span>
+          <span class="btn-text-desktop">Lưu & Deploy Web</span>
+          <span class="btn-text-mobile" style="display: none;">Lưu</span>
         </button>
         <button id="btn-logout" class="btn btn-secondary" style="width: auto; padding: 0 16px;">
           <i data-lucide="log-out"></i>
@@ -539,6 +602,9 @@
         <div class="nav-item" data-tab="faq"><i data-lucide="help-circle"></i> Câu hỏi thường gặp</div>
         <div class="nav-item" data-tab="payment"><i data-lucide="wallet"></i> Thông tin Donate</div>
         <div class="nav-item" data-tab="stats"><i data-lucide="bar-chart-2"></i> Thống kê truy cập</div>
+        <a href="/" target="_blank" class="nav-item nav-item-view-site" style="text-decoration: none; margin-top: auto; border: 1px dashed var(--border-color); color: var(--color-primary);">
+          <i data-lucide="external-link"></i> Xem trang chính
+        </a>
       </div>
 
       <!-- Main Editor Container -->
@@ -857,7 +923,10 @@
         <div class="editor-card">
           <div class="form-group">
             <label>Link ảnh đại diện (Avatar)</label>
-            <input type="text" id="prof-avatar" class="form-input" value="${profile.avatar || ''}">
+            <div class="image-upload-group">
+              <input type="text" id="prof-avatar" class="form-input" value="${profile.avatar || ''}">
+              <button class="btn btn-upload-image" data-target-id="prof-avatar" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
+            </div>
           </div>
           <div class="field-grid">
             <div class="form-group">
@@ -925,7 +994,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <span style="font-size: 14px; font-weight: 700; color: var(--text-muted);">Danh sách mạng xã hội (${section.items.length})</span>
           <button id="add-social" class="btn" style="width: auto; height: 36px; padding: 0 16px; font-size: 13px;">
-            <i data-lucide="plus"></i> Thêm liên kết
+            <i data-lucide="plus"></i> <span class="btn-text">Thêm liên kết</span>
           </button>
         </div>
         <div id="socials-list"></div>
@@ -1034,7 +1103,7 @@
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <span style="font-size: 14px; font-weight: 700; color: var(--text-muted);">${section.items.length} items</span>
-          <button class="btn btn-add" id="add-item" style="width: auto; padding: 0 16px; height: 38px; font-size: 13.5px;"><i data-lucide="plus"></i> Thêm mới</button>
+          <button class="btn btn-add" id="add-item" style="width: auto; padding: 0 16px; height: 38px; font-size: 13.5px;"><i data-lucide="plus"></i> <span class="btn-text">Thêm mới</span></button>
         </div>
         <div id="items-list-container"></div>
       `;
@@ -1081,7 +1150,10 @@
                 </div>
                 <div class="form-group">
                   <label>Đường dẫn Icon ứng dụng (image URL)</label>
-                  <input type="text" class="form-input inp-android-image" value="${item.image || ''}" data-index="${index}">
+                  <div class="image-upload-group">
+                    <input type="text" class="form-input inp-android-image" value="${item.image || ''}" data-index="${index}">
+                    <button class="btn btn-upload-image" data-target-class="inp-android-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
+                  </div>
                 </div>
               </div>
               <div class="field-grid">
@@ -1123,7 +1195,10 @@
               </div>
               <div class="form-group">
                 <label>Đường dẫn ảnh minh họa (image)</label>
-                <input type="text" class="form-input inp-service-image" value="${item.image || ''}" data-index="${index}" style="margin-bottom: 8px;">
+                <div class="image-upload-group" style="margin-bottom: 8px;">
+                  <input type="text" class="form-input inp-service-image" value="${item.image || ''}" data-index="${index}">
+                  <button class="btn btn-upload-image" data-target-class="inp-service-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
+                </div>
                 <div class="service-image-preview" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); width: 120px; height: 68px; display: ${item.image ? 'block' : 'none'}; background-color: #0b0f19;">
                   <img src="${item.image || ''}" style="width: 100%; height: 100%; object-fit: cover;" class="img-service-preview-tag">
                 </div>
@@ -1142,7 +1217,10 @@
                 </div>
                 <div class="form-group">
                   <label>Ảnh thu nhỏ (image URL) - Bỏ trống nếu muốn hiện icon PDF/Mặc định</label>
-                  <input type="text" class="form-input inp-gift-image" value="${item.image || ''}" data-index="${index}">
+                  <div class="image-upload-group">
+                    <input type="text" class="form-input inp-gift-image" value="${item.image || ''}" data-index="${index}">
+                    <button class="btn btn-upload-image" data-target-class="inp-gift-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
+                  </div>
                 </div>
               </div>
               <div class="field-grid">
@@ -1181,7 +1259,10 @@
                 </div>
                 <div class="form-group">
                   <label>Ảnh sản phẩm (image URL)</label>
-                  <input type="text" class="form-input inp-own-image" value="${item.image || ''}" data-index="${index}">
+                  <div class="image-upload-group">
+                    <input type="text" class="form-input inp-own-image" value="${item.image || ''}" data-index="${index}">
+                    <button class="btn btn-upload-image" data-target-class="inp-own-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -1223,7 +1304,10 @@
                 </div>
                 <div class="form-group">
                   <label>Ảnh sản phẩm (image URL) - Tùy chọn</label>
-                  <input type="text" class="form-input inp-affiliate-image" value="${item.image || ''}" data-index="${index}" placeholder="Nếu để trống sẽ tự cào từ link">
+                  <div class="image-upload-group">
+                    <input type="text" class="form-input inp-affiliate-image" value="${item.image || ''}" data-index="${index}" placeholder="Nếu để trống sẽ tự cào từ link">
+                    <button class="btn btn-upload-image" data-target-class="inp-affiliate-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -1254,8 +1338,9 @@
               <div class="field-grid">
                 <div class="form-group">
                   <label>Ảnh review (image) - *Bắt buộc</label>
-                  <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                    <input type="text" class="form-input inp-review-image" value="${item.image || ''}" data-index="${index}" style="flex-grow: 1;">
+                  <div class="image-upload-group" style="margin-bottom: 8px;">
+                    <input type="text" class="form-input inp-review-image" value="${item.image || ''}" data-index="${index}">
+                    <button class="btn btn-upload-image" data-target-class="inp-review-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
                     <button class="btn btn-select-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-main);">Kho ảnh</button>
                   </div>
                   <div class="review-image-preview" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); width: 80px; height: 120px; display: ${item.image ? 'block' : 'none'}; background-color: #0b0f19;">
@@ -1527,7 +1612,7 @@
           <div style="font-weight: 700; font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
             <span>Các Danh mục Hiện có (${affiliateSections.length})</span>
             <button id="add-aff-sec" class="btn" style="width: auto; height: 32px; padding: 0 12px; font-size: 12px; background-color: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; gap: 4px;">
-              <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Thêm danh mục mới
+              <i data-lucide="plus" style="width: 14px; height: 14px;"></i> <span class="btn-text">Thêm danh mục mới</span>
             </button>
           </div>
           <div id="aff-sec-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
@@ -1538,7 +1623,7 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <span style="font-size: 14px; font-weight: 700; color: var(--text-muted);" id="aff-items-title">Sản phẩm thuộc danh mục</span>
             <button id="add-aff-item" class="btn" style="width: auto; height: 36px; padding: 0 16px; font-size: 13px;">
-              <i data-lucide="plus"></i> Thêm sản phẩm
+              <i data-lucide="plus"></i> <span class="btn-text">Thêm sản phẩm</span>
             </button>
           </div>
           <div id="items-list"></div>
@@ -2137,6 +2222,151 @@ window.CONFIG = ${JSON.stringify(localConfig, null, 2)};
         alert(`Đã xảy ra lỗi: ${err.message || 'Không rõ nguyên nhân.'}`);
       }
     }
+
+    // --- AUTO UPLOAD TO IMGBB ---
+    async function uploadToImgBB(file, onProgress) {
+      const apiKey = 'a90f76fb57cb870f92b21b313bcd2a64';
+      const formData = new FormData();
+      formData.append('image', file);
+      
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `https://api.imgbb.com/1/upload?key=${apiKey}`);
+        
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentComplete = Math.round((event.loaded / event.total) * 100);
+            if (onProgress) onProgress(percentComplete);
+          }
+        };
+        
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            try {
+              const response = JSON.parse(xhr.responseText);
+              resolve(response.data.url);
+            } catch (e) {
+              reject(new Error('Phản hồi từ máy chủ không hợp lệ.'));
+            }
+          } else {
+            reject(new Error(`Tải lên thất bại với mã lỗi: ${xhr.status}`));
+          }
+        };
+        
+        xhr.onerror = () => {
+          reject(new Error('Lỗi kết nối mạng khi tải lên.'));
+        };
+        
+        xhr.send(formData);
+      });
+    }
+
+    // Đăng ký các sự kiện upload ảnh toàn cục
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn-upload-image');
+      if (!btn) return;
+      
+      e.preventDefault();
+      
+      let targetInput = null;
+      const targetId = btn.getAttribute('data-target-id');
+      const targetClass = btn.getAttribute('data-target-class');
+      const index = btn.getAttribute('data-index');
+      
+      if (targetId) {
+        targetInput = document.getElementById(targetId);
+      } else if (targetClass) {
+        if (index !== null && index !== undefined && index !== '') {
+          targetInput = document.querySelector(`.${targetClass}[data-index="${index}"]`);
+        } else {
+          targetInput = document.querySelector(`.${targetClass}`);
+        }
+      }
+      
+      if (!targetInput) return;
+      
+      let fileInput = document.getElementById('global-image-uploader');
+      if (!fileInput) {
+        fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.id = 'global-image-uploader';
+        fileInput.accept = 'image/*';
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+      }
+      
+      fileInput.targetInput = targetInput;
+      fileInput.triggerButton = btn;
+      
+      fileInput.click();
+    });
+
+    // Sự kiện khi người dùng chọn file
+    document.addEventListener('change', async (e) => {
+      if (e.target.id !== 'global-image-uploader') return;
+      
+      const fileInput = e.target;
+      const file = fileInput.files[0];
+      if (!file) return;
+      
+      const targetInput = fileInput.targetInput;
+      const triggerButton = fileInput.triggerButton;
+      if (!targetInput || !triggerButton) return;
+      
+      const originalBtnText = triggerButton.innerHTML;
+      const originalInputVal = targetInput.value;
+      
+      try {
+        triggerButton.disabled = true;
+        triggerButton.style.opacity = '0.7';
+        triggerButton.innerHTML = 'Đang tải (0%)...';
+        
+        targetInput.disabled = true;
+        targetInput.value = 'Đang tải ảnh lên máy chủ ImgBB...';
+        
+        const imageUrl = await uploadToImgBB(file, (percent) => {
+          triggerButton.innerHTML = `Đang tải (${percent}%)...`;
+        });
+        
+        targetInput.disabled = false;
+        targetInput.value = imageUrl;
+        
+        // Kích hoạt event input để các listener hiện tại lưu dữ liệu và update preview
+        const event = new Event('input', { bubbles: true });
+        targetInput.dispatchEvent(event);
+        
+        triggerButton.innerHTML = 'Xong!';
+        triggerButton.style.backgroundColor = '#2ecc71';
+        triggerButton.style.color = '#ffffff';
+        
+        setTimeout(() => {
+          triggerButton.disabled = false;
+          triggerButton.style.opacity = '1';
+          triggerButton.style.backgroundColor = '';
+          triggerButton.style.color = '';
+          triggerButton.innerHTML = originalBtnText;
+        }, 2000);
+        
+      } catch (err) {
+        alert(`Lỗi khi tải ảnh: ${err.message}`);
+        targetInput.disabled = false;
+        targetInput.value = originalInputVal;
+        
+        triggerButton.disabled = false;
+        triggerButton.style.opacity = '1';
+        triggerButton.innerHTML = 'Lỗi! Thử lại';
+        triggerButton.style.backgroundColor = '#e74c3c';
+        triggerButton.style.color = '#ffffff';
+        
+        setTimeout(() => {
+          triggerButton.style.backgroundColor = '';
+          triggerButton.style.color = '';
+          triggerButton.innerHTML = originalBtnText;
+        }, 2000);
+      } finally {
+        fileInput.value = '';
+      }
+    });
   </script>
 </body>
 </html>

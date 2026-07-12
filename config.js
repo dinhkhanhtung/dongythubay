@@ -488,7 +488,7 @@ window.CONFIG = {
       "accountNumber": "0982581222",
       "accountName": "DINH KHANH TUNG",
       "qrUrl": "https://img.vietqr.io/image/bidv-0982581222-compact2.jpg?amount=0&addInfo=Donate%20Dong%20y%20Thu%20Bay&accountName=DINH%20KHANH%20TUNG",
-      "note": "Mọi đóng góp, ủng hộ (donate) từ các bạn sẽ được Tùng sử dụng toàn bộ vào chi phí duy trì vận hành máy chủ và phát triển thêm các ứng dụng công nghệ miễn phí phục vụ cộng đồng."
+      "note": "Mọi sự đóng góp, ủng hộ (donate) từ quý vị sẽ được Tùng cam kết sử dụng 100% vào chi phí duy trì vận hành máy chủ và tiếp tục nghiên cứu, phát triển các ứng dụng công nghệ miễn phí phục vụ sức khỏe cộng đồng."
     },
     {
       "id": "free-gifts",
@@ -572,7 +572,7 @@ window.CONFIG = {
       "id": "promo-countdown",
       "type": "countdown",
       "title": "Ưu Đãi Tháng 7 – Tư Vấn Miễn Phí",
-      "subtitle": "🎉 Miễn phí tư vấn online cho bệnh nhân mới trong tháng 7/2026. Ưu đãi kết thúc sau:",
+      "subtitle": "🎉 Món quà tri ân: Tặng tài khoản sử dụng ứng dụng hoàn toàn miễn phí dành riêng cho cô chú, anh chị đã gửi hình ảnh phản hồi về phòng khám. Ưu đãi khép lại sau:",
       "endDate": "2026-07-31T23:59:59",
       "ctaLabel": "Đăng ký ngay",
       "ctaUrl": "#section-appointment-booking",
