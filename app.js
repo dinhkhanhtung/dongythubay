@@ -608,6 +608,21 @@ const initApp = () => {
         case 'affiliate-list':
            renderAffiliateList(section, sectionEl);
            break;
+        case 'own-products':
+          const mappedSection = {
+            ...section,
+            items: (section.items || []).map(item => ({
+              name: item.name,
+              image: item.image,
+              priceNote: 'Liên hệ',
+              discountNote: item.description || '',
+              affiliateUrl: item.contactUrl || 'https://zalo.me/0982581222',
+              isContact: true,
+              ctaLabel: item.contactLabel || 'Liên hệ báo giá'
+            }))
+          };
+          renderAffiliateList(mappedSection, sectionEl);
+          break;
         case 'bank-transfer':
           renderBankTransfer(section, sectionEl);
           break;

@@ -77,8 +77,8 @@ window.CONFIG = {
       "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của Đinh Khánh Tùng. Tại đây, Tùng mong muốn chia sẻ những giá trị thiết thực nhất cho cuộc sống – từ các phương pháp hỗ trợ sức khỏe, bài thuốc Nam gia truyền và thảo dược tự nhiên từ Phòng chẩn trị YHCT Thu Bẩy, cho đến các ứng dụng công nghệ tiện ích do chính Tùng phát triển nhằm giúp công việc và đời sống hàng ngày thêm phần thuận tiện. Rất vui và vinh hạnh được kết nối cùng mọi người!"
     },
     {
-      "id": "section-own-products",
-      "type": "affiliate-list",
+      "id": "own-products",
+      "type": "own-products",
       "title": "Sản Phẩm Thảo Dược Của Tôi",
       "enabled": true,
       "order": 2.8,
@@ -86,11 +86,9 @@ window.CONFIG = {
         {
           "name": "Trà Cổ Dược – Trà Thảo Dược Túi Lọc Thiên Nhiên | Thanh Mát, Dễ Uống",
           "image": "https://i.ibb.co/SwvSB6DB/de037b53-65bd-4470-873f-360cd1d065ba.jpg",
-          "priceNote": "Liên hệ",
-          "discountNote": "Trà Cổ Dược được kết hợp từ các thảo dược thiên nhiên, đóng gói dạng túi lọc tiện lợi, giúp pha nhanh và dễ sử dụng hằng ngày.",
-          "affiliateUrl": "https://zalo.me/0982581222",
-          "isContact": true,
-          "ctaLabel": "Liên hệ báo giá"
+          "description": "Trà Cổ Dược được kết hợp từ các thảo dược thiên nhiên, đóng gói dạng túi lọc tiện lợi, giúp pha nhanh và dễ sử dụng hằng ngày.",
+          "contactUrl": "https://zalo.me/0982581222",
+          "contactLabel": "Liên hệ báo giá"
         }
       ]
     },
