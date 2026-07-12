@@ -319,9 +319,10 @@ const initApp = () => {
       .then(res => res.json())
       .then(data => {
         clearTimeout(timeout);
-        if (data && typeof data.count !== 'undefined') {
+        const countVal = (data && (typeof data.value !== 'undefined' ? data.value : data.count));
+        if (typeof countVal !== 'undefined' && countVal !== null) {
           sessionStorage.setItem('visited_dongythubay', 'true');
-          const virtualCount = data.count * 12 + 8400;
+          const virtualCount = countVal * 12 + 8400;
           const formattedCount = new Intl.NumberFormat('vi-VN').format(virtualCount);
           localStorage.setItem('cached_view_count', formattedCount);
           updateCounters(formattedCount);
