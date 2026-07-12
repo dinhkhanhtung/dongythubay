@@ -263,7 +263,45 @@ const initApp = () => {
   const incrementPageView = () => {
     const profileHeader = document.querySelector('.profile-header');
 
-    // --- Top Counter: chỳ nhỏ mờ ngay dưới profile, không có nền/viền ---
+    // Khởi tạo và cập nhật số người online ảo nhấp nháy
+    if (!document.getElementById('online-counter-style')) {
+      const style = document.createElement('style');
+      style.id = 'online-counter-style';
+      style.textContent = `
+        @keyframes online-blink {
+          0% { opacity: 0.4; transform: scale(0.9); }
+          50% { opacity: 1; transform: scale(1.1); }
+          100% { opacity: 0.4; transform: scale(0.9); }
+        }
+        .online-dot {
+          display: inline-block;
+          width: 7px;
+          height: 7px;
+          background-color: #22c55e;
+          border-radius: 50%;
+          margin: 0 4px 0 8px;
+          vertical-align: middle;
+          animation: online-blink 2s infinite ease-in-out;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    let currentOnline = Math.floor(Math.random() * 8) + 12; // Khởi tạo 12-19
+    const updateOnlineUI = () => {
+      const change = Math.floor(Math.random() * 5) - 2; // -2 đến +2
+      currentOnline += change;
+      if (currentOnline < 8) currentOnline = 8;
+      if (currentOnline > 25) currentOnline = 25;
+      
+      const elTop = document.getElementById('online-counter-top');
+      const elFooter = document.getElementById('online-counter-footer');
+      if (elTop) elTop.textContent = currentOnline;
+      if (elFooter) elFooter.textContent = currentOnline;
+    };
+    setInterval(updateOnlineUI, 5000 + Math.random() * 2000);
+
+    // --- Top Counter ---
     let topCounter = document.getElementById('top-page-counter');
     if (!topCounter && profileHeader) {
       topCounter = document.createElement('p');
@@ -298,10 +336,10 @@ const initApp = () => {
 
     const updateCounters = (formattedCount) => {
       if (topCounter) {
-        topCounter.innerHTML = `<i data-lucide="eye" style="width:13px;height:13px;"></i><span>${formattedCount} lượt truy cập</span>`;
+        topCounter.innerHTML = `<i data-lucide="eye" style="width:13px;height:13px;"></i><span>${formattedCount} lượt truy cập<span class="online-dot"></span><span style="color: #22c55e; font-weight: 600;" id="online-counter-top">${currentOnline}</span> đang online</span>`;
       }
       if (footerCounter) {
-        footerCounter.innerHTML = `<i data-lucide="eye" style="width:14px;height:14px;opacity:0.8;"></i><span>${formattedCount} lượt truy cập</span>`;
+        footerCounter.innerHTML = `<i data-lucide="eye" style="width:14px;height:14px;opacity:0.8;"></i><span>${formattedCount} lượt truy cập<span class="online-dot"></span><span style="color: #22c55e; font-weight: 600;" id="online-counter-footer">${currentOnline}</span> đang online</span>`;
       }
       if (typeof lucide !== 'undefined') lucide.createIcons();
     };
