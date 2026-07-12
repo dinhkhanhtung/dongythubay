@@ -354,8 +354,33 @@
 
     /* Định vị nút xem trang chính cố định ở đáy sidebar */
     .panel-sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border-color);
+      background-color: rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      padding: 16px !important;
       position: relative;
-      padding-bottom: 80px !important;
+      height: 100%;
+      box-sizing: border-box;
+      overflow: hidden !important; /* Khóa cuộn ở sidebar chính */
+    }
+    .sidebar-nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto; /* Chỉ cho phép cuộn ở danh mục menu */
+      flex-grow: 1;
+      padding-bottom: 60px; /* Chừa khoảng trống cho nút đáy */
+    }
+    /* Ẩn scrollbar của sidebar-nav-menu để giao diện gọn gàng hơn */
+    .sidebar-nav-menu::-webkit-scrollbar {
+      width: 4px;
+    }
+    .sidebar-nav-menu::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 2px;
     }
     .nav-item-view-site {
       display: flex;
@@ -372,7 +397,8 @@
       right: 16px;
       margin: 0 !important;
       border: 1px dashed var(--border-color);
-      background-color: rgba(255, 255, 255, 0.02);
+      background-color: var(--bg-panel); /* Đặt nền đục để che các menu bị cuộn ở dưới */
+      z-index: 10;
     }
     .nav-item-view-site:hover {
       background-color: var(--bg-input);
@@ -406,20 +432,33 @@
         flex-direction: column;
       }
       .panel-sidebar {
-        width: 100%;
-        height: auto;
-        flex-direction: row;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        padding: 8px;
+        width: 100% !important;
+        height: auto !important;
+        flex-direction: row !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        padding: 8px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+      }
+      .sidebar-nav-menu {
+        flex-direction: row !important;
+        overflow: visible !important;
+        flex-grow: 0 !important;
+        padding-bottom: 0 !important;
+        gap: 8px !important;
       }
       .nav-item {
         padding: 8px 12px;
         white-space: nowrap;
       }
       .nav-item-view-site {
-        margin-top: 0 !important;
+        position: static !important;
+        margin: 0 !important;
         border: none !important;
+        padding: 8px 12px !important;
+        white-space: nowrap;
+        background-color: transparent !important;
       }
     }
 
@@ -614,21 +653,23 @@
     <div class="panel-body">
       <!-- Sidebar navigation tabs -->
       <div class="panel-sidebar">
-        <div class="nav-item active" data-tab="profile"><i data-lucide="user"></i> Profile cá nhân</div>
-        <div class="nav-item" data-tab="socials"><i data-lucide="share-2"></i> Mạng xã hội</div>
-        <div class="nav-item" data-tab="intro"><i data-lucide="file-text"></i> Lời Ngỏ</div>
-        <div class="nav-item" data-tab="promo"><i data-lucide="timer"></i> Ưu đãi</div>
-        <div class="nav-item" data-tab="booking"><i data-lucide="calendar"></i> Đặt Lịch Hẹn Khám</div>
-        <div class="nav-item" data-tab="my-apps"><i data-lucide="layout-grid"></i> Ứng dụng/Web App</div>
-        <div class="nav-item" data-tab="android-apps"><i data-lucide="smartphone"></i> Ứng dụng Android</div>
-        <div class="nav-item" data-tab="services"><i data-lucide="layers"></i> Dịch vụ số</div>
-        <div class="nav-item" data-tab="own-products"><i data-lucide="leaf"></i> Sản phẩm của tôi</div>
-        <div class="nav-item" data-tab="affiliates"><i data-lucide="shopping-bag"></i> SP khuyên dùng</div>
-        <div class="nav-item" data-tab="reviews"><i data-lucide="message-square"></i> Ý kiến bệnh nhân</div>
-        <div class="nav-item" data-tab="free-gifts"><i data-lucide="gift"></i> Quà tặng miễn phí</div>
-        <div class="nav-item" data-tab="faq"><i data-lucide="help-circle"></i> Câu hỏi thường gặp</div>
-        <div class="nav-item" data-tab="payment"><i data-lucide="wallet"></i> Thông tin Donate</div>
-        <div class="nav-item" data-tab="stats"><i data-lucide="bar-chart-2"></i> Thống kê truy cập</div>
+        <div class="sidebar-nav-menu">
+          <div class="nav-item active" data-tab="profile"><i data-lucide="user"></i> Profile cá nhân</div>
+          <div class="nav-item" data-tab="socials"><i data-lucide="share-2"></i> Mạng xã hội</div>
+          <div class="nav-item" data-tab="intro"><i data-lucide="file-text"></i> Lời Ngỏ</div>
+          <div class="nav-item" data-tab="promo"><i data-lucide="timer"></i> Ưu đãi</div>
+          <div class="nav-item" data-tab="booking"><i data-lucide="calendar"></i> Đặt Lịch Hẹn Khám</div>
+          <div class="nav-item" data-tab="my-apps"><i data-lucide="layout-grid"></i> Ứng dụng/Web App</div>
+          <div class="nav-item" data-tab="android-apps"><i data-lucide="smartphone"></i> Ứng dụng Android</div>
+          <div class="nav-item" data-tab="services"><i data-lucide="layers"></i> Dịch vụ số</div>
+          <div class="nav-item" data-tab="own-products"><i data-lucide="leaf"></i> Sản phẩm của tôi</div>
+          <div class="nav-item" data-tab="affiliates"><i data-lucide="shopping-bag"></i> SP khuyên dùng</div>
+          <div class="nav-item" data-tab="reviews"><i data-lucide="message-square"></i> Ý kiến bệnh nhân</div>
+          <div class="nav-item" data-tab="free-gifts"><i data-lucide="gift"></i> Quà tặng miễn phí</div>
+          <div class="nav-item" data-tab="faq"><i data-lucide="help-circle"></i> Câu hỏi thường gặp</div>
+          <div class="nav-item" data-tab="payment"><i data-lucide="wallet"></i> Thông tin Donate</div>
+          <div class="nav-item" data-tab="stats"><i data-lucide="bar-chart-2"></i> Thống kê truy cập</div>
+        </div>
         <a href="/" target="_blank" class="nav-item-view-site" style="text-decoration: none; color: var(--color-primary);">
           <i data-lucide="external-link"></i> <span class="nav-text">Xem trang chính</span>
         </a>
