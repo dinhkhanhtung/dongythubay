@@ -1883,13 +1883,29 @@ const initApp = () => {
       trackClick('bottom_bar', 'apps', 'Ứng dụng bottom bar', '#');
     });
 
-    // Click "Sản phẩm"
+    // Click "Sản phẩm" — cuộn đến section sản phẩm đầu tiên (order thấp nhất)
     bottomBar.querySelector('#bb-products').addEventListener('click', (e) => {
       e.preventDefault();
-      const productSection = document.querySelector('[id*="section-affiliate"]') || document.getElementById('section-affiliates');
-      if (productSection) {
-        scrollToElement(productSection);
+
+      // Lấy tất cả section sản phẩm (affiliate-list + own-products), sắp xếp theo order
+      const PRODUCT_TYPES = ['affiliate-list', 'own-products'];
+      const sortedProductSections = (config.sections || [])
+        .filter(sec => sec.enabled !== false && PRODUCT_TYPES.includes(sec.type) && sec.items && sec.items.length > 0)
+        .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+
+      // Tìm phần tử DOM của section đầu tiên
+      let topSection = null;
+      for (const sec of sortedProductSections) {
+        const el = document.getElementById(`section-${sec.id}`);
+        if (el) { topSection = el; break; }
       }
+
+      // Fallback: tìm theo selector cũ
+      if (!topSection) {
+        topSection = document.querySelector('[id*="section-affiliate"]') || document.getElementById('section-affiliates');
+      }
+
+      if (topSection) scrollToElement(topSection);
       trackClick('bottom_bar', 'products', 'Sản phẩm bottom bar', '#');
     });
 
@@ -1981,22 +1997,32 @@ const initApp = () => {
         } else {
           let selector = '';
           if (target === 'services') selector = '#section-services-digital';
-          else if (target === 'products') selector = '[id*="section-affiliate"]';
           else if (target === 'gifts') selector = '#section-free-gifts';
           else if (target === 'faq') selector = '#section-faq';
           else if (target === 'booking') selector = '#section-appointment-booking';
 
-          const targetEl = document.querySelector(selector);
-          if (targetEl) {
-            scrollToElement(targetEl);
-            
-            // Auto open booking form if selected
-            if (target === 'booking') {
-              const formWrapper = targetEl.querySelector('#booking-form-wrapper');
-              const chevron = targetEl.querySelector('#booking-chevron');
-              if (formWrapper && (formWrapper.style.maxHeight === '0px' || formWrapper.style.maxHeight === '')) {
-                formWrapper.style.maxHeight = formWrapper.scrollHeight + 'px';
-                if (chevron) chevron.style.transform = 'rotate(180deg)';
+          if (target === 'products') {
+            // Tìm section sản phẩm đầu tiên (order thấp nhất) từ config
+            const PRODUCT_TYPES = ['affiliate-list', 'own-products'];
+            const firstProductSec = (config.sections || [])
+              .filter(sec => sec.enabled !== false && PRODUCT_TYPES.includes(sec.type) && sec.items && sec.items.length > 0)
+              .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))[0];
+            let targetEl = firstProductSec ? document.getElementById(`section-${firstProductSec.id}`) : null;
+            if (!targetEl) targetEl = document.querySelector('[id*="section-affiliate"]');
+            if (targetEl) scrollToElement(targetEl);
+          } else {
+            const targetEl = selector ? document.querySelector(selector) : null;
+            if (targetEl) {
+              scrollToElement(targetEl);
+              
+              // Auto open booking form if selected
+              if (target === 'booking') {
+                const formWrapper = targetEl.querySelector('#booking-form-wrapper');
+                const chevron = targetEl.querySelector('#booking-chevron');
+                if (formWrapper && (formWrapper.style.maxHeight === '0px' || formWrapper.style.maxHeight === '')) {
+                  formWrapper.style.maxHeight = formWrapper.scrollHeight + 'px';
+                  if (chevron) chevron.style.transform = 'rotate(180deg)';
+                }
               }
             }
           }
