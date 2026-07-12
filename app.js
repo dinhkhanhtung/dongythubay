@@ -323,7 +323,7 @@ const initApp = () => {
         display: inline-flex; align-items: center; gap: 4px;
         opacity: 0.75;
       `;
-      topCounter.innerHTML = `<i data-lucide="eye" style="width:12px;height:12px;"></i><span>Đang tải...</span>`;
+      topCounter.innerHTML = `<i data-lucide="eye" style="width:12px;height:12px;opacity:0.5;"></i><span style="opacity:0.5;">--.--- lượt truy cập<span class="online-dot"></span><span style="color: #22c55e; font-weight: 600;" id="online-counter-top">${currentOnline}</span> đang online</span>`;
       profileHeader.appendChild(topCounter);
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
@@ -339,7 +339,7 @@ const initApp = () => {
         margin-top: 8px; display: flex; align-items: center;
         justify-content: center; gap: 4px;
       `;
-      footerCounter.innerHTML = `<i data-lucide="eye" style="width:14px;height:14px;opacity:0.8;"></i><span>Đang tải...</span>`;
+      footerCounter.innerHTML = `<i data-lucide="eye" style="width:14px;height:14px;opacity:0.5;"></i><span style="opacity:0.5;">--.--- lượt truy cập<span class="online-dot"></span><span style="color: #22c55e; font-weight: 600;" id="online-counter-footer">${currentOnline}</span> đang online</span>`;
       footer.appendChild(footerCounter);
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
@@ -1462,7 +1462,7 @@ const initApp = () => {
     container.appendChild(grid);
   }
 
-  // 6d. Own Products Component
+  // 6d. Own Products Component (Synchronized with Affiliate List design)
   function renderOwnProducts(section, container) {
     const items = section.items || [];
 
@@ -1475,40 +1475,50 @@ const initApp = () => {
     }
 
     const grid = document.createElement('div');
-    grid.className = 'own-products-grid';
+    grid.className = 'affiliate-container';
 
     items.forEach((item, index) => {
-      const card = document.createElement('article');
-      card.className = 'own-product-card';
+      const card = document.createElement('a');
+      card.className = 'affiliate-card';
+      card.id = `own-product-card-${section.id}-${index}`;
+      card.style.textDecoration = 'none';
 
       const name = item.name || 'Sản phẩm thảo dược';
       const image = item.image || 'assets/product_tea.png';
       const description = item.description || 'Liên hệ để được tư vấn bài thuốc phù hợp với thể trạng.';
-      const tags = Array.isArray(item.tags) ? item.tags : [];
       const contactUrl = item.contactUrl || 'https://zalo.me/0982581222';
       const contactLabel = item.contactLabel || 'Liên hệ báo giá';
 
+      card.href = contactUrl;
+      card.target = '_blank';
+      card.setAttribute('rel', 'noopener noreferrer');
+
       card.innerHTML = `
-        <div class="own-product-media">
-          <img src="${image}" alt="${name}" class="own-product-image" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" ${index < 2 ? 'fetchpriority="high"' : ''}>
-          <span class="own-product-badge">Đông y gia truyền</span>
+        <div class="affiliate-image-wrapper" style="position: relative;">
+          <img src="${image}" alt="${name}" class="affiliate-image" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" ${index < 2 ? 'fetchpriority="high"' : ''}>
+          <span class="affiliate-hot-badge" style="background-color: var(--color-primary); color: #ffffff; padding: 4px 8px; font-size: 9px; font-weight: 800; border-radius: 4px; position: absolute; left: 8px; top: 8px; z-index: 10;">Đông y</span>
         </div>
-        <div class="own-product-content">
-          <div class="own-product-meta">
-            <span class="own-product-price">Liên hệ</span>
-            <span class="own-product-rating"><i data-lucide="star"></i> 4.9</span>
+        <div class="affiliate-info">
+          <div class="affiliate-text">
+            <h3 class="affiliate-name">${name}</h3>
+            <div class="affiliate-price">Liên hệ</div>
+            <div class="affiliate-discount">${description}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 6px;">
+              <span style="color: #eab308; display: flex; align-items: center; gap: 2px; font-weight: 700;">
+                <i data-lucide="star" style="width: 11px; height: 11px; fill: #eab308; color:#eab308;"></i> 4.9
+              </span>
+              <span style="opacity: 0.4;">|</span>
+              <span style="opacity: 0.85; font-weight: 500;">Gia truyền Thu Bẩy</span>
+            </div>
           </div>
-          <h3 class="own-product-name">${name}</h3>
-          <p class="own-product-desc">${description}</p>
-          ${tags.length > 0 ? `<div class="own-product-tags">${tags.map(tag => `<span>${tag}</span>`).join('')}</div>` : ''}
-          <a href="${contactUrl}" class="own-product-cta" target="_blank" rel="noopener noreferrer">
+          <div class="affiliate-cta contact-zalo" style="background-color: #0068ff !important; color: #ffffff !important;">
             <span>${contactLabel}</span>
             <i data-lucide="message-circle"></i>
-          </a>
+          </div>
         </div>
       `;
 
-      card.querySelector('.own-product-cta').addEventListener('click', () => {
+      card.addEventListener('click', () => {
         trackClick('own_product', slugify(name), name, contactUrl);
       });
 

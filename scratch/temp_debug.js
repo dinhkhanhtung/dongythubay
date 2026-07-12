@@ -1,1080 +1,5 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trang Quản Trị Link-in-Bio - YHCT Thu Bẩy</title>
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Config loader -->
-  <script>
-    document.write('<script src="config.js?v=' + Date.now() + '"><\/script>');
-  </script>
 
-  <style>
-    :root {
-      --font-primary: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      --bg-admin: #0b0f19;
-      --bg-panel: #151c2c;
-      --bg-input: #1e293b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --color-primary: #22c55e;
-      --color-primary-hover: #166534;
-      --border-color: rgba(255, 255, 255, 0.08);
-      --radius: 16px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: var(--font-primary);
-      background-color: var(--bg-admin);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      overflow: hidden; /* Ẩn scrollbar thô của trình duyệt */
-    }
-
-    /* Custom Webkit Scrollbars for Dark Theme */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(0,0,0,0.15);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.08);
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255,255,255,0.15);
-    }
-
-    /* Login Screen */
-    .login-container {
-      width: 100%;
-      max-width: 400px;
-      background-color: var(--bg-panel);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 30px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      text-align: center;
-      display: block;
-    }
-
-    .login-logo {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--color-primary), #0f172a);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 auto 20px auto;
-      color: white;
-    }
-
-    .login-logo i {
-      width: 36px;
-      height: 36px;
-    }
-
-    .login-container h1 {
-      font-size: 22px;
-      margin-bottom: 10px;
-      font-weight: 800;
-    }
-
-    .login-container p {
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-bottom: 24px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .form-input {
-      width: 100%;
-      height: 48px;
-      background-color: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 0 16px;
-      color: white;
-      font-family: var(--font-primary);
-      font-size: 15px;
-      transition: var(--transition);
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
-    }
-
-    .btn {
-      width: 100%;
-      height: 48px;
-      background-color: var(--color-primary);
-      color: #000;
-      border: none;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      transition: var(--transition);
-    }
-
-    .btn:hover {
-      background-color: #4ade80;
-      transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-      background-color: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-    }
-
-    .btn-secondary:hover {
-      background-color: var(--bg-input);
-      border-color: var(--text-muted);
-    }
-
-    /* Admin Panel Dashboard */
-    .admin-panel {
-      display: none;
-      width: 100%;
-      max-width: 1200px;
-      background-color: var(--bg-panel);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-      height: 90vh;
-      max-height: 850px;
-      flex-direction: column;
-    }
-
-    .panel-header {
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: rgba(0,0,0,0.15);
-    }
-
-    .panel-header h2 {
-      font-size: 20px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .panel-header h2 i {
-      color: var(--color-primary);
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 12px;
-    }
-
-    .panel-body {
-      display: flex;
-      flex-grow: 1;
-      overflow: hidden;
-    }
-
-    /* Sidebar Navigation */
-    .panel-sidebar {
-      width: 240px;
-      flex-shrink: 0;
-      border-right: 1px solid var(--border-color);
-      background-color: rgba(0,0,0,0.15);
-      display: flex;
-      flex-direction: column;
-      padding: 16px;
-      gap: 8px;
-      overflow-y: auto;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 14px;
-      transition: var(--transition);
-    }
-
-    .nav-item:hover, .nav-item.active {
-      color: white;
-      background-color: var(--bg-input);
-    }
-
-    .nav-item.active {
-      border-left: 4px solid var(--color-primary);
-      border-radius: 4px 10px 10px 4px;
-    }
-
-    .nav-item i {
-      width: 18px;
-      height: 18px;
-    }
-
-    /* Main Editor Content Area */
-    .panel-content {
-      flex-grow: 1;
-      padding: 24px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .section-header {
-      border-bottom: 1px dashed var(--border-color);
-      padding-bottom: 14px;
-      margin-bottom: 10px;
-    }
-
-    .section-header h3 {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .section-header p {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    /* Editor Cards & Items */
-    .editor-card {
-      background-color: rgba(0,0,0,0.1);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 16px;
-      position: relative;
-    }
-
-    .editor-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .editor-card-title {
-      font-weight: 700;
-      font-size: 14px;
-      color: var(--color-primary);
-    }
-
-    .editor-card-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .icon-btn {
-      background: none;
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      cursor: pointer;
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: var(--transition);
-    }
-
-    .icon-btn:hover {
-      color: white;
-      border-color: var(--text-muted);
-      background-color: var(--bg-input);
-    }
-
-    .icon-btn.btn-delete:hover {
-      color: #ef4444;
-      border-color: #ef4444;
-      background-color: rgba(239, 68, 68, 0.08);
-    }
-
-    /* Form Fields Grid */
-    .field-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    /* Định vị nút xem trang chính cố định ở đáy sidebar */
-    .panel-sidebar {
-      width: 240px;
-      flex-shrink: 0;
-      border-right: 1px solid var(--border-color);
-      background-color: rgba(0,0,0,0.15);
-      display: flex;
-      flex-direction: column;
-      padding: 16px !important;
-      position: relative;
-      height: 100%;
-      box-sizing: border-box;
-      overflow: hidden !important; /* Khóa cuộn ở sidebar chính */
-    }
-    .sidebar-nav-menu {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      overflow-y: auto; /* Chỉ cho phép cuộn ở danh mục menu */
-      flex-grow: 1;
-      padding-bottom: 60px; /* Chừa khoảng trống cho nút đáy */
-    }
-    /* Ẩn scrollbar của sidebar-nav-menu để giao diện gọn gàng hơn */
-    .sidebar-nav-menu::-webkit-scrollbar {
-      width: 4px;
-    }
-    .sidebar-nav-menu::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 2px;
-    }
-    .nav-item-view-site {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 14px;
-      transition: var(--transition);
-      position: absolute;
-      bottom: 16px;
-      left: 16px;
-      right: 16px;
-      margin: 0 !important;
-      border: 1px dashed var(--border-color);
-      background-color: var(--bg-panel); /* Đặt nền đục để che các menu bị cuộn ở dưới */
-      z-index: 10;
-    }
-    .nav-item-view-site:hover {
-      background-color: var(--bg-input);
-      color: white;
-    }
-
-    /* Toast Notification System Styles */
-    .toast-container {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      z-index: 99999;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-width: 380px;
-      width: calc(100% - 48px);
-      pointer-events: none;
-    }
-    .toast-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background-color: #1f2937;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 14px 20px;
-      border-radius: 12px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
-      color: #f3f4f6;
-      font-size: 14px;
-      font-weight: 500;
-      pointer-events: auto;
-      transform: translateY(-20px);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .toast-item.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    .toast-item.hide {
-      transform: scale(0.9);
-      opacity: 0;
-    }
-    .toast-icon {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .toast-success .toast-icon {
-      color: #22c55e;
-    }
-    .toast-error .toast-icon {
-      color: #ef4444;
-    }
-    .toast-warning .toast-icon {
-      color: #f59e0b;
-    }
-    .toast-info .toast-icon {
-      color: #3b82f6;
-    }
-
-    /* Custom Confirm Modal System Styles */
-    .confirm-modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(17, 24, 39, 0.7);
-      backdrop-filter: blur(8px);
-      z-index: 999999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .confirm-modal-overlay.show {
-      opacity: 1;
-    }
-    .confirm-modal-card {
-      background-color: #1f2937;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 24px;
-      max-width: 400px;
-      width: calc(100% - 32px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-      transform: scale(0.9) translateY(20px);
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .confirm-modal-overlay.show .confirm-modal-card {
-      transform: scale(1) translateY(0);
-    }
-    .confirm-modal-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: white;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .confirm-modal-body {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.5;
-      margin-bottom: 24px;
-    }
-    .confirm-modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-    }
-    .confirm-btn {
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      border: none;
-    }
-    .confirm-btn-cancel {
-      background-color: rgba(255, 255, 255, 0.05);
-      color: var(--text-muted);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .confirm-btn-cancel:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-    .confirm-btn-ok {
-      background-color: #ef4444; /* màu đỏ cho xóa */
-      color: white;
-    }
-    .confirm-btn-ok:hover {
-      background-color: #dc2626;
-    }
-
-    /* Bố cục upload ảnh mới tránh bị dúm ró */
-    .image-upload-group {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      width: 100%;
-    }
-    .image-upload-group .form-input {
-      flex-grow: 1;
-    }
-    .image-upload-group button {
-      white-space: nowrap;
-    }
-
-    @media (max-width: 768px) {
-      .field-grid {
-        grid-template-columns: 1fr;
-      }
-      .admin-panel {
-        height: 100vh;
-        max-height: 100%;
-        border-radius: 0;
-      }
-      .panel-body {
-        flex-direction: column;
-        padding-bottom: 76px !important;
-      }
-      .panel-sidebar {
-        position: fixed !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-        height: 68px !important;
-        flex-direction: row !important;
-        border-right: none !important;
-        border-top: 1px solid var(--border-color) !important;
-        border-bottom: none !important;
-        background-color: rgba(21, 28, 44, 0.96) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        padding: 6px 12px !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        z-index: 99999 !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-        scrollbar-width: none;
-      }
-      .panel-sidebar::-webkit-scrollbar {
-        display: none;
-      }
-      .sidebar-nav-menu {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 8px !important;
-        overflow: visible !important;
-        flex-grow: 1 !important;
-      }
-      .nav-item {
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 4px 10px !important;
-        gap: 4px !important;
-        font-size: 11px !important;
-        white-space: nowrap !important;
-        border-radius: 12px !important;
-        color: var(--text-muted) !important;
-        background: transparent !important;
-        min-width: 80px !important;
-        text-align: center !important;
-      }
-      .nav-item.active {
-        color: var(--color-primary) !important;
-        background-color: rgba(34, 197, 94, 0.1) !important;
-        font-weight: 700 !important;
-      }
-      .nav-item i, .nav-item svg {
-        width: 18px !important;
-        height: 18px !important;
-        margin: 0 !important;
-      }
-      .nav-item-view-site {
-        display: none !important;
-      }
-
-      /* Responsive Table Container: Cuộn ngang chống xô lệch chữ trên Mobile */
-      .admin-table-responsive {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        margin-bottom: 16px;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background-color: rgba(0, 0, 0, 0.1);
-      }
-      .admin-table-responsive table {
-        min-width: 650px !important;
-      }
-      /* Tối ưu cuộn ngang cho danh sách danh mục sản phẩm trên mobile */
-      #aff-sec-list {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        width: 100% !important;
-        padding-bottom: 8px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 8px !important;
-      }
-      #aff-sec-list .editor-card-header {
-        min-width: 520px !important;
-      }
-    }
-
-    @media (max-width: 576px) {
-      /* Ẩn chữ phụ của các nút thêm, chỉ giữ lại biểu tượng + */
-      .btn-text {
-        display: none !important;
-      }
-      .btn-add, #add-social, #add-aff-sec, #add-aff-item {
-        padding: 0 12px !important;
-      }
-      
-      /* Ẩn bớt chữ Lưu & Deploy Web thành Lưu */
-      .btn-text-desktop {
-        display: none !important;
-      }
-      .btn-text-mobile {
-        display: inline !important;
-      }
-
-      /* Chuyển ô nhập ảnh và nút thành hàng dọc trên di động */
-      .image-upload-group {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 6px;
-      }
-      .image-upload-group button {
-        height: 38px !important;
-        width: 100% !important;
-        justify-content: center;
-      }
-    }
-
-    /* Modal / Progress Overlay */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: var(--transition);
-    }
-
-    .overlay.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .progress-box {
-      width: 90%;
-      max-width: 400px;
-      background-color: var(--bg-panel);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    }
-
-    .spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid rgba(255, 255, 255, 0.05);
-      border-top-color: var(--color-primary);
-      border-radius: 50%;
-      margin: 0 auto 20px auto;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .progress-box h3 {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-    /* Gallery Image Picker Styles */
-    .gallery-item {
-      aspect-ratio: 9 / 16;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 2px solid transparent;
-      cursor: pointer;
-      position: relative;
-      transition: var(--transition);
-      background-color: #0b0f19;
-    }
-    .gallery-item:hover {
-      transform: translateY(-2px);
-      border-color: var(--text-muted);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    .gallery-item.selected {
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
-    }
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .gallery-item-name {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(0,0,0,0.7);
-      font-size: 10px;
-      color: white;
-      padding: 4px 6px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: center;
-      font-weight: 500;
-    }
-
-    .progress-box p {
-      color: var(--text-muted);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .countdown {
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--color-primary);
-      margin-top: 14px;
-    }
-
-    /* Boot Screen */
-    .app-boot-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 99999999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      background: radial-gradient(circle at 50% 38%, rgba(34, 197, 94, 0.15), transparent 34%), var(--bg-admin);
-      opacity: 1;
-      transition: opacity 0.4s ease;
-    }
-
-    .app-boot-screen.is-hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .boot-orb {
-      position: relative;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background-color: var(--bg-panel);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    .boot-orb::before {
-      content: "";
-      position: absolute;
-      inset: -6px;
-      border-radius: 50%;
-      border: 2px solid rgba(34, 197, 94, 0.12);
-      border-top-color: var(--color-primary);
-      animation: boot-spin 1.1s linear infinite;
-    }
-
-    .boot-icon {
-      width: 32px;
-      height: 32px;
-      color: var(--color-primary);
-      animation: boot-pulse 1.8s infinite ease-in-out;
-    }
-
-    .boot-text {
-      color: var(--text-main);
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.2px;
-    }
-
-    @keyframes boot-spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes boot-pulse {
-      0% { transform: scale(0.92); opacity: 0.78; }
-      50% { transform: scale(1.08); opacity: 1; }
-      100% { transform: scale(0.92); opacity: 0.78; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Screen 0: App Boot Screen (Loading) -->
-  <div id="app-boot-screen" class="app-boot-screen" aria-hidden="true">
-    <div class="boot-orb">
-      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="boot-icon" aria-hidden="true">
-        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-13.9.2"/>
-        <path d="M9 22v-4h4"/>
-      </svg>
-    </div>
-    <div class="boot-text">Đang chuẩn bị trang quản trị...</div>
-  </div>
-
-  <!-- Screen 1: Login Form -->
-  <div id="login-screen" class="login-container">
-    <div class="login-logo">
-      <i data-lucide="lock"></i>
-    </div>
-    <h1>Đông y Thu Bẩy</h1>
-    <p>Trang Quản Trị Hệ Thống Link-in-Bio</p>
-    <div class="form-group">
-      <label for="admin-password">Mật khẩu bảo mật</label>
-      <input type="password" id="admin-password" class="form-input" placeholder="Nhập mật khẩu Admin của bạn...">
-    </div>
-    <button id="btn-login" class="btn">
-      <span>Đăng Nhập</span>
-      <i data-lucide="log-in"></i>
-    </button>
-  </div>
-
-  <!-- Screen 2: Admin Dashboard Panel -->
-  <div id="admin-dashboard" class="admin-panel">
-    <div class="panel-header">
-      <h2><i data-lucide="settings"></i> Admin</h2>
-      <div class="header-actions">
-        <button id="btn-save" class="btn" style="width: auto; padding: 0 16px; display: flex; align-items: center; gap: 6px;">
-          <i data-lucide="cloud-lightning"></i>
-          <span class="btn-text-desktop">Lưu & Deploy</span>
-          <span class="btn-text-mobile" style="display: none;">Lưu</span>
-        </button>
-        <button id="btn-logout" class="btn btn-secondary" style="width: auto; padding: 0 16px;">
-          <i data-lucide="log-out"></i>
-        </button>
-      </div>
-    </div>
-
-    <div class="panel-body">
-      <!-- Sidebar navigation tabs -->
-      <div class="panel-sidebar">
-        <div class="sidebar-nav-menu">
-          <div class="nav-item active" data-tab="profile"><i data-lucide="user"></i> Profile cá nhân</div>
-          <div class="nav-item" data-tab="socials"><i data-lucide="share-2"></i> Mạng xã hội</div>
-          <div class="nav-item" data-tab="intro"><i data-lucide="file-text"></i> Lời Ngỏ</div>
-          <div class="nav-item" data-tab="promo"><i data-lucide="timer"></i> Ưu đãi</div>
-          <div class="nav-item" data-tab="booking"><i data-lucide="calendar"></i> Đặt Lịch Hẹn Khám</div>
-          <div class="nav-item" data-tab="my-apps"><i data-lucide="layout-grid"></i> Ứng dụng/Web App</div>
-          <div class="nav-item" data-tab="android-apps"><i data-lucide="smartphone"></i> Ứng dụng Android</div>
-          <div class="nav-item" data-tab="services"><i data-lucide="layers"></i> Dịch vụ số</div>
-          <div class="nav-item" data-tab="own-products"><i data-lucide="leaf"></i> Sản phẩm của tôi</div>
-          <div class="nav-item" data-tab="affiliates"><i data-lucide="shopping-bag"></i> SP khuyên dùng</div>
-          <div class="nav-item" data-tab="reviews"><i data-lucide="message-square"></i> Ý kiến bệnh nhân</div>
-          <div class="nav-item" data-tab="free-gifts"><i data-lucide="gift"></i> Quà tặng miễn phí</div>
-          <div class="nav-item" data-tab="faq"><i data-lucide="help-circle"></i> Câu hỏi thường gặp</div>
-          <div class="nav-item" data-tab="payment"><i data-lucide="wallet"></i> Thông tin Donate</div>
-          <div class="nav-item" data-tab="stats"><i data-lucide="bar-chart-2"></i> Thống kê truy cập</div>
-        </div>
-        <a href="/" target="_blank" class="nav-item-view-site" style="text-decoration: none; color: var(--color-primary);">
-          <i data-lucide="external-link"></i> <span class="nav-text">Xem trang chính</span>
-        </a>
-      </div>
-
-      <!-- Main Editor Container -->
-      <div id="editor-container" class="panel-content">
-        <!-- Dynamically loaded editors by JS -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Screen 3: Progress & Deploying Overlay -->
-  <div id="deploy-overlay" class="overlay">
-    <div class="progress-box">
-      <div class="spinner" id="spinner-loader"></div>
-      <h3 id="deploy-title">Đang đồng bộ dữ liệu...</h3>
-      <p id="deploy-desc">Quá trình này sẽ mất khoảng vài giây để gửi dữ liệu lên máy chủ.</p>
-      <div id="deploy-countdown" class="countdown" style="display: none;">25</div>
-    </div>
-  </div>
-
-  <!-- Screen 4: Gallery Selector Overlay -->
-  <div id="gallery-overlay" class="overlay">
-    <div class="progress-box" style="max-width: 850px; width: 95%; height: 85vh; display: flex; flex-direction: column; padding: 24px; text-align: left;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 0;">Kho Ảnh Phản Hồi (Review)</h3>
-        <button id="btn-close-gallery" class="icon-btn" style="border: none;"><i data-lucide="x"></i></button>
-      </div>
-      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
-        Nhấp chọn một ảnh dưới đây để điền nhanh vào mục review (đây là các ảnh thực tế trong thư mục <code>assets/review</code>).
-      </p>
-      <div style="margin-bottom: 14px;">
-        <input type="text" id="gallery-search" class="form-input" placeholder="🔍 Nhập tên file để lọc ảnh nhanh (ví dụ: PicsArt, Screenshot, 2018...)" style="height: 42px; font-size: 13.5px; border-radius: 8px;">
-      </div>
-      <div id="gallery-grid" style="flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; padding: 12px; background-color: rgba(0,0,0,0.25); border-radius: 8px; border: 1px solid var(--border-color);">
-        <!-- Tự động load danh sách ảnh review bằng Javascript -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Logic scripts -->
-  <script>
-    // Toast Notification System
-    function showToast(message, type = 'success') {
-      let container = document.querySelector('.toast-container');
-      if (!container) {
-        container = document.createElement('div');
-        container.className = 'toast-container';
-        document.body.appendChild(container);
-      }
-      const item = document.createElement('div');
-      item.className = `toast-item toast-${type}`;
-      let iconHtml = '';
-      if (type === 'success') {
-        iconHtml = '<i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>';
-      } else if (type === 'error') {
-        iconHtml = '<i data-lucide="alert-triangle" style="width: 18px; height: 18px;"></i>';
-      } else if (type === 'warning') {
-        iconHtml = '<i data-lucide="alert-circle" style="width: 18px; height: 18px;"></i>';
-      } else {
-        iconHtml = '<i data-lucide="info" style="width: 18px; height: 18px;"></i>';
-      }
-      item.innerHTML = `
-        <div class="toast-icon">${iconHtml}</div>
-        <div class="toast-content" style="flex-grow: 1; line-height: 1.4;">${message}</div>
-      `;
-      container.appendChild(item);
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-      setTimeout(() => item.classList.add('show'), 10);
-      setTimeout(() => {
-        item.classList.remove('show');
-        item.classList.add('hide');
-        setTimeout(() => item.remove(), 300);
-      }, 3500);
-    }
-
-    // Override default alert to toast
-    window.alert = function(msg) {
-      let type = 'info';
-      const cleanMsg = msg.toLowerCase();
-      if (cleanMsg.includes('thành công') || cleanMsg.includes('hoàn tất') || cleanMsg.includes('đã lưu') || cleanMsg.includes('chính xác') || cleanMsg.includes('đăng nhập thành công')) {
-        type = 'success';
-      } else if (cleanMsg.includes('lỗi') || cleanMsg.includes('không chính xác') || cleanMsg.includes('thất bại') || cleanMsg.includes('không thể') || cleanMsg.includes('đã xảy ra') || cleanMsg.includes('sai')) {
-        type = 'error';
-      } else if (cleanMsg.includes('yêu cầu') || cleanMsg.includes('vui lòng') || cleanMsg.includes('cảnh báo')) {
-        type = 'warning';
-      }
-      showToast(msg, type);
-    };
-
-    // Custom Confirm Modal System
-    function showConfirm(message, title = 'Xác nhận xóa') {
-      return new Promise((resolve) => {
-        const overlay = document.createElement('div');
-        overlay.className = 'confirm-modal-overlay';
-        
-        let okBtnStyle = 'background-color: #ef4444;'; // Đỏ mặc định cho xóa
-        if (message.toLowerCase().includes('lưu') || message.toLowerCase().includes('cập nhật')) {
-          okBtnStyle = 'background-color: var(--color-primary);'; // Xanh cho lưu
-        }
-
-        overlay.innerHTML = `
-          <div class="confirm-modal-card">
-            <div class="confirm-modal-title">
-              <i data-lucide="help-circle" style="width: 20px; height: 20px; color: #ef4444;"></i>
-              <span>${title}</span>
-            </div>
-            <div class="confirm-modal-body">${message}</div>
-            <div class="confirm-modal-actions">
-              <button class="confirm-btn confirm-btn-cancel">Hủy bỏ</button>
-              <button class="confirm-btn confirm-btn-ok" style="${okBtnStyle}">Đồng ý</button>
-            </div>
-          </div>
-        `;
-        
-        document.body.appendChild(overlay);
-        if (typeof lucide !== 'undefined') {
-          lucide.createIcons();
-        }
-        
-        setTimeout(() => overlay.classList.add('show'), 10);
-        
-        const cleanUp = (result) => {
-          overlay.classList.remove('show');
-          setTimeout(() => {
-            overlay.remove();
-            resolve(result);
-          }, 250);
-        };
-        
-        overlay.querySelector('.confirm-btn-cancel').addEventListener('click', () => cleanUp(false));
-        overlay.querySelector('.confirm-btn-ok').addEventListener('click', () => cleanUp(true));
-        
-        overlay.addEventListener('click', (e) => {
-          if (e.target === overlay) cleanUp(false);
-        });
-      });
-    }
-
-    // Override default confirm
-    window.confirm = function(msg) {
-      console.warn("Dùng await showConfirm(msg) thay vì confirm(msg) để có giao diện đẹp.");
-      return true;
-    };
 
     // List of static images in assets/review folder
     const REVIEWS_GALLERY = [
@@ -1225,16 +150,6 @@
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
 
-      const bootScreen = document.getElementById('app-boot-screen');
-      if (bootScreen) {
-        setTimeout(() => {
-          bootScreen.classList.add('is-hidden');
-          bootScreen.addEventListener('transitionend', () => {
-            bootScreen.style.display = 'none';
-          }, { once: true });
-        }, 400);
-      }
-
       // Set up click events
       document.getElementById('btn-login').addEventListener('click', handleLogin);
       document.getElementById('admin-password').addEventListener('keypress', (e) => {
@@ -1320,10 +235,6 @@
         renderProfileTab(container);
       } else if (currentTab === 'socials') {
         renderSocialsTab(container);
-      } else if (currentTab === 'intro') {
-        renderIntroTab(container);
-      } else if (currentTab === 'promo') {
-        renderPromoTab(container);
       } else if (currentTab === 'booking') {
         renderBookingTab(container);
       } else if (currentTab === 'my-apps') {
@@ -1332,8 +243,6 @@
         renderItemsTab(container, 'android-apps', 'Ứng dụng Android (Google Play)', 'Thêm ứng dụng Android trên cửa hàng Google Play, hỗ trợ hiển thị rating, lượt tải và nút deep link.');
       } else if (currentTab === 'services') {
         renderItemsTab(container, 'services-digital', 'Dịch Vụ Số & Công Nghệ', 'Các dịch vụ bạn cung cấp (Facebook Ads, Web Dev, AI Agent...). Nút bấm Báo Giá sẽ tự cuộn tới form liên hệ và điền dịch vụ.');
-      } else if (currentTab === 'own-products') {
-        renderItemsTab(container, 'own-products', 'Sản Phẩm Thảo Dược Của Tôi', 'Quản lý sản phẩm thuốc nam/đông y riêng. Mỗi sản phẩm dùng nút Liên hệ báo giá qua Zalo hoặc link tư vấn riêng.');
       } else if (currentTab === 'affiliates') {
         renderAffiliatesTab(container);
       } else if (currentTab === 'reviews') {
@@ -1364,10 +273,7 @@
         <div class="editor-card">
           <div class="form-group">
             <label>Link ảnh đại diện (Avatar)</label>
-            <div class="image-upload-group">
-              <input type="text" id="prof-avatar" class="form-input" value="${profile.avatar || ''}">
-              <button class="btn btn-upload-image" data-target-id="prof-avatar" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
-            </div>
+            <input type="text" id="prof-avatar" class="form-input" value="${profile.avatar || ''}">
           </div>
           <div class="field-grid">
             <div class="form-group">
@@ -1435,7 +341,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <span style="font-size: 14px; font-weight: 700; color: var(--text-muted);">Danh sách mạng xã hội (${section.items.length})</span>
           <button id="add-social" class="btn" style="width: auto; height: 36px; padding: 0 16px; font-size: 13px;">
-            <i data-lucide="plus"></i> <span class="btn-text">Thêm liên kết</span>
+            <i data-lucide="plus"></i> Thêm liên kết
           </button>
         </div>
         <div id="socials-list"></div>
@@ -1492,8 +398,8 @@
             section.items[index].icon = e.target.value;
           });
 
-          card.querySelector('.btn-delete').addEventListener('click', async () => {
-            if (await showConfirm('Bạn muốn xóa liên kết mạng xã hội này?')) {
+          card.querySelector('.btn-delete').addEventListener('click', () => {
+            if (confirm('Bạn muốn xóa liên kết mạng xã hội này?')) {
               section.items.splice(index, 1);
               renderSocialItems();
             }
@@ -1544,7 +450,7 @@
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <span style="font-size: 14px; font-weight: 700; color: var(--text-muted);">${section.items.length} items</span>
-          <button class="btn btn-add" id="add-item" style="width: auto; padding: 0 16px; height: 38px; font-size: 13.5px;"><i data-lucide="plus"></i> <span class="btn-text">Thêm mới</span></button>
+          <button class="btn btn-add" id="add-item" style="width: auto; padding: 0 16px; height: 38px; font-size: 13.5px;"><i data-lucide="plus"></i> Thêm mới</button>
         </div>
         <div id="items-list-container"></div>
       `;
@@ -1591,10 +497,7 @@
                 </div>
                 <div class="form-group">
                   <label>Đường dẫn Icon ứng dụng (image URL)</label>
-                  <div class="image-upload-group">
-                    <input type="text" class="form-input inp-android-image" value="${item.image || ''}" data-index="${index}">
-                    <button class="btn btn-upload-image" data-target-class="inp-android-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
-                  </div>
+                  <input type="text" class="form-input inp-android-image" value="${item.image || ''}" data-index="${index}">
                 </div>
               </div>
               <div class="field-grid">
@@ -1636,10 +539,7 @@
               </div>
               <div class="form-group">
                 <label>Đường dẫn ảnh minh họa (image)</label>
-                <div class="image-upload-group" style="margin-bottom: 8px;">
-                  <input type="text" class="form-input inp-service-image" value="${item.image || ''}" data-index="${index}">
-                  <button class="btn btn-upload-image" data-target-class="inp-service-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
-                </div>
+                <input type="text" class="form-input inp-service-image" value="${item.image || ''}" data-index="${index}" style="margin-bottom: 8px;">
                 <div class="service-image-preview" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); width: 120px; height: 68px; display: ${item.image ? 'block' : 'none'}; background-color: #0b0f19;">
                   <img src="${item.image || ''}" style="width: 100%; height: 100%; object-fit: cover;" class="img-service-preview-tag">
                 </div>
@@ -1658,10 +558,7 @@
                 </div>
                 <div class="form-group">
                   <label>Ảnh thu nhỏ (image URL) - Bỏ trống nếu muốn hiện icon PDF/Mặc định</label>
-                  <div class="image-upload-group">
-                    <input type="text" class="form-input inp-gift-image" value="${item.image || ''}" data-index="${index}">
-                    <button class="btn btn-upload-image" data-target-class="inp-gift-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
-                  </div>
+                  <input type="text" class="form-input inp-gift-image" value="${item.image || ''}" data-index="${index}">
                 </div>
               </div>
               <div class="field-grid">
@@ -1691,40 +588,6 @@
                 <textarea class="form-input inp-gift-content" data-index="${index}" style="height: 100px; padding: 10px; resize: vertical;">${item.content || ''}</textarea>
               </div>
             `;
-          } else if (sectionId === 'own-products') {
-            specificFieldsHtml = `
-              <div class="field-grid">
-                <div class="form-group">
-                  <label>Tên sản phẩm (name) - *Bắt buộc</label>
-                  <input type="text" class="form-input inp-own-name" value="${item.name || ''}" data-index="${index}">
-                </div>
-                <div class="form-group">
-                  <label>Ảnh sản phẩm (image URL)</label>
-                  <div class="image-upload-group">
-                    <input type="text" class="form-input inp-own-image" value="${item.image || ''}" data-index="${index}">
-                    <button class="btn btn-upload-image" data-target-class="inp-own-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Mô tả sản phẩm (description)</label>
-                <textarea class="form-input inp-own-desc" data-index="${index}" style="height: 90px; padding: 10px; resize: vertical;">${item.description || ''}</textarea>
-              </div>
-              <div class="form-group">
-                <label>Tags sản phẩm (mỗi dòng là 1 tag)</label>
-                <textarea class="form-input inp-own-tags" data-index="${index}" style="height: 76px; padding: 10px; resize: vertical;">${(item.tags || []).join('\n')}</textarea>
-              </div>
-              <div class="field-grid">
-                <div class="form-group">
-                  <label>Link liên hệ (contactUrl)</label>
-                  <input type="text" class="form-input inp-own-contact-url" value="${item.contactUrl || ''}" data-index="${index}" placeholder="https://zalo.me/0982581222">
-                </div>
-                <div class="form-group">
-                  <label>Nhãn nút (contactLabel)</label>
-                  <input type="text" class="form-input inp-own-contact-label" value="${item.contactLabel || 'Liên hệ báo giá'}" data-index="${index}">
-                </div>
-              </div>
-            `;
           } else if (sectionId === 'faq') {
             specificFieldsHtml = `
               <div class="form-group">
@@ -1745,10 +608,7 @@
                 </div>
                 <div class="form-group">
                   <label>Ảnh sản phẩm (image URL) - Tùy chọn</label>
-                  <div class="image-upload-group">
-                    <input type="text" class="form-input inp-affiliate-image" value="${item.image || ''}" data-index="${index}" placeholder="Nếu để trống sẽ tự cào từ link">
-                    <button class="btn btn-upload-image" data-target-class="inp-affiliate-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
-                  </div>
+                  <input type="text" class="form-input inp-affiliate-image" value="${item.image || ''}" data-index="${index}" placeholder="Nếu để trống sẽ tự cào từ link">
                 </div>
               </div>
               <div class="form-group">
@@ -1779,9 +639,8 @@
               <div class="field-grid">
                 <div class="form-group">
                   <label>Ảnh review (image) - *Bắt buộc</label>
-                  <div class="image-upload-group" style="margin-bottom: 8px;">
-                    <input type="text" class="form-input inp-review-image" value="${item.image || ''}" data-index="${index}">
-                    <button class="btn btn-upload-image" data-target-class="inp-review-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
+                  <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                    <input type="text" class="form-input inp-review-image" value="${item.image || ''}" data-index="${index}" style="flex-grow: 1;">
                     <button class="btn btn-select-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-main);">Kho ảnh</button>
                   </div>
                   <div class="review-image-preview" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); width: 80px; height: 120px; display: ${item.image ? 'block' : 'none'}; background-color: #0b0f19;">
@@ -1800,7 +659,6 @@
           if (sectionId === 'my-apps') editorTitle = 'Ứng dụng';
           else if (sectionId === 'android-apps') editorTitle = 'Android App';
           else if (sectionId === 'services-digital') editorTitle = 'Dịch vụ';
-          else if (sectionId === 'own-products') editorTitle = 'Sản phẩm riêng';
           else if (sectionId === 'free-gifts') editorTitle = 'Quà tặng';
           else if (sectionId === 'faq') editorTitle = 'Câu hỏi';
           else if (sectionId === 'patient-reviews') editorTitle = 'Review';
@@ -1815,7 +673,7 @@
               </div>
             </div>
             ${specificFieldsHtml}
-            ${(sectionId !== 'patient-reviews' && sectionId !== 'free-gifts' && sectionId !== 'faq' && sectionId !== 'services-digital' && sectionId !== 'android-apps' && sectionId !== 'own-products') ? `
+            ${(sectionId !== 'patient-reviews' && sectionId !== 'free-gifts' && sectionId !== 'faq' && sectionId !== 'services-digital' && sectionId !== 'android-apps') ? `
             <p style="font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 4px;">
               Các trường Tên, Mô tả, Hình ảnh được tự động cào từ đường dẫn sau khi lưu.
             </p>
@@ -1897,25 +755,6 @@
             card.querySelector('.inp-gift-content').addEventListener('input', (e) => {
               section.items[index].content = e.target.value;
             });
-          } else if (sectionId === 'own-products') {
-            card.querySelector('.inp-own-name').addEventListener('input', (e) => {
-              section.items[index].name = e.target.value;
-            });
-            card.querySelector('.inp-own-image').addEventListener('input', (e) => {
-              section.items[index].image = e.target.value;
-            });
-            card.querySelector('.inp-own-desc').addEventListener('input', (e) => {
-              section.items[index].description = e.target.value;
-            });
-            card.querySelector('.inp-own-tags').addEventListener('input', (e) => {
-              section.items[index].tags = e.target.value.split('\n').map(l => l.trim()).filter(Boolean);
-            });
-            card.querySelector('.inp-own-contact-url').addEventListener('input', (e) => {
-              section.items[index].contactUrl = e.target.value;
-            });
-            card.querySelector('.inp-own-contact-label').addEventListener('input', (e) => {
-              section.items[index].contactLabel = e.target.value;
-            });
           } else if (sectionId === 'faq') {
             card.querySelector('.inp-faq-question').addEventListener('input', (e) => {
               section.items[index].question = e.target.value;
@@ -1965,8 +804,8 @@
             });
           }
  
-          card.querySelector('.btn-delete').addEventListener('click', async () => {
-            if (await showConfirm('Bạn có chắc muốn xóa item này?')) {
+          card.querySelector('.btn-delete').addEventListener('click', () => {
+            if (confirm('Bạn có chắc muốn xóa item này?')) {
               section.items.splice(index, 1);
               renderItemsList();
             }
@@ -2005,8 +844,6 @@
           section.items.unshift({ title: 'Dịch vụ mới', subtitle: 'Dịch vụ mới Demo', description: 'Mô tả dịch vụ...', icon: 'layers', features: [] });
         } else if (sectionId === 'free-gifts') {
           section.items.unshift({ title: 'Quà tặng mới', image: '', description: 'Mô tả quà tặng...', icon: 'gift', type: 'copy', content: '' });
-        } else if (sectionId === 'own-products') {
-          section.items.unshift({ name: 'Bài thuốc mới', image: '', description: 'Mô tả sản phẩm thảo dược...', tags: ['100% thảo dược'], contactUrl: 'https://zalo.me/0982581222', contactLabel: 'Liên hệ báo giá' });
         } else if (sectionId === 'faq') {
           section.items.unshift({ question: 'Câu hỏi mới?', answer: 'Trả lời mới...' });
         } else if (sectionId === 'patient-reviews') {
@@ -2053,7 +890,7 @@
           <div style="font-weight: 700; font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
             <span>Các Danh mục Hiện có (${affiliateSections.length})</span>
             <button id="add-aff-sec" class="btn" style="width: auto; height: 32px; padding: 0 12px; font-size: 12px; background-color: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; gap: 4px;">
-              <i data-lucide="plus" style="width: 14px; height: 14px;"></i> <span class="btn-text">Thêm danh mục mới</span>
+              <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Thêm danh mục mới
             </button>
           </div>
           <div id="aff-sec-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
@@ -2064,7 +901,7 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <span style="font-size: 14px; font-weight: 700; color: var(--text-muted);" id="aff-items-title">Sản phẩm thuộc danh mục</span>
             <button id="add-aff-item" class="btn" style="width: auto; height: 36px; padding: 0 16px; font-size: 13px;">
-              <i data-lucide="plus"></i> <span class="btn-text">Thêm sản phẩm</span>
+              <i data-lucide="plus"></i> Thêm sản phẩm
             </button>
           </div>
           <div id="items-list"></div>
@@ -2168,8 +1005,8 @@
             }
           });
 
-          row.querySelector('.btn-sec-delete').addEventListener('click', async () => {
-            if (await showConfirm(`Bạn có chắc muốn xóa danh mục "${sec.title || sec.id}" và tất cả sản phẩm bên trong không?`)) {
+          row.querySelector('.btn-sec-delete').addEventListener('click', () => {
+            if (confirm(`Bạn có chắc muốn xóa danh mục "${sec.title || sec.id}" và tất cả sản phẩm bên trong không?`)) {
               const currIdx = localConfig.sections.findIndex(s => s.id === sec.id);
               localConfig.sections.splice(currIdx, 1);
               if (activeAffiliateSectionId === sec.id) {
@@ -2252,8 +1089,8 @@
           });
 
           // Up/Down/Delete
-          card.querySelector('.btn-item-delete').addEventListener('click', async () => {
-            if (await showConfirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+          card.querySelector('.btn-item-delete').addEventListener('click', () => {
+            if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
               sec.items.splice(index, 1);
               renderProductsList();
               renderSectionsList();
@@ -2332,84 +1169,6 @@
 
       renderSectionsList();
       renderProductsList();
-    }
-
-    // TAB: Intro Text
-    function renderIntroTab(container) {
-      const section = localConfig.sections.find(s => s.id === 'intro');
-
-      container.innerHTML = `
-        <div class="section-header">
-          <h3>Lời Ngỏ</h3>
-          <p>Chỉnh sửa phần giới thiệu ngắn xuất hiện gần đầu trang chủ.</p>
-        </div>
-        <div class="editor-card">
-          <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-            <input type="checkbox" id="intro-enabled" ${section.enabled !== false ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
-            <label for="intro-enabled" style="margin-bottom: 0; cursor: pointer; text-transform: none; font-size: 15px; font-weight: 700;">Hiển thị Lời Ngỏ trên trang chủ</label>
-          </div>
-          <div class="form-group">
-            <label>Tiêu đề section</label>
-            <input type="text" id="intro-title" class="form-input" value="${section.title || ''}">
-          </div>
-          <div class="form-group">
-            <label>Nội dung Lời Ngỏ</label>
-            <textarea id="intro-content" class="form-input" style="height: 220px; padding: 12px; resize: vertical;">${section.content || ''}</textarea>
-          </div>
-        </div>
-      `;
-
-      document.getElementById('intro-enabled').addEventListener('change', (e) => section.enabled = e.target.checked);
-      document.getElementById('intro-title').addEventListener('input', (e) => section.title = e.target.value);
-      document.getElementById('intro-content').addEventListener('input', (e) => section.content = e.target.value);
-    }
-
-    // TAB: Promo Countdown
-    function renderPromoTab(container) {
-      const section = localConfig.sections.find(s => s.id === 'promo-countdown');
-      const endDateValue = section.endDate ? section.endDate.slice(0, 10) : '';
-
-      container.innerHTML = `
-        <div class="section-header">
-          <h3>Ưu đãi & Đếm ngược</h3>
-          <p>Quản lý banner ưu đãi, thời hạn kết thúc và nút kêu gọi hành động.</p>
-        </div>
-        <div class="editor-card">
-          <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-            <input type="checkbox" id="promo-enabled" ${section.enabled !== false ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
-            <label for="promo-enabled" style="margin-bottom: 0; cursor: pointer; text-transform: none; font-size: 15px; font-weight: 700;">Hiển thị banner ưu đãi trên trang chủ</label>
-          </div>
-          <div class="form-group">
-            <label>Tiêu đề ưu đãi</label>
-            <input type="text" id="promo-title" class="form-input" value="${section.title || ''}">
-          </div>
-          <div class="form-group">
-            <label>Mô tả ngắn</label>
-            <textarea id="promo-subtitle" class="form-input" style="height: 90px; padding: 12px; resize: vertical;">${section.subtitle || ''}</textarea>
-          </div>
-          <div class="field-grid">
-            <div class="form-group">
-              <label>Ngày kết thúc</label>
-              <input type="date" id="promo-end-date" class="form-input" value="${endDateValue}">
-            </div>
-            <div class="form-group">
-              <label>Nhãn nút CTA</label>
-              <input type="text" id="promo-cta-label" class="form-input" value="${section.ctaLabel || ''}">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>URL nút CTA</label>
-            <input type="text" id="promo-cta-url" class="form-input" value="${section.ctaUrl || ''}">
-          </div>
-        </div>
-      `;
-
-      document.getElementById('promo-enabled').addEventListener('change', (e) => section.enabled = e.target.checked);
-      document.getElementById('promo-title').addEventListener('input', (e) => section.title = e.target.value);
-      document.getElementById('promo-subtitle').addEventListener('input', (e) => section.subtitle = e.target.value);
-      document.getElementById('promo-end-date').addEventListener('input', (e) => section.endDate = `${e.target.value}T23:59:59`);
-      document.getElementById('promo-cta-label').addEventListener('input', (e) => section.ctaLabel = e.target.value);
-      document.getElementById('promo-cta-url').addEventListener('input', (e) => section.ctaUrl = e.target.value);
     }
 
     // TAB: Bank Details
@@ -2528,7 +1287,7 @@
           <p>Theo dõi các lượt bấm vào liên kết (lưu tại trình duyệt này).</p>
         </div>
         <div class="editor-card">
-          <div class="stats-table-wrapper admin-table-responsive" style="overflow-x: auto; background-color: rgba(0,0,0,0.15); border-radius: 10px; padding: 10px;">
+          <div class="stats-table-wrapper" style="overflow-x: auto; background-color: rgba(0,0,0,0.15); border-radius: 10px; padding: 10px;">
             <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
               <thead>
                 <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted);">
@@ -2551,9 +1310,8 @@
       try {
         const res = await fetch('https://api.counterapi.dev/v1/dongythubay/views');
         const data = await res.json();
-        const countVal = (data && (typeof data.value !== 'undefined' ? data.value : data.count));
-        if (typeof countVal !== 'undefined' && countVal !== null) {
-          const realViews = countVal;
+        if (data && typeof data.count !== 'undefined') {
+          const realViews = data.count;
           const virtualViews = realViews * 12 + 8400;
           
           document.getElementById('stat-real-views').textContent = new Intl.NumberFormat('vi-VN').format(realViews);
@@ -2664,215 +1422,4 @@ window.CONFIG = ${JSON.stringify(localConfig, null, 2)};
         alert(`Đã xảy ra lỗi: ${err.message || 'Không rõ nguyên nhân.'}`);
       }
     }
-
-    // --- COMPRESS IMAGE CLIENT-SIDE ---
-    function compressImageClientSide(file, maxWidth = 800, maxHeight = 800, quality = 0.8) {
-      return new Promise((resolve) => {
-        if (!file.type.startsWith('image/')) {
-          resolve(file);
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-          const img = new Image();
-          img.src = event.target.result;
-          img.onload = () => {
-            let width = img.width;
-            let height = img.height;
-
-            if (width > maxWidth || height > maxHeight) {
-              if (width > height) {
-                height = Math.round((height * maxWidth) / width);
-                width = maxWidth;
-              } else {
-                width = Math.round((width * maxHeight) / height);
-                height = maxHeight;
-              }
-            }
-
-            const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-
-            const outputType = 'image/jpeg';
-            canvas.toBlob((blob) => {
-              if (!blob) {
-                resolve(file);
-                return;
-              }
-              const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
-                type: outputType,
-                lastModified: Date.now()
-              });
-              resolve(compressedFile);
-            }, outputType, quality);
-          };
-          img.onerror = () => resolve(file);
-        };
-        reader.onerror = () => resolve(file);
-      });
-    }
-
-    // --- AUTO UPLOAD TO IMGBB ---
-    async function uploadToImgBB(file, onProgress) {
-      const apiKey = 'a90f76fb57cb870f92b21b313bcd2a64';
-      const formData = new FormData();
-      formData.append('image', file);
-      
-      return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', `https://api.imgbb.com/1/upload?key=${apiKey}`);
-        
-        xhr.upload.onprogress = (event) => {
-          if (event.lengthComputable) {
-            const percentComplete = Math.round((event.loaded / event.total) * 100);
-            if (onProgress) onProgress(percentComplete);
-          }
-        };
-        
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            try {
-              const response = JSON.parse(xhr.responseText);
-              resolve(response.data.url);
-            } catch (e) {
-              reject(new Error('Phản hồi từ máy chủ không hợp lệ.'));
-            }
-          } else {
-            reject(new Error(`Tải lên thất bại với mã lỗi: ${xhr.status}`));
-          }
-        };
-        
-        xhr.onerror = () => {
-          reject(new Error('Lỗi kết nối mạng khi tải lên.'));
-        };
-        
-        xhr.send(formData);
-      });
-    }
-
-    // Đăng ký các sự kiện upload ảnh toàn cục
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('.btn-upload-image');
-      if (!btn) return;
-      
-      e.preventDefault();
-      
-      let targetInput = null;
-      const targetId = btn.getAttribute('data-target-id');
-      const targetClass = btn.getAttribute('data-target-class');
-      const index = btn.getAttribute('data-index');
-      
-      if (targetId) {
-        targetInput = document.getElementById(targetId);
-      } else if (targetClass) {
-        if (index !== null && index !== undefined && index !== '') {
-          targetInput = document.querySelector(`.${targetClass}[data-index="${index}"]`);
-        } else {
-          targetInput = document.querySelector(`.${targetClass}`);
-        }
-      }
-      
-      if (!targetInput) return;
-      
-      let fileInput = document.getElementById('global-image-uploader');
-      if (!fileInput) {
-        fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.id = 'global-image-uploader';
-        fileInput.accept = 'image/*';
-        fileInput.style.display = 'none';
-        document.body.appendChild(fileInput);
-      }
-      
-      fileInput.targetInput = targetInput;
-      fileInput.triggerButton = btn;
-      
-      fileInput.click();
-    });
-
-    // Sự kiện khi người dùng chọn file
-    document.addEventListener('change', async (e) => {
-      if (e.target.id !== 'global-image-uploader') return;
-      
-      const fileInput = e.target;
-      const file = fileInput.files[0];
-      if (!file) return;
-      
-      const targetInput = fileInput.targetInput;
-      const triggerButton = fileInput.triggerButton;
-      if (!targetInput || !triggerButton) return;
-      
-      const originalBtnText = triggerButton.innerHTML;
-      const originalInputVal = targetInput.value;
-      
-      try {
-        triggerButton.disabled = true;
-        triggerButton.style.opacity = '0.7';
-        triggerButton.innerHTML = 'Đang nén ảnh...';
-        
-        targetInput.disabled = true;
-        targetInput.value = 'Đang tự động tối ưu hóa và nén ảnh...';
-
-        let maxWidth = 800;
-        let maxHeight = 800;
-        if (targetInput.id === 'prof-avatar') {
-          maxWidth = 250;
-          maxHeight = 250;
-        }
-
-        const compressedFile = await compressImageClientSide(file, maxWidth, maxHeight, 0.8);
-        
-        triggerButton.innerHTML = 'Đang tải (0%)...';
-        targetInput.value = 'Đang tải ảnh lên máy chủ ImgBB...';
-        
-        const imageUrl = await uploadToImgBB(compressedFile, (percent) => {
-          triggerButton.innerHTML = `Đang tải (${percent}%)...`;
-        });
-        
-        targetInput.disabled = false;
-        targetInput.value = imageUrl;
-        
-        // Kích hoạt event input để các listener hiện tại lưu dữ liệu và update preview
-        const event = new Event('input', { bubbles: true });
-        targetInput.dispatchEvent(event);
-        
-        triggerButton.innerHTML = 'Xong!';
-        triggerButton.style.backgroundColor = '#2ecc71';
-        triggerButton.style.color = '#ffffff';
-        
-        setTimeout(() => {
-          triggerButton.disabled = false;
-          triggerButton.style.opacity = '1';
-          triggerButton.style.backgroundColor = '';
-          triggerButton.style.color = '';
-          triggerButton.innerHTML = originalBtnText;
-        }, 2000);
-        
-      } catch (err) {
-        alert(`Lỗi khi tải ảnh: ${err.message}`);
-        targetInput.disabled = false;
-        targetInput.value = originalInputVal;
-        
-        triggerButton.disabled = false;
-        triggerButton.style.opacity = '1';
-        triggerButton.innerHTML = 'Lỗi! Thử lại';
-        triggerButton.style.backgroundColor = '#e74c3c';
-        triggerButton.style.color = '#ffffff';
-        
-        setTimeout(() => {
-          triggerButton.style.backgroundColor = '';
-          triggerButton.style.color = '';
-          triggerButton.innerHTML = originalBtnText;
-        }, 2000);
-      } finally {
-        fileInput.value = '';
-      }
-    });
-  </script>
-</body>
-</html>
+  
