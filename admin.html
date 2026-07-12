@@ -2202,8 +2202,8 @@
               </div>
             </div>
             <div class="form-group">
-              <label>${isOwnProducts ? 'Mô tả ngắn sản phẩm' : 'Ưu đãi / Chiết khấu (discountNote)'}</label>
-              <input type="text" class="form-input inp-discount" value="${isOwnProducts ? (item.description || item.discountNote || '') : (item.discountNote || '')}" data-index="${index}" placeholder="Ví dụ: Hỗ trợ giảm đau, thanh nhiệt...">
+              <label>${isOwnProducts ? 'Mô tả ngắn sản phẩm' : 'Ưu đãi / Chiết khấu (Để trống sẽ tự lấy từ link)'}</label>
+              <input type="text" class="form-input inp-discount" value="${isOwnProducts ? (item.description || item.discountNote || '') : (item.discountNote || '')}" data-index="${index}" placeholder="${isOwnProducts ? 'Ví dụ: Hỗ trợ giảm đau, thanh nhiệt...' : 'Ví dụ: Mua combo 3 tặng 1 (Để trống sẽ tự lấy mô tả link)'}">
             </div>
             <p style="font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 4px;">
               ${isOwnProducts ? 'Sản phẩm tự nhập được lưu thủ công và không bị cào tự động.' : 'Tên, Mô tả, Ảnh được cào tự động sau khi lưu.'}

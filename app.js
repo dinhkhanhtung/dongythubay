@@ -614,11 +614,11 @@ const initApp = () => {
             items: (section.items || []).map(item => ({
               name: item.name,
               image: item.image,
-              priceNote: 'Liên hệ',
-              discountNote: item.description || '',
-              affiliateUrl: item.contactUrl || 'https://zalo.me/0982581222',
+              priceNote: item.priceNote || 'Liên hệ',
+              discountNote: item.description || item.discountNote || '',
+              affiliateUrl: item.contactUrl || item.affiliateUrl || 'https://zalo.me/0982581222',
               isContact: true,
-              ctaLabel: item.contactLabel || 'Liên hệ báo giá'
+              ctaLabel: item.contactLabel || item.ctaLabel || ''
             }))
           };
           renderAffiliateList(mappedSection, sectionEl);
@@ -941,6 +941,7 @@ const initApp = () => {
       const image = item.image || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4=';
       
       const isContact = item.isContact === true;
+      const hasSpecificPrice = price && price !== 'Liên hệ' && price.trim() !== '';
       let linkUrl = item.affiliateUrl;
       let platformClass = 'other';
       let defaultCta = 'Mua ngay';
@@ -949,9 +950,13 @@ const initApp = () => {
 
       if (isContact) {
         platformClass = 'contact-zalo';
-        defaultCta = 'Tư vấn Zalo';
-        // Số điện thoại của admin là 0982581222
-        linkUrl = `https://zalo.me/0982581222?text=${encodeURIComponent('Tôi cần tư vấn về sản phẩm: ' + name)}`;
+        if (hasSpecificPrice) {
+          defaultCta = 'Mua ngay';
+          linkUrl = `https://zalo.me/0982581222?text=${encodeURIComponent('Tôi muốn mua sản phẩm: ' + name + ' (Giá: ' + price + ')')}`;
+        } else {
+          defaultCta = 'Liên hệ báo giá';
+          linkUrl = `https://zalo.me/0982581222?text=${encodeURIComponent('Tôi cần tư vấn về sản phẩm: ' + name)}`;
+        }
       } else {
         const isTikTok = linkUrl && linkUrl.includes('tiktok.com');
         const isShopee = linkUrl && (linkUrl.includes('shopee.vn') || linkUrl.includes('shope.ee'));
@@ -992,7 +997,7 @@ const initApp = () => {
         <div class="affiliate-info">
           <div class="affiliate-text">
             <h3 class="affiliate-name">${name}</h3>
-            ${price && price !== 'Liên hệ' ? `<div class="affiliate-price">${price}</div>` : ''}
+            ${price && (!isContact || hasSpecificPrice) ? `<div class="affiliate-price">${price}</div>` : ''}
             <div class="affiliate-discount">${discount}</div>
             <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 6px;">
               <span style="color: #eab308; display: flex; align-items: center; gap: 2px; font-weight: 700;">
