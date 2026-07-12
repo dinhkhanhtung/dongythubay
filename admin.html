@@ -18,19 +18,71 @@
     document.write('<script src="config.js?v=' + Date.now() + '"><\/script>');
   </script>
 
+  <script>
+    // Khởi tạo theme sớm nhất có thể để tránh chớp màn hình (flash)
+    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (savedTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  </script>
+
   <style>
     :root {
       --font-primary: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      --bg-admin: #0b0f19;
-      --bg-panel: #151c2c;
-      --bg-input: #1e293b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --color-primary: #22c55e;
-      --color-primary-hover: #166534;
-      --border-color: rgba(255, 255, 255, 0.08);
+      
+      /* Light theme (Premium Organic Oriental Beige & Deep Moss Green) */
+      --bg-admin: #fbfaf8;
+      --bg-panel: rgba(255, 255, 255, 0.95);
+      --bg-input: #f3efea;
+      --text-main: #0a1f14;
+      --text-muted: #445c4e;
+      --color-primary: #126c3d;
+      --color-primary-hover: #0d522e;
+      --border-color: rgba(206, 218, 210, 0.8);
       --radius: 16px;
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      /* Màu bổ sung phục vụ đồng bộ */
+      --btn-primary-text: #ffffff;
+      --btn-secondary-hover: #f3efea;
+      --confirm-bg: #ffffff;
+      --text-active: #126c3d;
+      --bg-nav-active: #f3efea;
+      --shadow-panel: 0 20px 40px rgba(18, 108, 61, 0.08);
+      --editor-card-bg: rgba(18, 108, 61, 0.02);
+      
+      /* Scrollbar */
+      --scrollbar-track: rgba(0,0,0,0.03);
+      --scrollbar-thumb: rgba(18, 108, 61, 0.15);
+      --scrollbar-thumb-hover: rgba(18, 108, 61, 0.3);
+    }
+
+    [data-theme="dark"] {
+      /* Dark theme */
+      --bg-admin: #060e0a;
+      --bg-panel: rgba(15, 27, 20, 0.85);
+      --bg-input: #16281e;
+      --text-main: #ecf5ef;
+      --text-muted: #8ba293;
+      --color-primary: #2ecc71;
+      --color-primary-hover: #1ea860;
+      --border-color: rgba(255, 255, 255, 0.05);
+      
+      /* Màu bổ sung phục vụ đồng bộ */
+      --btn-primary-text: #000000;
+      --btn-secondary-hover: #16281e;
+      --confirm-bg: #151c2c;
+      --text-active: #ffffff;
+      --bg-nav-active: #16281e;
+      --shadow-panel: 0 20px 50px rgba(0,0,0,0.6);
+      --editor-card-bg: rgba(0,0,0,0.15);
+      
+      /* Scrollbar */
+      --scrollbar-track: rgba(0,0,0,0.15);
+      --scrollbar-thumb: rgba(255,255,255,0.08);
+      --scrollbar-thumb-hover: rgba(255,255,255,0.15);
     }
 
     * {
@@ -51,20 +103,20 @@
       overflow: hidden; /* Ẩn scrollbar thô của trình duyệt */
     }
 
-    /* Custom Webkit Scrollbars for Dark Theme */
+    /* Custom Webkit Scrollbars */
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
     }
     ::-webkit-scrollbar-track {
-      background: rgba(0,0,0,0.15);
+      background: var(--scrollbar-track);
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.08);
+      background: var(--scrollbar-thumb);
       border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255,255,255,0.15);
+      background: var(--scrollbar-thumb-hover);
     }
 
     /* Login Screen */
@@ -75,7 +127,7 @@
       border: 1px solid var(--border-color);
       border-radius: var(--radius);
       padding: 30px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      box-shadow: var(--shadow-panel);
       text-align: center;
       display: block;
     }
@@ -84,12 +136,12 @@
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--color-primary), #0f172a);
+      background: linear-gradient(135deg, var(--color-primary), var(--bg-admin));
       display: flex;
       justify-content: center;
       align-items: center;
       margin: 0 auto 20px auto;
-      color: white;
+      color: var(--text-active);
     }
 
     .login-logo i {
@@ -131,7 +183,7 @@
       border: 1px solid var(--border-color);
       border-radius: 10px;
       padding: 0 16px;
-      color: white;
+      color: var(--text-main);
       font-family: var(--font-primary);
       font-size: 15px;
       transition: var(--transition);
@@ -140,14 +192,14 @@
     .form-input:focus {
       outline: none;
       border-color: var(--color-primary);
-      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+      box-shadow: 0 0 0 2px var(--color-primary-hover);
     }
 
     .btn {
       width: 100%;
       height: 48px;
       background-color: var(--color-primary);
-      color: #000;
+      color: var(--btn-primary-text);
       border: none;
       border-radius: 10px;
       font-size: 15px;
@@ -161,7 +213,7 @@
     }
 
     .btn:hover {
-      background-color: #4ade80;
+      background-color: var(--color-primary-hover);
       transform: translateY(-2px);
     }
 
@@ -172,7 +224,7 @@
     }
 
     .btn-secondary:hover {
-      background-color: var(--bg-input);
+      background-color: var(--btn-secondary-hover);
       border-color: var(--text-muted);
     }
 
@@ -185,7 +237,7 @@
       border: 1px solid var(--border-color);
       border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      box-shadow: var(--shadow-panel);
       height: 90vh;
       max-height: 850px;
       flex-direction: column;
@@ -197,7 +249,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: rgba(0,0,0,0.15);
+      background-color: rgba(0,0,0,0.03);
     }
 
     .panel-header h2 {
@@ -228,7 +280,7 @@
       width: 240px;
       flex-shrink: 0;
       border-right: 1px solid var(--border-color);
-      background-color: rgba(0,0,0,0.15);
+      background-color: rgba(0,0,0,0.02);
       display: flex;
       flex-direction: column;
       padding: 16px;
@@ -250,8 +302,8 @@
     }
 
     .nav-item:hover, .nav-item.active {
-      color: white;
-      background-color: var(--bg-input);
+      color: var(--text-active);
+      background-color: var(--bg-nav-active);
     }
 
     .nav-item.active {
@@ -334,7 +386,7 @@
     }
 
     .icon-btn:hover {
-      color: white;
+      color: var(--text-active);
       border-color: var(--text-muted);
       background-color: var(--bg-input);
     }
@@ -357,7 +409,7 @@
       width: 240px;
       flex-shrink: 0;
       border-right: 1px solid var(--border-color);
-      background-color: rgba(0,0,0,0.15);
+      background-color: rgba(0,0,0,0.02);
       display: flex;
       flex-direction: column;
       padding: 16px !important;
@@ -379,7 +431,7 @@
       width: 4px;
     }
     .sidebar-nav-menu::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--scrollbar-thumb);
       border-radius: 2px;
     }
     .nav-item-view-site {
@@ -402,7 +454,7 @@
     }
     .nav-item-view-site:hover {
       background-color: var(--bg-input);
-      color: white;
+      color: var(--text-active);
     }
 
     /* Toast Notification System Styles */
@@ -422,12 +474,12 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background-color: #1f2937;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background-color: var(--confirm-bg);
+      border: 1px solid var(--border-color);
       padding: 14px 20px;
       border-radius: 12px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
-      color: #f3f4f6;
+      box-shadow: var(--shadow-panel);
+      color: var(--text-main);
       font-size: 14px;
       font-weight: 500;
       pointer-events: auto;
@@ -469,7 +521,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: rgba(17, 24, 39, 0.7);
+      background-color: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(8px);
       z-index: 999999;
       display: flex;
@@ -482,13 +534,13 @@
       opacity: 1;
     }
     .confirm-modal-card {
-      background-color: #1f2937;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background-color: var(--confirm-bg);
+      border: 1px solid var(--border-color);
       border-radius: 16px;
       padding: 24px;
       max-width: 400px;
       width: calc(100% - 32px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--shadow-panel);
       transform: scale(0.9) translateY(20px);
       transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -498,7 +550,7 @@
     .confirm-modal-title {
       font-size: 16px;
       font-weight: 700;
-      color: white;
+      color: var(--text-main);
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -525,13 +577,13 @@
       border: none;
     }
     .confirm-btn-cancel {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: var(--scrollbar-track);
       color: var(--text-muted);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
     }
     .confirm-btn-cancel:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: white;
+      background-color: var(--btn-secondary-hover);
+      color: var(--text-active);
     }
     .confirm-btn-ok {
       background-color: #ef4444; /* màu đỏ cho xóa */
@@ -731,7 +783,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(11, 15, 25, 0.85);
+      background-color: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(10px);
       display: flex;
       justify-content: center;
@@ -755,13 +807,13 @@
       border-radius: var(--radius);
       padding: 30px;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      box-shadow: var(--shadow-panel);
     }
 
     .spinner {
       width: 50px;
       height: 50px;
-      border: 4px solid rgba(255, 255, 255, 0.05);
+      border: 4px solid var(--border-color);
       border-top-color: var(--color-primary);
       border-radius: 50%;
       margin: 0 auto 20px auto;
@@ -787,16 +839,16 @@
       cursor: pointer;
       position: relative;
       transition: var(--transition);
-      background-color: #0b0f19;
+      background-color: var(--bg-admin);
     }
     .gallery-item:hover {
       transform: translateY(-2px);
       border-color: var(--text-muted);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     .gallery-item.selected {
       border-color: var(--color-primary);
-      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+      box-shadow: 0 0 0 2px var(--color-primary-hover);
     }
     .gallery-item img {
       width: 100%;
@@ -934,6 +986,9 @@
     <div class="panel-header">
       <h2><i data-lucide="settings"></i> Admin</h2>
       <div class="header-actions">
+        <button id="theme-toggle" class="btn btn-secondary" style="width: auto; padding: 0 16px;" aria-label="Chuyển chế độ sáng/tối">
+          <i data-lucide="moon"></i>
+        </button>
         <button id="btn-save" class="btn" style="width: auto; padding: 0 16px; display: flex; align-items: center; gap: 6px;">
           <i data-lucide="cloud-lightning"></i>
           <span class="btn-text-desktop">Lưu & Deploy</span>
@@ -1259,6 +1314,28 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Thiết lập nút chuyển đổi theme
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      if (themeToggleBtn) {
+        const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        themeToggleBtn.innerHTML = currentTheme === 'dark' ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
+        
+        themeToggleBtn.addEventListener('click', () => {
+          const current = localStorage.getItem('theme') || 'light';
+          const nextTheme = current === 'dark' ? 'light' : 'dark';
+          
+          if (nextTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeToggleBtn.innerHTML = '<i data-lucide="sun"></i>';
+          } else {
+            document.documentElement.removeAttribute('data-theme');
+            themeToggleBtn.innerHTML = '<i data-lucide="moon"></i>';
+          }
+          localStorage.setItem('theme', nextTheme);
+          lucide.createIcons();
+        });
+      }
+
       lucide.createIcons();
 
       const bootScreen = document.getElementById('app-boot-screen');
@@ -1674,7 +1751,7 @@
                   <input type="text" class="form-input inp-service-image" value="${item.image || ''}" data-index="${index}">
                   <button class="btn btn-upload-image" data-target-class="inp-service-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
                 </div>
-                <div class="service-image-preview" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); width: 120px; height: 68px; display: ${item.image ? 'block' : 'none'}; background-color: #0b0f19;">
+                <div class="service-image-preview" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); width: 120px; height: 68px; display: ${item.image ? 'block' : 'none'}; background-color: var(--bg-admin);">
                   <img src="${item.image || ''}" style="width: 100%; height: 100%; object-fit: cover;" class="img-service-preview-tag">
                 </div>
               </div>
@@ -1784,7 +1861,7 @@
                     <button class="btn btn-upload-image" data-target-class="inp-review-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
                     <button class="btn btn-select-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-main);">Kho ảnh</button>
                   </div>
-                  <div class="review-image-preview" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); width: 80px; height: 120px; display: ${item.image ? 'block' : 'none'}; background-color: #0b0f19;">
+                  <div class="review-image-preview" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); width: 80px; height: 120px; display: ${item.image ? 'block' : 'none'}; background-color: var(--bg-admin);">
                     <img src="${item.image || ''}" style="width: 100%; height: 100%; object-fit: cover;" class="img-preview-tag">
                   </div>
                 </div>
