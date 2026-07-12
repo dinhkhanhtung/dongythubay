@@ -1496,7 +1496,7 @@ const initApp = () => {
       card.innerHTML = `
         <div class="affiliate-image-wrapper" style="position: relative;">
           <img src="${image}" alt="${name}" class="affiliate-image" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" ${index < 2 ? 'fetchpriority="high"' : ''}>
-          <span class="affiliate-hot-badge" style="background-color: var(--color-primary); color: #ffffff; padding: 4px 8px; font-size: 9px; font-weight: 800; border-radius: 4px; position: absolute; left: 8px; top: 8px; z-index: 10;">Đông y</span>
+          <span class="affiliate-hot-badge" style="background: linear-gradient(135deg, #059669, #10b981); box-shadow: 0 2px 6px rgba(5, 150, 105, 0.35); text-transform: uppercase;">Đông y</span>
         </div>
         <div class="affiliate-info">
           <div class="affiliate-text">
