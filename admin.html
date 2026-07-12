@@ -1994,7 +1994,7 @@
       container.innerHTML = `
         <div class="section-header">
           <h3>Quản Lý Danh Mục & Sản Phẩm</h3>
-          <p>Quản lý danh mục hiển thị trên trang chủ. Bạn có thể thêm danh mục tiếp thị hoặc danh mục Đông y tự sản xuất.</p>
+          <p>Quản lý danh mục hiển thị trên trang chủ. Bạn có thể thêm danh mục tiếp thị (cào tự động) hoặc danh mục tự nhập (nhập thủ công).</p>
         </div>
 
         <!-- 1. Danh sách Danh mục sản phẩm -->
@@ -2006,7 +2006,7 @@
                 <i data-lucide="plus" style="width: 14px; height: 14px;"></i> <span class="btn-text">Thêm danh mục tiếp thị</span>
               </button>
               <button id="add-own-sec" class="btn" style="width: auto; height: 32px; padding: 0 12px; font-size: 12px; background-color: rgba(54, 162, 235, 0.15); color: #36a2eb; display: flex; align-items: center; gap: 4px;">
-                <i data-lucide="plus" style="width: 14px; height: 14px;"></i> <span class="btn-text">Thêm danh mục Đông y</span>
+                <i data-lucide="plus" style="width: 14px; height: 14px;"></i> <span class="btn-text">Thêm danh mục tự nhập</span>
               </button>
             </div>
           </div>
@@ -2206,7 +2206,7 @@
               <input type="text" class="form-input inp-discount" value="${isOwnProducts ? (item.description || item.discountNote || '') : (item.discountNote || '')}" data-index="${index}" placeholder="Ví dụ: Hỗ trợ giảm đau, thanh nhiệt...">
             </div>
             <p style="font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 4px;">
-              ${isOwnProducts ? 'Sản phẩm Đông y được nhập thủ công và không bị cào tự động.' : 'Tên, Mô tả, Ảnh được cào tự động sau khi lưu.'}
+              ${isOwnProducts ? 'Sản phẩm tự nhập được lưu thủ công và không bị cào tự động.' : 'Tên, Mô tả, Ảnh được cào tự động sau khi lưu.'}
             </p>
           `;
 
@@ -2315,9 +2315,9 @@
         renderAffiliatesTab(container);
       });
 
-      // Thêm danh mục Đông y
+      // Thêm danh mục tự nhập
       document.getElementById('add-own-sec').addEventListener('click', () => {
-        const title = prompt('Nhập tên danh mục Đông y mới (ví dụ: Thảo dược gia truyền...):');
+        const title = prompt('Nhập tên danh mục tự nhập mới (ví dụ: Sản phẩm cá nhân, Khóa học riêng...):');
         if (!title) return;
         
         const id = 'own-products-' + Date.now();
