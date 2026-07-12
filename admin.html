@@ -928,8 +928,7 @@
           <div class="nav-item" data-tab="my-apps"><i data-lucide="layout-grid"></i> Ứng dụng/Web App</div>
           <div class="nav-item" data-tab="android-apps"><i data-lucide="smartphone"></i> Ứng dụng Android</div>
           <div class="nav-item" data-tab="services"><i data-lucide="layers"></i> Dịch vụ số</div>
-          <div class="nav-item" data-tab="own-products"><i data-lucide="leaf"></i> Sản phẩm của tôi</div>
-          <div class="nav-item" data-tab="affiliates"><i data-lucide="shopping-bag"></i> SP khuyên dùng</div>
+          <div class="nav-item" data-tab="affiliates"><i data-lucide="shopping-bag"></i> Sản phẩm & Tiếp thị</div>
           <div class="nav-item" data-tab="reviews"><i data-lucide="message-square"></i> Ý kiến bệnh nhân</div>
           <div class="nav-item" data-tab="free-gifts"><i data-lucide="gift"></i> Quà tặng miễn phí</div>
           <div class="nav-item" data-tab="faq"><i data-lucide="help-circle"></i> Câu hỏi thường gặp</div>
@@ -1340,8 +1339,6 @@
         renderItemsTab(container, 'android-apps', 'Ứng dụng Android (Google Play)', 'Thêm ứng dụng Android trên cửa hàng Google Play, hỗ trợ hiển thị rating, lượt tải và nút deep link.');
       } else if (currentTab === 'services') {
         renderItemsTab(container, 'services-digital', 'Dịch Vụ Số & Công Nghệ', 'Các dịch vụ bạn cung cấp (Facebook Ads, Web Dev, AI Agent...). Nút bấm Báo Giá sẽ tự cuộn tới form liên hệ và điền dịch vụ.');
-      } else if (currentTab === 'own-products') {
-        renderItemsTab(container, 'own-products', 'Sản Phẩm Thảo Dược Của Tôi', 'Quản lý sản phẩm thuốc nam/đông y riêng. Mỗi sản phẩm dùng nút Liên hệ báo giá qua Zalo hoặc link tư vấn riêng.');
       } else if (currentTab === 'affiliates') {
         renderAffiliatesTab(container);
       } else if (currentTab === 'reviews') {
@@ -1699,41 +1696,7 @@
                 <textarea class="form-input inp-gift-content" data-index="${index}" style="height: 100px; padding: 10px; resize: vertical;">${item.content || ''}</textarea>
               </div>
             `;
-          } else if (sectionId === 'own-products') {
-            specificFieldsHtml = `
-              <div class="field-grid">
-                <div class="form-group">
-                  <label>Tên sản phẩm (name) - *Bắt buộc</label>
-                  <input type="text" class="form-input inp-own-name" value="${item.name || ''}" data-index="${index}">
-                </div>
-                <div class="form-group">
-                  <label>Ảnh sản phẩm (image URL)</label>
-                  <div class="image-upload-group">
-                    <input type="text" class="form-input inp-own-image" value="${item.image || ''}" data-index="${index}">
-                    <button class="btn btn-upload-image" data-target-class="inp-own-image" data-index="${index}" style="width: auto; padding: 0 12px; height: 48px; flex-shrink: 0; font-size: 13px; background-color: var(--primary-color); color: #ffffff;">Tải lên</button>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Mô tả sản phẩm (description)</label>
-                <textarea class="form-input inp-own-desc" data-index="${index}" style="height: 90px; padding: 10px; resize: vertical;">${item.description || ''}</textarea>
-              </div>
-              <div class="form-group">
-                <label>Tags sản phẩm (mỗi dòng là 1 tag)</label>
-                <textarea class="form-input inp-own-tags" data-index="${index}" style="height: 76px; padding: 10px; resize: vertical;">${(item.tags || []).join('\n')}</textarea>
-              </div>
-              <div class="field-grid">
-                <div class="form-group">
-                  <label>Link liên hệ (contactUrl)</label>
-                  <input type="text" class="form-input inp-own-contact-url" value="${item.contactUrl || ''}" data-index="${index}" placeholder="https://zalo.me/0982581222">
-                </div>
-                <div class="form-group">
-                  <label>Nhãn nút (contactLabel)</label>
-                  <input type="text" class="form-input inp-own-contact-label" value="${item.contactLabel || 'Liên hệ báo giá'}" data-index="${index}">
-                </div>
-              </div>
-            `;
-          } else if (sectionId === 'faq') {
+           } else if (sectionId === 'faq') {
             specificFieldsHtml = `
               <div class="form-group">
                 <label>Câu hỏi (question) - *Bắt buộc</label>
@@ -1808,7 +1771,6 @@
           if (sectionId === 'my-apps') editorTitle = 'Ứng dụng';
           else if (sectionId === 'android-apps') editorTitle = 'Android App';
           else if (sectionId === 'services-digital') editorTitle = 'Dịch vụ';
-          else if (sectionId === 'own-products') editorTitle = 'Sản phẩm riêng';
           else if (sectionId === 'free-gifts') editorTitle = 'Quà tặng';
           else if (sectionId === 'faq') editorTitle = 'Câu hỏi';
           else if (sectionId === 'patient-reviews') editorTitle = 'Review';
@@ -1823,7 +1785,7 @@
               </div>
             </div>
             ${specificFieldsHtml}
-            ${(sectionId !== 'patient-reviews' && sectionId !== 'free-gifts' && sectionId !== 'faq' && sectionId !== 'services-digital' && sectionId !== 'android-apps' && sectionId !== 'own-products') ? `
+            ${(sectionId !== 'patient-reviews' && sectionId !== 'free-gifts' && sectionId !== 'faq' && sectionId !== 'services-digital' && sectionId !== 'android-apps') ? `
             <p style="font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 4px;">
               Các trường Tên, Mô tả, Hình ảnh được tự động cào từ đường dẫn sau khi lưu.
             </p>
@@ -1905,26 +1867,7 @@
             card.querySelector('.inp-gift-content').addEventListener('input', (e) => {
               section.items[index].content = e.target.value;
             });
-          } else if (sectionId === 'own-products') {
-            card.querySelector('.inp-own-name').addEventListener('input', (e) => {
-              section.items[index].name = e.target.value;
-            });
-            card.querySelector('.inp-own-image').addEventListener('input', (e) => {
-              section.items[index].image = e.target.value;
-            });
-            card.querySelector('.inp-own-desc').addEventListener('input', (e) => {
-              section.items[index].description = e.target.value;
-            });
-            card.querySelector('.inp-own-tags').addEventListener('input', (e) => {
-              section.items[index].tags = e.target.value.split('\n').map(l => l.trim()).filter(Boolean);
-            });
-            card.querySelector('.inp-own-contact-url').addEventListener('input', (e) => {
-              section.items[index].contactUrl = e.target.value;
-            });
-            card.querySelector('.inp-own-contact-label').addEventListener('input', (e) => {
-              section.items[index].contactLabel = e.target.value;
-            });
-          } else if (sectionId === 'faq') {
+           } else if (sectionId === 'faq') {
             card.querySelector('.inp-faq-question').addEventListener('input', (e) => {
               section.items[index].question = e.target.value;
             });
@@ -2013,8 +1956,6 @@
           section.items.unshift({ title: 'Dịch vụ mới', subtitle: 'Dịch vụ mới Demo', description: 'Mô tả dịch vụ...', icon: 'layers', features: [] });
         } else if (sectionId === 'free-gifts') {
           section.items.unshift({ title: 'Quà tặng mới', image: '', description: 'Mô tả quà tặng...', icon: 'gift', type: 'copy', content: '' });
-        } else if (sectionId === 'own-products') {
-          section.items.unshift({ name: 'Bài thuốc mới', image: '', description: 'Mô tả sản phẩm thảo dược...', tags: ['100% thảo dược'], contactUrl: 'https://zalo.me/0982581222', contactLabel: 'Liên hệ báo giá' });
         } else if (sectionId === 'faq') {
           section.items.unshift({ question: 'Câu hỏi mới?', answer: 'Trả lời mới...' });
         } else if (sectionId === 'patient-reviews') {

@@ -606,11 +606,8 @@ const initApp = () => {
           renderAndroidApps(section, sectionEl);
           break;
         case 'affiliate-list':
-          renderAffiliateList(section, sectionEl);
-          break;
-        case 'own-products':
-          renderOwnProducts(section, sectionEl);
-          break;
+           renderAffiliateList(section, sectionEl);
+           break;
         case 'bank-transfer':
           renderBankTransfer(section, sectionEl);
           break;
@@ -1460,73 +1457,6 @@ const initApp = () => {
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
     container.appendChild(grid);
-  }
-
-  // 6d. Own Products Component (Synchronized with Affiliate List design)
-  function renderOwnProducts(section, container) {
-    const items = section.items || [];
-
-    if (items.length === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'section-empty-state';
-      empty.textContent = 'Chưa có sản phẩm nào';
-      container.appendChild(empty);
-      return;
-    }
-
-    const grid = document.createElement('div');
-    grid.className = 'affiliate-container';
-
-    items.forEach((item, index) => {
-      const card = document.createElement('a');
-      card.className = 'affiliate-card';
-      card.id = `own-product-card-${section.id}-${index}`;
-      card.style.textDecoration = 'none';
-
-      const name = item.name || 'Sản phẩm thảo dược';
-      const image = item.image || 'assets/product_tea.png';
-      const description = item.description || 'Liên hệ để được tư vấn bài thuốc phù hợp với thể trạng.';
-      const contactUrl = item.contactUrl || 'https://zalo.me/0982581222';
-      const contactLabel = item.contactLabel || 'Liên hệ báo giá';
-
-      card.href = contactUrl;
-      card.target = '_blank';
-      card.setAttribute('rel', 'noopener noreferrer');
-
-      card.innerHTML = `
-        <div class="affiliate-image-wrapper" style="position: relative;">
-          <img src="${image}" alt="${name}" class="affiliate-image" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" ${index < 2 ? 'fetchpriority="high"' : ''}>
-          <span class="affiliate-hot-badge" style="background: linear-gradient(135deg, #059669, #10b981); box-shadow: 0 2px 6px rgba(5, 150, 105, 0.35); text-transform: uppercase;">Đông y</span>
-        </div>
-        <div class="affiliate-info">
-          <div class="affiliate-text">
-            <h3 class="affiliate-name">${name}</h3>
-            <div class="affiliate-price">Liên hệ</div>
-            <div class="affiliate-discount">${description}</div>
-            <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 6px;">
-              <span style="color: #eab308; display: flex; align-items: center; gap: 2px; font-weight: 700;">
-                <i data-lucide="star" style="width: 11px; height: 11px; fill: #eab308; color:#eab308;"></i> 4.9
-              </span>
-              <span style="opacity: 0.4;">|</span>
-              <span style="opacity: 0.85; font-weight: 500;">Gia truyền Thu Bẩy</span>
-            </div>
-          </div>
-          <div class="affiliate-cta contact-zalo" style="background-color: #0068ff !important; color: #ffffff !important;">
-            <span>${contactLabel}</span>
-            <i data-lucide="message-circle"></i>
-          </div>
-        </div>
-      `;
-
-      card.addEventListener('click', () => {
-        trackClick('own_product', slugify(name), name, contactUrl);
-      });
-
-      grid.appendChild(card);
-    });
-
-    container.appendChild(grid);
-    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
   // 6e. Service List Component
