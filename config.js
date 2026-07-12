@@ -1,7 +1,7 @@
 // File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.
 window.CONFIG = {
-  "updatedAt": 1783842562853,
+  "updatedAt": 1783842619047,
   "profile": {
     "avatar": "assets/avatar_doctor.png",
     "name": "Đông y Thu Bẩy",
@@ -83,6 +83,36 @@ window.CONFIG = {
       "enabled": true,
       "order": 2.8,
       "items": [
+        {
+          "name": "Bài thuốc mới",
+          "image": "",
+          "description": "Mô tả sản phẩm thảo dược...",
+          "tags": [
+            "100% thảo dược"
+          ],
+          "contactUrl": "https://zalo.me/0982581222",
+          "contactLabel": "Liên hệ báo giá"
+        },
+        {
+          "name": "Bài thuốc mới",
+          "image": "",
+          "description": "Mô tả sản phẩm thảo dược...",
+          "tags": [
+            "100% thảo dược"
+          ],
+          "contactUrl": "https://zalo.me/0982581222",
+          "contactLabel": "Liên hệ báo giá"
+        },
+        {
+          "name": "Bài thuốc mới",
+          "image": "",
+          "description": "Mô tả sản phẩm thảo dược...",
+          "tags": [
+            "100% thảo dược"
+          ],
+          "contactUrl": "https://zalo.me/0982581222",
+          "contactLabel": "Liên hệ báo giá"
+        },
         {
           "name": "Bài thuốc mới",
           "image": "",
