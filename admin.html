@@ -607,6 +607,51 @@
       white-space: nowrap;
     }
 
+    /* Style cho Switch Toggle trong admin */
+    .switch-container {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    .switch-container input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      transition: .3s;
+      border-radius: 24px;
+    }
+    .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: var(--text-muted);
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .switch-slider {
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+    input:checked + .switch-slider:before {
+      transform: translateX(20px);
+      background-color: var(--btn-primary-text);
+    }
+
     @media (max-width: 768px) {
       .field-grid {
         grid-template-columns: 1fr;
@@ -1507,6 +1552,23 @@
         </div>
 
         <div class="section-header" style="margin-top: 10px;">
+          <h3>Cấu hình Giao diện & Hiển thị</h3>
+          <p>Điều chỉnh các tuỳ chọn hiển thị đặc biệt trên trang Link-in-Bio.</p>
+        </div>
+        <div class="editor-card">
+          <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 0;">
+            <div>
+              <label style="margin-bottom: 4px;">Tràn viền trên Mobile (Edge-to-Edge)</label>
+              <p style="font-size: 12px; color: var(--text-muted); margin: 0;">Giúp các card co giãn 100% chiều ngang, bỏ bo góc thô trên di động.</p>
+            </div>
+            <label class="switch-container">
+              <input type="checkbox" id="ui-edge-to-edge" ${localConfig.edgeToEdge ? 'checked' : ''}>
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="section-header" style="margin-top: 10px;">
           <h3>Cấu hình SEO / Open Graph</h3>
           <p>Thiết lập thông tin hiển thị khi chia sẻ link lên Facebook/TikTok/Zalo.</p>
         </div>
@@ -1529,6 +1591,7 @@
       document.getElementById('prof-subtitle').addEventListener('input', (e) => profile.subtitle = e.target.value);
       document.getElementById('prof-tiktok').addEventListener('input', (e) => profile.tiktokHandle = e.target.value);
       document.getElementById('prof-bio').addEventListener('input', (e) => profile.bio = e.target.value);
+      document.getElementById('ui-edge-to-edge').addEventListener('change', (e) => localConfig.edgeToEdge = e.target.checked);
       document.getElementById('seo-title').addEventListener('input', (e) => localConfig.seo.title = e.target.value);
       document.getElementById('seo-desc').addEventListener('input', (e) => localConfig.seo.description = e.target.value);
     }

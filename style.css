@@ -2772,5 +2772,48 @@ body {
   filter: none;
 }
 
+/* ============ EFFECT: EDGE TO EDGE (TRÀN VIỀN MOBILE) ============ */
+@media (max-width: 480px) {
+  body.layout-edge-to-edge .app-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  body.layout-edge-to-edge .profile-header,
+  body.layout-edge-to-edge .section-title,
+  body.layout-edge-to-edge .app-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  body.layout-edge-to-edge .text-block-card,
+  body.layout-edge-to-edge .booking-card,
+  body.layout-edge-to-edge .bank-transfer-card,
+  body.layout-edge-to-edge .countdown-banner,
+  body.layout-edge-to-edge .faq-card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  
+  body.layout-edge-to-edge .project-bento-grid,
+  body.layout-edge-to-edge .android-grid,
+  body.layout-edge-to-edge .affiliate-container,
+  body.layout-edge-to-edge .gift-grid,
+  body.layout-edge-to-edge .social-links-grid {
+    padding-left: 16px;
+    padding-right: 16px;
+    width: 100%;
+  }
+
+  body.layout-edge-to-edge .project-card,
+  body.layout-edge-to-edge .android-card,
+  body.layout-edge-to-edge .affiliate-card,
+  body.layout-edge-to-edge .gift-card {
+    border-radius: 8px; /* Tinh chỉnh góc bo nhỏ hơn thay vì 14px để hài hòa trên màn hình nhỏ */
+  }
+}
+
+
 
 

@@ -167,6 +167,11 @@ const initApp = () => {
 
   const config = window.CONFIG;
 
+  // Apply edge-to-edge layout if enabled
+  if (config.edgeToEdge) {
+    document.body.classList.add('layout-edge-to-edge');
+  }
+
   // Helper to fallback icon name to SVG to avoid CDN bundle missing issues (e.g. facebook)
   function getDynamicIconHtml(iconName) {
     if (iconName === 'facebook') {
