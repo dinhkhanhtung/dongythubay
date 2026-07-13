@@ -192,7 +192,7 @@
     .form-input:focus {
       outline: none;
       border-color: var(--color-primary);
-      box-shadow: 0 0 0 2px var(--color-primary-hover);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
     }
 
     .btn {
@@ -638,12 +638,12 @@
         height: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
         flex-direction: row !important;
         border-right: none !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-top: 1px solid var(--border-color) !important;
         border-bottom: none !important;
-        background-color: rgba(15, 23, 42, 0.95) !important;
+        background-color: var(--bg-panel) !important;
         backdrop-filter: blur(20px) !important;
         -webkit-backdrop-filter: blur(20px) !important;
-        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.45) !important;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08) !important;
         padding: 6px 12px calc(6px + env(safe-area-inset-bottom, 6px)) 12px !important;
         overflow-x: auto !important;
         overflow-y: hidden !important;
@@ -684,8 +684,8 @@
         transition: all 0.2s ease !important;
       }
       .nav-item.active {
-        color: var(--color-primary) !important;
-        background-color: rgba(34, 197, 94, 0.12) !important;
+        color: var(--text-active) !important;
+        background-color: var(--bg-nav-active) !important;
         border-left: none !important;
         border-radius: 9999px !important;
       }
@@ -707,8 +707,8 @@
         white-space: nowrap !important;
         border-radius: 9999px !important;
         color: var(--color-primary) !important;
-        background: rgba(34, 197, 94, 0.08) !important;
-        border: 1px dashed rgba(34, 197, 94, 0.3) !important;
+        background: color-mix(in srgb, var(--color-primary) 8%, transparent) !important;
+        border: 1px dashed color-mix(in srgb, var(--color-primary) 30%, transparent) !important;
         min-width: 84px !important;
         text-align: center !important;
       }
@@ -1378,7 +1378,7 @@
 
     async function handleLogin() {
       const pwd = document.getElementById('admin-password').value;
-      if (!pwd) return alert('Vui lòng nhập mật khẩu!');
+      if (!pwd) return showToast('Vui lòng nhập mật khẩu!', 'warning');
 
       try {
         const res = await fetch('/api/login', {
@@ -1394,11 +1394,11 @@
           localStorage.setItem('admin_logged_pwd', pwd);
           showDashboard();
         } else {
-          alert(data.error || 'Mật khẩu bảo mật không chính xác!');
+          showToast(data.error || 'Mật khẩu bảo mật không chính xác!', 'error');
         }
       } catch (err) {
         console.error(err);
-        alert('Lỗi kết nối đến máy chủ xác thực.');
+        showToast('Lỗi kết nối đến máy chủ xác thực.', 'error');
       }
     }
 
@@ -1420,7 +1420,7 @@
         localConfig = JSON.parse(JSON.stringify(window.CONFIG)); // Deep copy
         renderEditor();
       } else {
-        alert('Không tải được cấu hình từ file config.js');
+        showToast('Không tải được cấu hình từ file config.js', 'error');
       }
     }
 
@@ -2794,14 +2794,14 @@ window.CONFIG = ${JSON.stringify(localConfig, null, 2)};
           if (counter <= 0) {
             clearInterval(interval);
             overlay.classList.remove('show');
-            alert('Cập nhật dữ liệu thành công! Trang web của bạn đã được cập nhật bản mới nhất trên Internet.');
+            showToast('Cập nhật dữ liệu thành công! Trang web của bạn đã được cập nhật bản mới nhất trên Internet.', 'success');
           }
         }, 1000);
 
       } catch (err) {
         overlay.classList.remove('show');
         console.error(err);
-        alert(`Đã xảy ra lỗi: ${err.message || 'Không rõ nguyên nhân.'}`);
+        showToast(`Đã xảy ra lỗi: ${err.message || 'Không rõ nguyên nhân.'}`, 'error');
       }
     }
 
@@ -2999,7 +2999,7 @@ window.CONFIG = ${JSON.stringify(localConfig, null, 2)};
         }, 2000);
         
       } catch (err) {
-        alert(`Lỗi khi tải ảnh: ${err.message}`);
+        showToast(`Lỗi khi tải ảnh: ${err.message}`, 'error');
         targetInput.disabled = false;
         targetInput.value = originalInputVal;
         

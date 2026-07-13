@@ -187,6 +187,132 @@ const initApp = () => {
     });
   }
 
+  // Custom App Toast System to replace native alert()
+  function showAppToast(message, type = 'info') {
+    let container = document.querySelector('.app-toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.className = 'app-toast-container';
+      document.body.appendChild(container);
+    }
+    const item = document.createElement('div');
+    item.className = `app-toast-item app-toast-${type}`;
+    let iconHtml = '';
+    if (type === 'success') {
+      iconHtml = '<i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>';
+    } else if (type === 'error') {
+      iconHtml = '<i data-lucide="alert-triangle" style="width: 18px; height: 18px;"></i>';
+    } else if (type === 'warning') {
+      iconHtml = '<i data-lucide="alert-circle" style="width: 18px; height: 18px;"></i>';
+    } else {
+      iconHtml = '<i data-lucide="info" style="width: 18px; height: 18px;"></i>';
+    }
+    item.innerHTML = `
+      <div class="app-toast-icon">${iconHtml}</div>
+      <div class="app-toast-content" style="flex-grow: 1; line-height: 1.4;">${message}</div>
+    `;
+    container.appendChild(item);
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+    setTimeout(() => item.classList.add('show'), 10);
+    setTimeout(() => {
+      item.classList.remove('show');
+      item.classList.add('hide');
+      setTimeout(() => item.remove(), 400);
+    }, 4000);
+  }
+
+  // Override default window.alert
+  window.alert = function(msg) {
+    let type = 'info';
+    const cleanMsg = msg.toLowerCase();
+    if (cleanMsg.includes('thành công') || cleanMsg.includes('hoàn tất') || cleanMsg.includes('đã gửi') || cleanMsg.includes('đăng ký thành công')) {
+      type = 'success';
+    } else if (cleanMsg.includes('lỗi') || cleanMsg.includes('thất bại') || cleanMsg.includes('yêu cầu') || cleanMsg.includes('vui lòng') || cleanMsg.includes('thiếu') || cleanMsg.includes('điền đầy đủ')) {
+      type = 'warning';
+    }
+    showAppToast(msg, type);
+  };
+
+  // Custom App Confirm Modal System to replace native confirm()
+  function showAppConfirm(message) {
+    return new Promise((resolve) => {
+      const overlay = document.createElement('div');
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100000;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+      `;
+      
+      const card = document.createElement('div');
+      card.style.cssText = `
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 24px;
+        max-width: 360px;
+        width: calc(100% - 32px);
+        box-shadow: var(--card-shadow);
+        transform: scale(0.9) translateY(10px);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        color: var(--text-primary);
+        font-family: var(--font-primary);
+        text-align: center;
+      `;
+
+      card.innerHTML = `
+        <div style="color: var(--color-primary); margin-bottom: 12px; display: flex; justify-content: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-help-circle"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 10px; color: var(--text-primary); font-family: var(--font-primary);">Xác nhận</h3>
+        <p style="font-size: 13.5px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 20px; font-family: var(--font-primary);">${message}</p>
+        <div style="display: flex; gap: 8px; justify-content: center;">
+          <button id="app-confirm-cancel" style="flex: 1; padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: transparent; color: var(--text-secondary); font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: var(--font-primary);">Hủy</button>
+          <button id="app-confirm-ok" style="flex: 1; padding: 10px 16px; border-radius: var(--radius-sm); border: none; background: var(--color-primary); color: white; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: var(--font-primary);">Đồng ý</button>
+        </div>
+      `;
+
+      overlay.appendChild(card);
+      document.body.appendChild(overlay);
+
+      // Trigger animations
+      requestAnimationFrame(() => {
+        overlay.style.opacity = '1';
+        card.style.transform = 'scale(1) translateY(0)';
+      });
+
+      const cancelBtn = card.querySelector('#app-confirm-cancel');
+      const okBtn = card.querySelector('#app-confirm-ok');
+
+      const cleanup = (result) => {
+        overlay.style.opacity = '0';
+        card.style.transform = 'scale(0.9) translateY(10px)';
+        setTimeout(() => {
+          overlay.remove();
+          resolve(result);
+        }, 250);
+      };
+
+      cancelBtn.addEventListener('click', () => cleanup(false));
+      okBtn.addEventListener('click', () => cleanup(true));
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) cleanup(false);
+      });
+    });
+  }
+
   // 1. Populate SEO Meta Tags
   if (config.seo) {
     document.title = config.seo.title || document.title;
@@ -1168,8 +1294,8 @@ const initApp = () => {
   });
 
   // Reset Stats Clicked
-  resetStatsBtn.addEventListener('click', () => {
-    if (confirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu thống kê số lượt bấm không?')) {
+  resetStatsBtn.addEventListener('click', async () => {
+    if (await showAppConfirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu thống kê số lượt bấm không?')) {
       localStorage.removeItem('linktree_clicks');
       showStatsModal();
     }
@@ -1949,6 +2075,46 @@ const initApp = () => {
 
     document.body.appendChild(bottomBar);
     if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    // Scroll Active Tab Synchronization for Bottom Navigation
+    const syncBottomBarActiveTab = () => {
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+      
+      const sections = [
+        { id: 'bb-apps', el: document.getElementById('section-my-apps') },
+        { 
+          id: 'bb-products', 
+          el: document.querySelector('[id*="section-affiliate"]') || document.querySelector('[id*="section-own-products"]')
+        },
+        { id: 'bb-booking', el: document.getElementById('section-appointment-booking') },
+        { id: 'bb-gifts', el: document.getElementById('section-free-gifts') },
+        { id: 'bb-services', el: document.getElementById('section-services-digital') }
+      ];
+
+      let activeTabId = null;
+
+      for (const section of sections) {
+        if (section.el) {
+          const top = section.el.offsetTop;
+          const height = section.el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            activeTabId = section.id;
+            break;
+          }
+        }
+      }
+
+      bottomBar.querySelectorAll('.bottom-bar-item').forEach(item => {
+        if (item.id === activeTabId) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    };
+
+    window.addEventListener('scroll', syncBottomBarActiveTab, { passive: true });
+    setTimeout(syncBottomBarActiveTab, 300);
   }
 
   // 11. Hamburger Menu Logic for Sticky Header
