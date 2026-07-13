@@ -171,6 +171,12 @@ const initApp = () => {
   if (config.edgeToEdge) {
     document.body.classList.add('layout-edge-to-edge');
 
+    // Tạo hai dải giả lập màn hình cong tràn viền (waterfall curved edge glass)
+    const edgeLeft = document.createElement('div');
+    edgeLeft.className = 'curved-edge-left';
+    const edgeRight = document.createElement('div');
+    edgeRight.className = 'curved-edge-right';
+
     // Nếu chạy trên Desktop (màn hình rộng hơn 480px), tự động bọc giao diện vào khung mockup điện thoại tràn viền
     if (window.innerWidth > 480) {
       const container = document.querySelector('.app-container');
@@ -202,9 +208,17 @@ const initApp = () => {
           phoneDevice.appendChild(backToTopBtn);
         }
         
+        // Chèn hai dải cong tràn viền vào trong mockup điện thoại
+        phoneDevice.appendChild(edgeLeft);
+        phoneDevice.appendChild(edgeRight);
+        
         // Thêm class đánh dấu đang chạy mockup trên body để có các tuỳ chỉnh CSS nền mờ bên ngoài
         document.body.classList.add('phone-mockup-active');
       }
+    } else {
+      // Chèn hai dải cong tràn viền trực tiếp vào body (Mobile thực tế)
+      document.body.appendChild(edgeLeft);
+      document.body.appendChild(edgeRight);
     }
   }
 

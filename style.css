@@ -2963,6 +2963,71 @@ body {
   }
 }
 
+/* ============ EFFECT: CURVED EDGE GLASS (GIẢ LẬP MÀN HÌNH CONG 3D) ============ */
+.curved-edge-left,
+.curved-edge-right {
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  pointer-events: none;
+  z-index: 999999; /* Đè lên toàn bộ phần tử bao gồm cả header/footer */
+}
+
+/* Trên mobile: Đặt ở mép màn hình bằng fixed */
+@media (max-width: 480px) {
+  .curved-edge-left,
+  .curved-edge-right {
+    position: fixed;
+  }
+}
+
+/* Trên desktop: Đặt ở mép mockup điện thoại bằng absolute */
+@media (min-width: 481px) {
+  .phone-mockup-device .curved-edge-left,
+  .phone-mockup-device .curved-edge-right {
+    position: absolute;
+  }
+}
+
+.curved-edge-left {
+  left: 0;
+  background: linear-gradient(to right, 
+    rgba(0, 0, 0, 0.28) 0%, 
+    rgba(255, 255, 255, 0.16) 20%, 
+    rgba(255, 255, 255, 0.04) 45%, 
+    rgba(0, 0, 0, 0.06) 75%, 
+    rgba(0, 0, 0, 0) 100%);
+}
+
+.curved-edge-right {
+  right: 0;
+  background: linear-gradient(to left, 
+    rgba(0, 0, 0, 0.28) 0%, 
+    rgba(255, 255, 255, 0.16) 20%, 
+    rgba(255, 255, 255, 0.04) 45%, 
+    rgba(0, 0, 0, 0.06) 75%, 
+    rgba(0, 0, 0, 0) 100%);
+}
+
+[data-theme="dark"] .curved-edge-left {
+  background: linear-gradient(to right, 
+    rgba(0, 0, 0, 0.55) 0%, 
+    rgba(255, 255, 255, 0.12) 15%, 
+    rgba(255, 255, 255, 0.02) 40%, 
+    rgba(0, 0, 0, 0.15) 75%, 
+    rgba(0, 0, 0, 0) 100%);
+}
+
+[data-theme="dark"] .curved-edge-right {
+  background: linear-gradient(to left, 
+    rgba(0, 0, 0, 0.55) 0%, 
+    rgba(255, 255, 255, 0.12) 15%, 
+    rgba(255, 255, 255, 0.02) 40%, 
+    rgba(0, 0, 0, 0.15) 75%, 
+    rgba(0, 0, 0, 0) 100%);
+}
+
+
 
 
 
