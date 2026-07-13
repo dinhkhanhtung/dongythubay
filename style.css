@@ -2814,6 +2814,155 @@ body {
   }
 }
 
+/* ============ EFFECT: PHONE MOCKUP (GIẢ LẬP ĐIỆN THOẠI TRÀN VIỀN TRÊN DESKTOP) ============ */
+@media (min-width: 481px) {
+  body.phone-mockup-active {
+    background: radial-gradient(circle at 50% 30%, rgba(18, 108, 61, 0.08), transparent 60%), #0d1511 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
+  [data-theme="dark"] body.phone-mockup-active {
+    background: radial-gradient(circle at 50% 30%, rgba(46, 204, 113, 0.05), transparent 60%), #040806 !important;
+  }
+
+  /* Khung giả lập điện thoại */
+  .phone-mockup-device {
+    position: relative;
+    width: 412px;
+    height: 860px;
+    max-height: calc(100vh - 40px);
+    background: var(--bg-app-gradient);
+    border-radius: 46px;
+    border: 12px solid #000000; /* Viền đen màn hình */
+    outline: 3px solid #374151; /* Sườn kim loại titan */
+    box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 
+                0 0 0 12px #000000;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    margin: auto;
+  }
+
+  [data-theme="dark"] .phone-mockup-device {
+    outline-color: #1f2937;
+    box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.9), 
+                0 0 0 12px #000000;
+  }
+
+  /* Dynamic Island */
+  .phone-dynamic-island {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 105px;
+    height: 26px;
+    background-color: #000000;
+    border-radius: 20px;
+    z-index: 10000; /* Luôn nổi trên cùng của màn hình */
+    box-shadow: inset 0 0 4px rgba(255,255,255,0.1);
+  }
+  
+  .phone-dynamic-island::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: #0d1527;
+    border-radius: 50%;
+    box-shadow: inset 0 0 2px rgba(255,255,255,0.3);
+  }
+
+  /* Loa thoại */
+  .phone-dynamic-island::after {
+    content: "";
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 3px;
+    background: #1f2937;
+    border-radius: 3px;
+  }
+
+  /* Bố cục của container chính bên trong điện thoại */
+  .phone-mockup-device .app-container {
+    max-width: 100% !important;
+    height: 100%;
+    padding-top: 68px !important; /* Để chừa khoảng trống cho header */
+    padding-bottom: 90px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(18, 108, 61, 0.15) transparent;
+  }
+  
+  /* Header cuộn cố định bên trong khung điện thoại */
+  .phone-mockup-device .sticky-header {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
+    border-top-left-radius: 34px !important;
+    border-top-right-radius: 34px !important;
+    padding-top: 14px !important; /* Đẩy chữ logo xuống dưới Dynamic Island */
+    height: 68px !important;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  /* Ẩn các thanh cuộn thô trên Webkit của điện thoại */
+  .phone-mockup-device .app-container::-webkit-scrollbar {
+    width: 5px;
+  }
+  .phone-mockup-device .app-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .phone-mockup-device .app-container::-webkit-scrollbar-thumb {
+    background: rgba(var(--color-primary-rgb), 0.15);
+    border-radius: 10px;
+  }
+  .phone-mockup-device .app-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--color-primary-rgb), 0.35);
+  }
+
+  /* Điều chỉnh nút Back to Top định vị tuyệt đối trong khung điện thoại */
+  .phone-mockup-device .back-to-top {
+    position: absolute !important;
+    bottom: 96px !important;
+    right: 20px !important;
+    z-index: 1000;
+  }
+
+  /* Điều chỉnh Bottom Nav Bar (nếu có) */
+  .phone-mockup-device .bottom-nav-bar {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-bottom-left-radius: 34px !important;
+    border-bottom-right-radius: 34px !important;
+    z-index: 999 !important;
+  }
+  
+  /* Ẩn các phần tử thô lề ngoài */
+  .phone-mockup-device .skeleton-loader {
+    padding: 0 16px;
+  }
+}
+
 
 
 

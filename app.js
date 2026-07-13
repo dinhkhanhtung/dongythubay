@@ -170,6 +170,42 @@ const initApp = () => {
   // Apply edge-to-edge layout if enabled
   if (config.edgeToEdge) {
     document.body.classList.add('layout-edge-to-edge');
+
+    // Nếu chạy trên Desktop (màn hình rộng hơn 480px), tự động bọc giao diện vào khung mockup điện thoại tràn viền
+    if (window.innerWidth > 480) {
+      const container = document.querySelector('.app-container');
+      const header = document.querySelector('.sticky-header');
+      
+      if (container) {
+        // Tạo wrapper mockup điện thoại tràn viền
+        const phoneDevice = document.createElement('div');
+        phoneDevice.className = 'phone-mockup-device';
+        
+        // Tạo Dynamic Island phía trên cùng
+        const dynamicIsland = document.createElement('div');
+        dynamicIsland.className = 'phone-dynamic-island';
+        
+        // Chèn phoneDevice vào DOM tại vị trí của header/container
+        const insertTarget = header || container;
+        insertTarget.parentNode.insertBefore(phoneDevice, insertTarget);
+        
+        // Bọc Dynamic Island, Header và Container vào trong khung điện thoại
+        phoneDevice.appendChild(dynamicIsland);
+        if (header) {
+          phoneDevice.appendChild(header);
+        }
+        phoneDevice.appendChild(container);
+        
+        // Di chuyển cả nút back-to-top vào bên trong để hiển thị đúng vị trí
+        const backToTopBtn = document.getElementById('back-to-top');
+        if (backToTopBtn) {
+          phoneDevice.appendChild(backToTopBtn);
+        }
+        
+        // Thêm class đánh dấu đang chạy mockup trên body để có các tuỳ chỉnh CSS nền mờ bên ngoài
+        document.body.classList.add('phone-mockup-active');
+      }
+    }
   }
 
   // Helper to fallback icon name to SVG to avoid CDN bundle missing issues (e.g. facebook)
@@ -550,20 +586,36 @@ const initApp = () => {
 
   // 4. Back to Top Button
   const backToTopBtn = document.getElementById('back-to-top');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-      backToTopBtn.classList.add('show');
-    } else {
-      backToTopBtn.classList.remove('show');
-    }
-  });
+  const mainScrollContainer = (config.edgeToEdge && window.innerWidth > 480)
+    ? document.querySelector('.app-container')
+    : window;
 
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+  if (backToTopBtn && mainScrollContainer) {
+    const handleScroll = () => {
+      const scrollTop = mainScrollContainer === window ? window.scrollY : mainScrollContainer.scrollTop;
+      if (scrollTop > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    };
+    
+    mainScrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    
+    backToTopBtn.addEventListener('click', () => {
+      if (mainScrollContainer === window) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        mainScrollContainer.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
     });
-  });
+  }
 
   // 5. Click Tracking Utility
   const trackClick = (type, id, name, url) => {
@@ -2083,7 +2135,13 @@ const initApp = () => {
 
     // Scroll Active Tab Synchronization for Bottom Navigation
     const syncBottomBarActiveTab = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
+      const scrollContainer = (config.edgeToEdge && window.innerWidth > 480) 
+        ? document.querySelector('.app-container') 
+        : null;
+      
+      const scrollPosition = scrollContainer 
+        ? scrollContainer.scrollTop + scrollContainer.clientHeight / 3
+        : window.scrollY + window.innerHeight / 3;
       
       const sections = [
         { id: 'bb-apps', el: document.getElementById('section-my-apps') },
@@ -2118,7 +2176,13 @@ const initApp = () => {
       });
     };
 
-    window.addEventListener('scroll', syncBottomBarActiveTab, { passive: true });
+    const scrollTarget = (config.edgeToEdge && window.innerWidth > 480) 
+      ? document.querySelector('.app-container') 
+      : window;
+
+    if (scrollTarget) {
+      scrollTarget.addEventListener('scroll', syncBottomBarActiveTab, { passive: true });
+    }
     setTimeout(syncBottomBarActiveTab, 300);
   }
 
