@@ -171,55 +171,14 @@ const initApp = () => {
   if (config.edgeToEdge) {
     document.body.classList.add('layout-edge-to-edge');
 
-    // Tạo hai dải giả lập màn hình cong tràn viền (waterfall curved edge glass)
+    // Tạo hai dải giả lập màn hình cong tràn viền (waterfall curved edge glass) ở hai bên lề màn hình
     const edgeLeft = document.createElement('div');
     edgeLeft.className = 'curved-edge-left';
     const edgeRight = document.createElement('div');
     edgeRight.className = 'curved-edge-right';
 
-    // Nếu chạy trên Desktop (màn hình rộng hơn 480px), tự động bọc giao diện vào khung mockup điện thoại tràn viền
-    if (window.innerWidth > 480) {
-      const container = document.querySelector('.app-container');
-      const header = document.querySelector('.sticky-header');
-      
-      if (container) {
-        // Tạo wrapper mockup điện thoại tràn viền
-        const phoneDevice = document.createElement('div');
-        phoneDevice.className = 'phone-mockup-device';
-        
-        // Tạo Dynamic Island phía trên cùng
-        const dynamicIsland = document.createElement('div');
-        dynamicIsland.className = 'phone-dynamic-island';
-        
-        // Chèn phoneDevice vào DOM tại vị trí của header/container
-        const insertTarget = header || container;
-        insertTarget.parentNode.insertBefore(phoneDevice, insertTarget);
-        
-        // Bọc Dynamic Island, Header và Container vào trong khung điện thoại
-        phoneDevice.appendChild(dynamicIsland);
-        if (header) {
-          phoneDevice.appendChild(header);
-        }
-        phoneDevice.appendChild(container);
-        
-        // Di chuyển cả nút back-to-top vào bên trong để hiển thị đúng vị trí
-        const backToTopBtn = document.getElementById('back-to-top');
-        if (backToTopBtn) {
-          phoneDevice.appendChild(backToTopBtn);
-        }
-        
-        // Chèn hai dải cong tràn viền vào trong mockup điện thoại
-        phoneDevice.appendChild(edgeLeft);
-        phoneDevice.appendChild(edgeRight);
-        
-        // Thêm class đánh dấu đang chạy mockup trên body để có các tuỳ chỉnh CSS nền mờ bên ngoài
-        document.body.classList.add('phone-mockup-active');
-      }
-    } else {
-      // Chèn hai dải cong tràn viền trực tiếp vào body (Mobile thực tế)
-      document.body.appendChild(edgeLeft);
-      document.body.appendChild(edgeRight);
-    }
+    document.body.appendChild(edgeLeft);
+    document.body.appendChild(edgeRight);
   }
 
   // Helper to fallback icon name to SVG to avoid CDN bundle missing issues (e.g. facebook)
@@ -600,36 +559,20 @@ const initApp = () => {
 
   // 4. Back to Top Button
   const backToTopBtn = document.getElementById('back-to-top');
-  const mainScrollContainer = (config.edgeToEdge && window.innerWidth > 480)
-    ? document.querySelector('.app-container')
-    : window;
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      backToTopBtn.classList.add('show');
+    } else {
+      backToTopBtn.classList.remove('show');
+    }
+  });
 
-  if (backToTopBtn && mainScrollContainer) {
-    const handleScroll = () => {
-      const scrollTop = mainScrollContainer === window ? window.scrollY : mainScrollContainer.scrollTop;
-      if (scrollTop > 300) {
-        backToTopBtn.classList.add('show');
-      } else {
-        backToTopBtn.classList.remove('show');
-      }
-    };
-    
-    mainScrollContainer.addEventListener('scroll', handleScroll, { passive: true });
-    
-    backToTopBtn.addEventListener('click', () => {
-      if (mainScrollContainer === window) {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      } else {
-        mainScrollContainer.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      }
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
-  }
+  });
 
   // 5. Click Tracking Utility
   const trackClick = (type, id, name, url) => {
@@ -2149,13 +2092,7 @@ const initApp = () => {
 
     // Scroll Active Tab Synchronization for Bottom Navigation
     const syncBottomBarActiveTab = () => {
-      const scrollContainer = (config.edgeToEdge && window.innerWidth > 480) 
-        ? document.querySelector('.app-container') 
-        : null;
-      
-      const scrollPosition = scrollContainer 
-        ? scrollContainer.scrollTop + scrollContainer.clientHeight / 3
-        : window.scrollY + window.innerHeight / 3;
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
       
       const sections = [
         { id: 'bb-apps', el: document.getElementById('section-my-apps') },
@@ -2190,13 +2127,7 @@ const initApp = () => {
       });
     };
 
-    const scrollTarget = (config.edgeToEdge && window.innerWidth > 480) 
-      ? document.querySelector('.app-container') 
-      : window;
-
-    if (scrollTarget) {
-      scrollTarget.addEventListener('scroll', syncBottomBarActiveTab, { passive: true });
-    }
+    window.addEventListener('scroll', syncBottomBarActiveTab, { passive: true });
     setTimeout(syncBottomBarActiveTab, 300);
   }
 
