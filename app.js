@@ -140,12 +140,11 @@ const initApp = () => {
   const hideBootScreen = () => {
     if (!bootScreen || bootScreen.classList.contains('is-hidden')) return;
     bootScreen.classList.add('is-hidden');
-    bootScreen.addEventListener('transitionend', () => {
-      bootScreen.style.display = 'none';
-    }, { once: true });
+    // Không phụ thuộc transitionend (có thể không chạy khi tab bị ẩn / webview tiết kiệm pin)
+    setTimeout(() => { bootScreen.style.display = 'none'; }, 300);
   };
 
-  const maxBootTimeout = setTimeout(hideBootScreen, 1500);
+  const maxBootTimeout = setTimeout(hideBootScreen, 1200);
 
   // Initialize Lucide Icons
   if (typeof lucide !== 'undefined') {
@@ -192,6 +191,8 @@ const initApp = () => {
   // 0. Helper function to scroll to element with Sticky Header offset (72px)
   function scrollToElement(element) {
     if (!element) return;
+    const parentGroup = element.closest && element.closest('details');
+    if (parentGroup && !parentGroup.open) parentGroup.open = true;
     const headerOffset = 72; // 56px sticky header + 16px safe buffer
     const elementPosition = element.getBoundingClientRect().top + window.scrollY;
     const offsetPosition = elementPosition - headerOffset;
@@ -403,128 +404,26 @@ const initApp = () => {
     }
 
     if (profile.bio) {
-      bioEl.textContent = profile.bio;
+      const escapeHtml = (t) => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+      const stripLeadingEmoji = (t) => t.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+      const html = profile.bio.split('\n').map(line => line.trim()).filter(Boolean).map(line => {
+        if (line.includes('|')) {
+          const chips = stripLeadingEmoji(line).split('|').map(x => x.trim()).filter(Boolean);
+          return `<span class="bio-chips">${chips.map(c => `<span class="bio-chip">${escapeHtml(c)}</span>`).join('')}</span>`;
+        }
+        const phone = line.match(/(0\d[\d .]{7,12}\d)/);
+        if (phone) {
+          const digits = phone[1].replace(/\D/g, '');
+          return `<a class="bio-hotline" href="tel:${digits}"><i data-lucide="phone"></i><span>${escapeHtml(stripLeadingEmoji(line))}</span></a>`;
+        }
+        return `<span class="bio-line">${escapeHtml(line)}</span>`;
+      }).join('');
+      bioEl.innerHTML = html;
+      bioEl.classList.add('is-structured');
     } else {
       bioEl.style.display = 'none';
     }
   }
-
-  // 2.5. Page View Counter Integration (Using api.counterapi.dev)
-  const incrementPageView = () => {
-    const profileHeader = document.querySelector('.profile-header');
-
-    // Khởi tạo và cập nhật số người online ảo nhấp nháy
-    if (!document.getElementById('online-counter-style')) {
-      const style = document.createElement('style');
-      style.id = 'online-counter-style';
-      style.textContent = `
-        @keyframes online-blink {
-          0% { opacity: 0.4; transform: scale(0.9); }
-          50% { opacity: 1; transform: scale(1.1); }
-          100% { opacity: 0.4; transform: scale(0.9); }
-        }
-        .online-dot {
-          display: inline-block;
-          width: 7px;
-          height: 7px;
-          background-color: #22c55e;
-          border-radius: 50%;
-          margin: 0 4px 0 8px;
-          vertical-align: middle;
-          animation: online-blink 2s infinite ease-in-out;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-
-    let currentOnline = Math.floor(Math.random() * 8) + 12; // Khởi tạo 12-19
-    const updateOnlineUI = () => {
-      const change = Math.floor(Math.random() * 5) - 2; // -2 đến +2
-      currentOnline += change;
-      if (currentOnline < 8) currentOnline = 8;
-      if (currentOnline > 25) currentOnline = 25;
-      
-      const elTop = document.getElementById('online-counter-top');
-      const elFooter = document.getElementById('online-counter-footer');
-      if (elTop) elTop.textContent = currentOnline;
-      if (elFooter) elFooter.textContent = currentOnline;
-    };
-    setInterval(updateOnlineUI, 5000 + Math.random() * 2000);
-
-    // --- Top Counter ---
-    let topCounter = document.getElementById('top-page-counter');
-    if (!topCounter && profileHeader) {
-      topCounter = document.createElement('p');
-      topCounter.id = 'top-page-counter';
-      topCounter.style.cssText = `
-        font-size: 11.5px; font-weight: 500;
-        color: var(--text-muted);
-        margin: 8px auto 0 auto;
-        display: inline-flex; align-items: center; gap: 4px;
-        opacity: 0.75;
-      `;
-      topCounter.innerHTML = `<i data-lucide="eye" style="width:12px;height:12px;opacity:0.5;"></i><span style="opacity:0.5;">--.--- lượt truy cập<span class="online-dot"></span><span style="color: #22c55e; font-weight: 600;" id="online-counter-top">${currentOnline}</span> đang online</span>`;
-      profileHeader.appendChild(topCounter);
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    // --- Footer Counter ---
-    const footer = document.querySelector('.app-footer');
-    let footerCounter = document.getElementById('public-page-counter');
-    if (!footerCounter && footer) {
-      footerCounter = document.createElement('p');
-      footerCounter.id = 'public-page-counter';
-      footerCounter.style.cssText = `
-        font-size: 12px; color: var(--text-muted);
-        margin-top: 8px; display: flex; align-items: center;
-        justify-content: center; gap: 4px;
-      `;
-      footerCounter.innerHTML = `<i data-lucide="eye" style="width:14px;height:14px;opacity:0.5;"></i><span style="opacity:0.5;">--.--- lượt truy cập<span class="online-dot"></span><span style="color: #22c55e; font-weight: 600;" id="online-counter-footer">${currentOnline}</span> đang online</span>`;
-      footer.appendChild(footerCounter);
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    const updateCounters = (formattedCount) => {
-      if (topCounter) {
-        topCounter.innerHTML = `<i data-lucide="eye" style="width:13px;height:13px;"></i><span>${formattedCount} lượt truy cập<span class="online-dot"></span><span style="color: #22c55e; font-weight: 600;" id="online-counter-top">${currentOnline}</span> đang online</span>`;
-      }
-      if (footerCounter) {
-        footerCounter.innerHTML = `<i data-lucide="eye" style="width:14px;height:14px;opacity:0.8;"></i><span>${formattedCount} lượt truy cập<span class="online-dot"></span><span style="color: #22c55e; font-weight: 600;" id="online-counter-footer">${currentOnline}</span> đang online</span>`;
-      }
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    };
-
-    const hasVisited = sessionStorage.getItem('visited_dongythubay');
-    const apiUrl = hasVisited
-      ? 'https://api.counterapi.dev/v1/dongythubay/views'
-      : 'https://api.counterapi.dev/v1/dongythubay/views/up';
-
-    // Timeout 5 giây, nếu lỗi dùng localStorage fallback
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
-
-    fetch(apiUrl, { signal: controller.signal })
-      .then(res => res.json())
-      .then(data => {
-        clearTimeout(timeout);
-        const countVal = (data && (typeof data.value !== 'undefined' ? data.value : data.count));
-        if (typeof countVal !== 'undefined' && countVal !== null) {
-          sessionStorage.setItem('visited_dongythubay', 'true');
-          const virtualCount = countVal * 12 + 8400;
-          const formattedCount = new Intl.NumberFormat('vi-VN').format(virtualCount);
-          localStorage.setItem('cached_view_count', formattedCount);
-          updateCounters(formattedCount);
-        }
-      })
-      .catch(() => {
-        clearTimeout(timeout);
-        // Fallback: dùng cache localStorage
-        const cached = localStorage.getItem('cached_view_count') || '8.400+';
-        updateCounters(cached);
-      });
-  };
-
-  incrementPageView();
 
   // 3. Theme Toggle (Dark/Light mode)
   const themeToggleBtn = document.getElementById('theme-toggle');
@@ -713,7 +612,17 @@ const initApp = () => {
       .filter(sec => sec.enabled !== false)
       .sort((a, b) => (a.order || 99) - (b.order || 99));
 
+    // Các mục công nghệ được gom vào một nhóm gập riêng để trang chính tập trung cho bệnh nhân
+    const TECH_TYPES = ['services', 'project-grid', 'android-apps'];
+    let techGroup = null;
+    let techGroupBody = null;
+
     activeSections.forEach(section => {
+      // Ẩn khối ưu đãi khi đã hết hạn
+      if (section.type === 'countdown' && section.endDate && new Date(section.endDate) <= new Date()) {
+        return;
+      }
+
       // Auto-hide affiliate or own-products sections that have no items.
       if ((section.type === 'affiliate-list' || section.type === 'own-products') && (!section.items || section.items.length === 0)) {
         return;
@@ -789,8 +698,39 @@ const initApp = () => {
           break;
       }
 
-      sectionsContainer.appendChild(sectionEl);
+      if (TECH_TYPES.includes(section.type)) {
+        if (!techGroup) {
+          techGroup = document.createElement('details');
+          techGroup.className = 'tech-group';
+          techGroup.id = 'section-tech-group';
+          techGroup.innerHTML = `
+            <summary class="tech-group-summary">
+              <span class="tech-group-icon"><i data-lucide="cpu"></i></span>
+              <span class="tech-group-text">
+                <strong>Góc công nghệ của Tùng</strong>
+                <small>Dịch vụ số, ứng dụng web & Android</small>
+              </span>
+              <i data-lucide="chevron-down" class="tech-group-chevron"></i>
+            </summary>`;
+          techGroupBody = document.createElement('div');
+          techGroupBody.className = 'tech-group-body';
+          techGroup.appendChild(techGroupBody);
+          techGroup.addEventListener('toggle', () => {
+            // Cập nhật nút cuộn ngang của các carousel vừa hiện ra
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+          });
+          sectionsContainer.appendChild(techGroup);
+        }
+        techGroupBody.appendChild(sectionEl);
+      } else {
+        sectionsContainer.appendChild(sectionEl);
+      }
     });
+
+    if (sectionsContainer.children.length > 0) {
+      hideBootScreen();
+      clearTimeout(maxBootTimeout);
+    }
 
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
@@ -861,36 +801,6 @@ const initApp = () => {
     container.appendChild(card);
   }
 
-  // Helper to generate virtual usage count for apps with daily dynamic growth and distinct values
-  function getVirtualUsage(title, index, saltUrl) {
-    if (!title || title === 'Đang tải...') title = 'app-preview-' + index;
-    const daysSinceStart = Math.floor((new Date() - new Date('2026-07-01')) / (1000 * 60 * 60 * 24));
-    
-    // Hash string to create a very distinct seed
-    const seedStr = (title + (saltUrl || '') + index);
-    const hash = seedStr.split('').reduce((acc, char, i) => acc + char.charCodeAt(0) * (i + 1), 0);
-    
-    const baseCount = (hash % 200) + 120; // 120 - 320 (Hạ thấp số lượng)
-    const dailyGrowth = (hash % 2) + 1; // mỗi ngày chỉ tăng 1-2 lượt sử dụng
-    const total = baseCount + (daysSinceStart * dailyGrowth);
-    return new Intl.NumberFormat('vi-VN').format(total);
-  }
-
-  // Helper to generate virtual sales count for products with daily dynamic growth and distinct values
-  function getVirtualSales(name, index, saltUrl) {
-    if (!name || name === 'Đang tải...') name = 'product-preview-' + index;
-    const daysSinceStart = Math.floor((new Date() - new Date('2026-07-01')) / (1000 * 60 * 60 * 24));
-    
-    // Hash string to create a very distinct seed
-    const seedStr = (name + (saltUrl || '') + index);
-    const hash = seedStr.split('').reduce((acc, char, i) => acc + char.charCodeAt(0) * (i + 1), 0);
-    
-    const baseSales = (hash % 160) + 30; // 30 - 190 (Hạ thấp số lượng)
-    const dailyGrowth = (hash % 2) + 1; // mỗi ngày chỉ tăng 1-2 lượt bán
-    const total = baseSales + (daysSinceStart * dailyGrowth);
-    return new Intl.NumberFormat('vi-VN').format(total);
-  }
-
   // 3. Project Grid Component (Full Width Image Card for App display)
   function renderProjectGrid(section, container) {
     const grid = document.createElement('div');
@@ -924,10 +834,6 @@ const initApp = () => {
           <div class="project-text">
             <h3>${title}</h3>
             <p>${description}</p>
-          </div>
-          <div class="project-usage">
-            <i data-lucide="users" style="width: 12px; height: 12px;"></i>
-            <span>${getVirtualUsage(title, index, linkUrl)} lượt sử dụng</span>
           </div>
           <div class="project-cta">
             <span>Sử dụng ngay</span>
@@ -998,8 +904,8 @@ const initApp = () => {
       const title = item.title || 'Đang tải...';
       const description = item.description || 'Vui lòng đợi giây lát...';
       const icon = item.image || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNlZWUiLz48L3N2Zz4=';
-      const rating = item.rating || '5.0';
-      const downloads = item.downloads || '100+';
+      const rating = item.rating || '';
+      const downloads = item.downloads || '';
       
       // Deep link cho thiết bị Android: dùng market://details?id=...
       const isAndroid = /Android/i.test(navigator.userAgent);
@@ -1019,14 +925,14 @@ const initApp = () => {
         <div class="android-info">
           <h3>${title}</h3>
           <p>${description}</p>
-          <div class="android-meta">
-            <span class="android-rating">
+          ${(rating || downloads) ? `<div class="android-meta">
+            ${rating ? `<span class="android-rating">
               <i data-lucide="star" style="width: 12px; height: 12px; fill: #eab308; color:#eab308;"></i> ${rating}
-            </span>
-            <span class="android-downloads">
+            </span>` : ''}
+            ${downloads ? `<span class="android-downloads">
               <i data-lucide="download" style="width: 12px; height: 12px;"></i> ${downloads} lượt tải
-            </span>
-          </div>
+            </span>` : ''}
+          </div>` : ''}
         </div>
         <div class="android-cta" title="Tải trên Google Play">
           <i data-lucide="play" style="width: 16px; height: 16px; fill: currentColor;"></i>
@@ -1139,13 +1045,6 @@ const initApp = () => {
             <h3 class="affiliate-name">${name}</h3>
             ${price && (!isContact || hasSpecificPrice) ? `<div class="affiliate-price">${price}</div>` : ''}
             <div class="affiliate-discount">${discount}</div>
-            <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 6px;">
-              <span style="color: #eab308; display: flex; align-items: center; gap: 2px; font-weight: 700;">
-                <i data-lucide="star" style="width: 11px; height: 11px; fill: #eab308; color:#eab308;"></i> 4.9
-              </span>
-              <span style="opacity: 0.4;">|</span>
-              <span style="opacity: 0.85; font-weight: 500;">Đã bán ${getVirtualSales(name, index, isContact ? 'contact' : linkUrl)}</span>
-            </div>
           </div>
           <div class="affiliate-cta ${platformClass}">
             <span>${ctaLabel}</span>
@@ -1913,74 +1812,6 @@ const initApp = () => {
     }, 80);
   }
 
-  // 9. Social Proof Toast Generator (ngắn gọn, chung chung, không lộ tên)
-  function initSocialToasts() {
-    if (window.location.pathname.includes('quanly')) return;
-
-    let toastContainer = document.getElementById('social-toast-container');
-    if (!toastContainer) {
-      toastContainer = document.createElement('div');
-      toastContainer.id = 'social-toast-container';
-      toastContainer.className = 'social-toast-container';
-      document.body.appendChild(toastContainer);
-    }
-
-    // Nội dung ngắn gọn, chung chung - không nêu tên cụ thể
-    const actions = [
-      { text: 'Vừa có người đặt lịch khám', icon: 'calendar', color: '#22c55e' },
-      { text: 'Có đơn hàng vừa được đặt', icon: 'shopping-cart', color: '#22c55e' },
-      { text: 'Ai đó vừa đăng ký tư vấn', icon: 'phone', color: '#22c55e' },
-      { text: 'Vừa có người dùng thử ứng dụng', icon: 'external-link', color: '#60a5fa' },
-      { text: 'Có người xem sản phẩm ngay lúc này', icon: 'eye', color: '#60a5fa' },
-      { text: 'Vừa có đăng ký tư vấn bệnh lý', icon: 'activity', color: '#22c55e' },
-    ];
-
-    const timeStrs = ['vài giây trước', '1 phút trước', '2 phút trước', '3 phút trước', 'vừa xong'];
-
-    const showToast = () => {
-      const action = actions[Math.floor(Math.random() * actions.length)];
-      const timeStr = timeStrs[Math.floor(Math.random() * timeStrs.length)];
-
-      const toast = document.createElement('div');
-      toast.className = 'social-toast';
-      toast.innerHTML = `
-        <div class="social-toast-avatar">
-          ${getDynamicIconHtml(action.icon)}
-        </div>
-        <div class="social-toast-content">
-          <div class="social-toast-text">${action.text}</div>
-          <div class="social-toast-time">${timeStr}</div>
-        </div>
-      `;
-
-      toastContainer.appendChild(toast);
-
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons({ nameAttr: 'data-lucide' });
-      }
-
-      setTimeout(() => toast.classList.add('show'), 80);
-
-      // Tự xóa sau 4s
-      setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 500);
-      }, 4000);
-    };
-
-    // Kích hoạt lần đầu sau 18s, sau đó mỗi 40-70s (thưa hơn nhiều)
-    setTimeout(() => {
-      showToast();
-      const triggerNext = () => {
-        const delay = (Math.random() * 30 + 40) * 1000;
-        setTimeout(() => { showToast(); triggerNext(); }, delay);
-      };
-      triggerNext();
-    }, 18000);
-  }
-
-  initSocialToasts();
-
   // 10. Native Bottom Navigation Bar for Mobile (5 items: Ưu đãi, Sản phẩm, Đặt lịch, Quà tặng, Gọi điện)
   function initBottomBar() {
     if (window.location.pathname.includes('quanly')) return;
@@ -1991,9 +1822,9 @@ const initApp = () => {
     const phoneNumber = (window.CONFIG && window.CONFIG.profile && window.CONFIG.profile.phone) || '0982581222';
 
     bottomBar.innerHTML = `
-      <a href="#section-my-apps" class="bottom-bar-item" id="bb-apps">
-        <div class="bb-icon-wrapper"><i data-lucide="layout-grid"></i></div>
-        <span>Ứng dụng</span>
+      <a href="#section-patient-reviews" class="bottom-bar-item" id="bb-apps">
+        <div class="bb-icon-wrapper"><i data-lucide="message-square-heart"></i></div>
+        <span>Phản hồi</span>
       </a>
       <a href="#" class="bottom-bar-item" id="bb-products">
         <div class="bb-icon-wrapper"><i data-lucide="shopping-bag"></i></div>
@@ -2016,11 +1847,11 @@ const initApp = () => {
     // Click "Ứng dụng"
     bottomBar.querySelector('#bb-apps').addEventListener('click', (e) => {
       e.preventDefault();
-      const appsSection = document.getElementById('section-my-apps');
-      if (appsSection) {
-        scrollToElement(appsSection);
+      const reviewsSection = document.getElementById('section-patient-reviews');
+      if (reviewsSection) {
+        scrollToElement(reviewsSection);
       }
-      trackClick('bottom_bar', 'apps', 'Ứng dụng bottom bar', '#');
+      trackClick('bottom_bar', 'reviews', 'Phản hồi bottom bar', '#');
     });
 
     // Click "Sản phẩm" — cuộn đến section sản phẩm đầu tiên (order thấp nhất)
@@ -2095,14 +1926,14 @@ const initApp = () => {
       const scrollPosition = window.scrollY + window.innerHeight / 3;
       
       const sections = [
-        { id: 'bb-apps', el: document.getElementById('section-my-apps') },
+        { id: 'bb-apps', el: document.getElementById('section-patient-reviews') },
         { 
           id: 'bb-products', 
           el: document.querySelector('[id*="section-affiliate"]') || document.querySelector('[id*="section-own-products"]')
         },
         { id: 'bb-booking', el: document.getElementById('section-appointment-booking') },
         { id: 'bb-gifts', el: document.getElementById('section-free-gifts') },
-        { id: 'bb-services', el: document.getElementById('section-services-digital') }
+        { id: 'bb-services', el: document.getElementById('section-tech-group') || document.getElementById('section-services-digital') }
       ];
 
       let activeTabId = null;
