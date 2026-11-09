@@ -72,10 +72,10 @@ window.CONFIG = {
     {
       "id": "intro",
       "type": "text-block",
-      "title": "Đôi Lời Từ Tùng",
+      "title": "Lời Ngỏ Từ Đinh Khánh Tùng",
       "enabled": true,
-      "order": 3.5,
-      "content": "Chào bà con! Tùng là thầy thuốc tại Phòng chẩn trị YHCT Thu Bẩy (Quan Triều, Thái Nguyên). Trang này gom lại các bài thuốc Nam, thảo dược và cách chăm sóc sức khỏe hằng ngày. Cần tư vấn, bà con cứ nhắn Zalo hoặc gọi trực tiếp cho Tùng nhé."
+      "order": 2,
+      "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của Đinh Khánh Tùng. Tại đây, Tùng mong muốn chia sẻ những giá trị thiết thực nhất cho cuộc sống – từ các phương pháp hỗ trợ sức khỏe, bài thuốc Nam gia truyền và thảo dược tự nhiên từ Phòng chẩn trị YHCT Thu Bẩy, cho đến các ứng dụng công nghệ tiện ích do chính Tùng phát triển nhằm giúp công việc và đời sống hàng ngày thêm phần thuận tiện. Rất vui và vinh hạnh được kết nối cùng mọi người!"
     },
     {
       "id": "own-products",
@@ -98,7 +98,7 @@ window.CONFIG = {
       "type": "project-grid",
       "title": "Ứng Dụng Độc Quyền Của Tôi",
       "enabled": true,
-      "order": 6.2,
+      "order": 5,
       "items": [
         {
           "title": "Vidu Family",
@@ -163,7 +163,7 @@ window.CONFIG = {
       "type": "android-apps",
       "title": "Ứng Dụng Android Trên CH Play",
       "enabled": true,
-      "order": 6.4,
+      "order": 5.2,
       "items": [
         {
           "playStoreUrl": "https://play.google.com/store/apps/details?id=com.financeapp.personal_finance_app",
@@ -191,7 +191,7 @@ window.CONFIG = {
       "title": "Đăng Ký Khám & Tư Vấn Trực Tuyến",
       "subtitle": "Điền thông tin dưới đây, Tùng sẽ nhắn tin hoặc gọi điện lại trao đổi với bạn nhé.",
       "enabled": true,
-      "order": 2.5
+      "order": 4
     },
     {
       "id": "affiliates-health",
@@ -235,7 +235,7 @@ window.CONFIG = {
       "type": "reviews",
       "title": "Chia sẻ từ bà con",
       "enabled": true,
-      "order": 2,
+      "order": 3.5,
       "items": [
         {
           "image": "assets/review/Screenshot_20180824-092449.jpg",
@@ -504,7 +504,7 @@ window.CONFIG = {
       "type": "gift-list",
       "title": "🎁 Quà Tặng Miễn Phí",
       "enabled": true,
-      "order": 4.5,
+      "order": 6,
       "items": [
         {
           "id": "g1",
@@ -553,7 +553,7 @@ window.CONFIG = {
       "type": "faq",
       "title": "Câu Hỏi Thường Gặp",
       "enabled": true,
-      "order": 4,
+      "order": 7,
       "items": [
         {
           "question": "Phòng khám có nhận khám và tư vấn online không?",
@@ -586,14 +586,14 @@ window.CONFIG = {
       "ctaLabel": "Đăng ký ngay",
       "ctaUrl": "#section-appointment-booking",
       "enabled": true,
-      "order": 1.5
+      "order": 2.5
     },
     {
       "id": "services-digital",
       "type": "services",
       "title": "Dịch Vụ Số & Công Nghệ",
       "enabled": true,
-      "order": 6,
+      "order": 4.5,
       "items": [
         {
           "title": "Chạy quảng cáo Facebook",
