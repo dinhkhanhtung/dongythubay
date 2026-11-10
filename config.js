@@ -1,7 +1,7 @@
 // File cấu hình Link-in-Bio - YHCT Thu Bẩy (Đinh Khánh Tùng)
 // Chỉnh sửa các trường dưới đây để thay đổi nội dung trang web mà không cần động vào code giao diện.
 window.CONFIG = {
-  "updatedAt": 1783931140573,
+  "updatedAt": 1794315786545,
   "edgeToEdge": true,
   "profile": {
     "avatar": "assets/avatar_doctor.png",
@@ -9,7 +9,7 @@ window.CONFIG = {
     "title": "Phòng Chẩn Trị YHCT Thu Bẩy",
     "subtitle": "Đinh Khánh Tùng",
     "tiktokHandle": "@khanhtungdinh",
-    "bio": "💊 Cường Dương | Sỏi Thận | Dạ Dày | Rụng Tóc | Hiếm Muộn | Trĩ | Xương Khớp | Phụ Khoa \n☎️ Hotline tư vấn: 0982581222"
+    "bio": "🌿 Tư vấn thảo dược truyền thống | Chăm sóc sức khỏe chủ động | Xương khớp – Tiêu hóa – Giấc ngủ\n☎️ Hotline / Zalo tư vấn: 0982.581.222"
   },
   "seo": {
     "title": "Đông y Thu Bẩy - Phòng Chẩn Trị YHCT Thu Bẩy",
@@ -52,7 +52,7 @@ window.CONFIG = {
         {
           "platform": "facebook-page",
           "label": "Fanpage",
-          "url": "https://www.facebook.com/kimke.store",
+          "url": "https://www.facebook.com/phongchantriyhctthubay",
           "icon": "https://i.ibb.co/tTxPVxhX/facebook-page.png"
         },
         {
@@ -72,10 +72,10 @@ window.CONFIG = {
     {
       "id": "intro",
       "type": "text-block",
-      "title": "Lời Ngỏ Từ Đinh Khánh Tùng",
+      "title": "Lời Ngỏ Từ Phòng Khám YHCT Thu Bẩy",
       "enabled": true,
       "order": 2,
-      "content": "Chào mừng quý bà con và các bạn ghé thăm trang liên kết của Đinh Khánh Tùng. Tại đây, Tùng mong muốn chia sẻ những giá trị thiết thực nhất cho cuộc sống – từ các phương pháp hỗ trợ sức khỏe, bài thuốc Nam gia truyền và thảo dược tự nhiên từ Phòng chẩn trị YHCT Thu Bẩy, cho đến các ứng dụng công nghệ tiện ích do chính Tùng phát triển nhằm giúp công việc và đời sống hàng ngày thêm phần thuận tiện. Rất vui và vinh hạnh được kết nối cùng mọi người!"
+      "content": "Chào mừng quý bà con ghé thăm trang thông tin chính thức của Phòng Chẩn Trị Y Học Cổ Truyền Thu Bẩy (Đinh Khánh Tùng). Tại đây, bà con có thể tìm hiểu các sản phẩm thảo dược truyền thống, xem chia sẻ thực tế từ khách hàng đã thăm khám, đặt lịch tư vấn trực tiếp theo thể trạng và nhận tài liệu dưỡng sinh gia đình hoàn toàn miễn phí."
     },
     {
       "id": "own-products",
@@ -97,7 +97,7 @@ window.CONFIG = {
       "id": "my-apps",
       "type": "project-grid",
       "title": "Ứng Dụng Độc Quyền Của Tôi",
-      "enabled": true,
+      "enabled": false,
       "order": 5,
       "items": [
         {
@@ -109,9 +109,9 @@ window.CONFIG = {
         },
         {
           "title": "Kim Kê",
-          "description": "Hệ thống quản lý chuyên sâu cho cửa hàng tiệm gà rán, tối ưu hóa quy trình order và báo cáo doanh thu chi tiết.",
+          "description": "Sàn kết nối, danh bạ và không gian giao thương dành cho cộng đồng Tân Dậu 1981.",
           "image": "https://i.ibb.co/RpMx8DcP/kimke-og-share.jpg",
-          "previewUrl": "https://kimke.vercel.app/",
+          "previewUrl": "https://www.kimke.store/",
           "tag": "Sàn thương mại"
         },
         {
@@ -162,25 +162,21 @@ window.CONFIG = {
       "id": "android-apps",
       "type": "android-apps",
       "title": "Ứng Dụng Android Trên CH Play",
-      "enabled": true,
+      "enabled": false,
       "order": 5.2,
       "items": [
         {
           "playStoreUrl": "https://play.google.com/store/apps/details?id=com.financeapp.personal_finance_app",
           "packageName": "com.financeapp.personal_finance_app",
-          "rating": "4.8",
-          "downloads": "100+",
           "title": "MoneyFlow Smart",
-          "description": "MoneyFlow Smart là giải pháp quản lý tài chính cá nhân hiện đại, trực quan và dễ sử dụng, giúp bạn kiểm soát tài chính một cách thông minh và hiệu quả. Với giao diện người dùng thân thiện và đầy đủ tính năng, ứng dụng giúp bạn theo dõi thu chi, lập kế hoạch tài chính và đạt được mục tiêu tiết kiệm.",
+          "description": "MoneyFlow Smart hỗ trợ ghi chép thu chi, lập kế hoạch tài chính cá nhân và theo dõi mục tiêu tiết kiệm.",
           "image": "https://play-lh.googleusercontent.com/YNu9gjjD3oRoLdRVmoeLIepStqxGT3qOwJRHn-oVaGWrbryUcadKTk93gAnkshui4xOyeBlPr0FP60V9QHW2Nc8"
         },
         {
           "playStoreUrl": "https://play.google.com/store/apps/details?id=com.dinhkhanhtung.selleasy",
           "packageName": "com.dinhkhanhtung.selleasy",
-          "rating": "4.9",
-          "downloads": "500+",
           "title": "SellEasy - Nhật Ký Bán Hàng",
-          "description": "SellEasy là ứng dụng quản lý bán hàng toàn diện, giúp doanh nghiệp của bạn vận hành hiệu quả hơn. Với các tính năng mạnh mẽ và dễ sử dụng, SellEasy là giải pháp hoàn hảo cho việc quản lý kho, theo dõi doanh thu và phân tích hiệu suất kinh doanh.",
+          "description": "SellEasy là ứng dụng nhật ký bán hàng giúp cửa hàng nhỏ quản lý đơn hàng, tồn kho và doanh thu.",
           "image": "https://play-lh.googleusercontent.com/N4WG5Wf3AUlKC4ISS1NtvXIokA_9vZ-ezsPZ6pwHvSatVghbJRrBvw0iIUWMyv_HRGPKt0pAK5dFTNowpwfLfg"
         }
       ]
@@ -201,15 +197,11 @@ window.CONFIG = {
       "order": 3,
       "items": [
         {
-          "priceNote": "120.000đ",
-          "discountNote": "Hộp 30 túi lọc - Mua combo 3 hộp free ship",
-          "affiliateUrl": "https://www.tiktok.com/view/product/1731787477229472505?_d=f052mj9gb8j443&_svg=1&chain_key=%7B%22t%22%3A1%2C%22k%22%3A%22000000000000000007656996177196320533%22%2C%22sc%22%3A%22copy%22%7D&checksum=311206808e8ac511b60cce833756070671d1f6d1b395e2f1e5639f14b7c2daca&encode_params=MIIBUwQMd38i8YryAiDbJ8RmBIIBL5jFY6-15dJ_tPbxu5ZeZQrfRMg9tFoVRHU7o8H1oDzyhkXD9S86Qg1g1Vv4DmDP_Nhn-S9jfxHyLHvk0vIgyh_k_6mjfDtA5NlG2jFCCYU_JiDuOa-a0XJrFhKxeIUbBmATyYX8wGp3cuJ4ujzUoBunxle0tKi909WPtK7CyGoNKIHB-bkzWe3YHJ-4FPZBIgUiO4C0wPu-_mePCaLInn_O1r08GdjroW1kLvsit_XkGWy_-S1u1FOAUKsj2eeLMyx5FvGN2K4LxIFAIrRQ2ny3-QyodA8OltEGEmHH8PI71UeazaCUusyEvFwjxPIQ094QaABE8hxL9YAlKSd3YBzZHCtqTQgH8bZSqDRomt0wz_HPofd4yP_PRIeCSIOhoxXWlQY4-7tdXQAL8H4W4QQQRDrxBfbX5uNXqjH-wwqZbw%3D%3D&og_info=%7B%22title%22%3A%22B%E1%BB%99+Que+Test+b%E1%BB%87nh+d%E1%BA%A1+d%C3%A0y%2C+khu%E1%BA%A9n+HP%2C+d%E1%BB%85+s%E1%BB%AD+d%E1%BB%A5ng+t%E1%BA%A1i+nh%C3%A0%2C+ch%C3%ADnh+x%C3%A1c%2C+che+t%C3%AAn+s%E1%BA%A3n+ph%E1%BA%A9m.+Test+HP+d%E1%BA%A1+d%C3%A0y+Faste%22%2C%22image%22%3A%22https%3A%5C%2F%5C%2Fp16-oec-va.ibyteimg.com%5C%2Ftos-maliva-i-o3syd03w52-us%5C%2F9f7218027cf14d2e9ab09f2f4afd2ee1~tplv-o3syd03w52-resize-webp%3A260%3A260.webp%3Fdr%3D15582%26t%3D555f072d%26ps%3D933b5bde%26shp%3D7745054a%26shcp%3D9b759fb9%26idc%3Dmy2%26from%3D2001012042%22%7D&sec_user_id=MS4wLjABAAAAm6aHnDQFhWdRNz5xUlD8q1n8443WhSmuav77ny6fKY9MxZR5b9GKkk5g286Qsdgk&share_app_id=1180&share_iid=7653300326657640212&share_link_id=9eb6b872-22c8-4078-9e6e-979d2c1ea361&share_region=VN&social_share_type=15&timestamp=1782783360&trackParams=%7B%22traffic_source_list%22%3A%5B3%5D%2C%22traffic_source%22%3A3%2C%22enable_shop_tab_popup%22%3A1%2C%22device_id%22%3A%227565433477211555335%22%7D&u_code=d55c9342jc4ch3&ug_btm=b2631%2Cb6661&ugbiz_name=UNKNOWN&unique_id=khanhtungdinh&user_id=6667323453606297602&utm_campaign=client_share&utm_medium=android&utm_source=copy",
-          "ctaLabel": "Mua trên TikTok"
-        },
-        {
+          "name": "Tinh dầu massage dược liệu gừng và ngải cứu",
+          "image": "https://p16-oec-general.tiktokcdn.com/tos-alisg-i-aphluv4xwc-sg/78b1f199d18544c597832f328853c42e~tplv-aphluv4xwc-resize-webp:260:260.webp",
           "priceNote": "85.000đ",
-          "discountNote": "Chai xịt 100ml - Hỗ trợ giảm đau cơ xương khớp",
-          "affiliateUrl": "https://www.tiktok.com/view/product/1735112219487536176?_d=f052mj9gb8j443&_svg=1&chain_key=%7B%22t%22%3A1%2C%22k%22%3A%22000000000000000007656995557143987989%22%2C%22sc%22%3A%22copy%22%7D&checksum=914742807669b59c1a05c2b1cf27f2b555fb5a4276c1206489fe12fcfbdb8c73&encode_params=MIIBUwQMCon0c2Z1NPyQQAI1BIIBL_qVyCC1tTHhQt-BANAG1wnYzPiJbvDTpLOcUynzFAmMBvo6b8qqQMfEhim0Bp2LkAHHI3GPnOILY8jAA9XS7BvBTXQzZjqAsR7JDEboGZiEbb-ixyDIlccXHwUX4ipboL8IJ2wnnepjHTDtMdEQvxyiVNh_YOJyy0HPbMKL7gmwRtSUaVQtUxbnObWoXhxWfrIBohZUBPm3wmXCLnjtH9CcWe8fvoIeRAX_tVqu_STAB3FP5Ab_ecTeUHsUYhrjoPJ0x6FHwgjgtXsxVdxdQEghEgYDBbRTko8E_mI1J6h9Nl22iu1FS-IihlaH2AhuWTjLE_DVFj1s7YQNOb0Iu5Do9FT2Vk5Q1aQ2lnyEJiTYWn29UOuxWHR2jc5NS7k1n5Z_LXkYtqj20rpDYq01LQQQ8sh9_tv09iUYFWi9YKwFug%3D%3D&og_info=%7B%22title%22%3A%22Tinh+d%E1%BA%A7u+massage+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u+g%E1%BB%ABng+v%C3%A0+ng%E1%BA%A3i+c%E1%BB%A9u+xoa+b%C3%B3p+d%C6%B0%E1%BB%A3c+li%E1%BB%87u%22%2C%22image%22%3A%22https%3A%2F%2Fp16-oec-general.tiktokcdn.com%2Ftos-alisg-i-aphluv4xwc-sg%2F78b1f199d18544c597832f328853c42e~tplv-aphluv4xwc-resize-webp%3A260%3A260.webp%22%7D&sec_user_id=MS4wLjABAAAAm6aHnDQFhWdRNz5xUlD8q1n8443WhSmuav77ny6fKY9MxZR5b9GKkk5g286Qsdgk&share_app_id=1180&share_iid=7653300326657640212&share_link_id=d0ee96f0-6d50-4141-a045-d7e0ed39f8f4&share_region=VN&social_share_type=15&timestamp=1782783215&trackParams=%7B%22traffic_source_list%22%3A%5B3%5D%2C%22traffic_source%22%3A3%2C%22enable_shop_tab_popup%22%3A1%2C%22device_id%22%3A%227565433477211555335%22%7D&u_code=d55c9342jc4ch3&ug_btm=b2631%2Cb6661&ugbiz_name=UNKNOWN&unique_id=khanhtungdinh&user_id=6667323453606297602&utm_campaign=client_share&utm_medium=android&utm_source=copy",
+          "discountNote": "Chai xịt 100ml - Hỗ trợ thư giãn cơ xương khớp",
+          "affiliateUrl": "https://www.tiktok.com/view/product/1735112219487536176",
           "ctaLabel": "Mua trên TikTok"
         }
       ]
@@ -491,7 +483,7 @@ window.CONFIG = {
       "id": "payment",
       "type": "bank-transfer",
       "title": "Thông tin Donate",
-      "enabled": true,
+      "enabled": false,
       "order": 8,
       "bankName": "Ngân hàng BIDV",
       "accountNumber": "0982581222",
@@ -561,7 +553,7 @@ window.CONFIG = {
         },
         {
           "question": "Một liệu trình điều trị thường kéo dài bao lâu?",
-          "answer": "Tùy từng bệnh lý. Thông thường một liệu trình cơ bản từ 1–3 tháng. Các bệnh mãn tính như sỏi thận, dạ dày HP có thể cần 3–6 tháng. Tùng sẽ đánh giá và điều chỉnh phù hợp với từng người."
+          "answer": "Tùy từng thể trạng và mức độ. Thông thường một đợt chăm sóc cơ bản kéo dài khoảng 1–3 tháng; những tình trạng kéo dài có thể cần theo dõi thêm để gia giảm phù hợp."
         },
         {
           "question": "Thuốc nam có an toàn không? Có tác dụng phụ không?",
@@ -585,14 +577,14 @@ window.CONFIG = {
       "endDate": "2026-07-31T23:59:59",
       "ctaLabel": "Đăng ký ngay",
       "ctaUrl": "#section-appointment-booking",
-      "enabled": true,
+      "enabled": false,
       "order": 2.5
     },
     {
       "id": "services-digital",
       "type": "services",
       "title": "Dịch Vụ Số & Công Nghệ",
-      "enabled": true,
+      "enabled": false,
       "order": 4.5,
       "items": [
         {
